@@ -39,5 +39,6 @@ class DatabaseSeeder extends Seeder
         $this->call(JadwalSeeder::class);
         $this->call(NilaiSeeder::class);
         $this->call(BarangSeeder::class);
+        $this->call(PeminjamanSeeder::class);
     }
 }

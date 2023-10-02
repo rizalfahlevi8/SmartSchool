@@ -1,23 +1,24 @@
 <?php
 
-use App\Http\Controllers\BarangController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\EditPasswordController;
+use Illuminate\Http\Request;
+use App\Models\Data_angkatan;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GuruController;
-use App\Http\Controllers\InputNilaiController;
-use App\Http\Controllers\JadwalController;
-use App\Http\Controllers\JadwalMengajarController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MapelController;
-use App\Http\Controllers\PegawaiController;
-use App\Http\Controllers\RaportController;
 use App\Http\Controllers\RuangController;
 use App\Http\Controllers\SiswaController;
-use App\Models\Data_angkatan;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BarangController;
+use App\Http\Controllers\JadwalController;
+use App\Http\Controllers\RaportController;
+use App\Http\Controllers\PegawaiController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\InputNilaiController;
+use App\Http\Controllers\PeminjamanController;
+use App\Http\Controllers\EditPasswordController;
+use App\Http\Controllers\JadwalMengajarController;
 
 /*
 |--------------------------------------------------------------------------
@@ -105,7 +106,7 @@ Route::middleware(['userRole:admin,guru'])->group(function () {
     Route::get('/data-jadwal-cekjadwal/{id}', [JadwalController::class, 'cekjadwal']);
 });
 
-//Sultan
+//==========================================================================================
 Route::middleware(['userRole:admin'])->group(function () {
     // Daftar Barang
     Route::get('/sarana/barang', [BarangController::class, 'index'])->name('barang_main');
@@ -120,8 +121,8 @@ Route::middleware(['userRole:admin'])->group(function () {
     Route::put('/sarana/ruang-update', [RuangController::class, 'update'])->name('update-ruang');
     Route::get('/sarana/ruang-hapus/{ruang}', [RuangController::class, 'destroy'])->name('hapus-ruang');
 });
+//==========================================================================================
 
-// Fahim
 Route::middleware(['userRole:admin'])->group(function () {
     // ==============[ D a t a - G u r u ]===============
     Route::get('/administrasi/guru', [GuruController::class, 'index']);
@@ -184,6 +185,13 @@ Route::middleware(['userRole:admin'])->group(function () {
     Route::get('/akademik/raport-angkatan/{angkatan}', [RaportController::class, 'showRaportAngkatan']);
     Route::get('/akademik/raport-cetak/{id}/{smt}', [RaportController::class, 'cetakraport']);
     Route::post('/akademik/raport-update/{id_siswa}', [RaportController::class, 'update_nilai_raport']);
+
+    // ==============[ D a t a - P e m i n j a m a n ]===============
+    Route::get('/data-peminjaman', [PeminjamanController::class, 'index']);
+    Route::get('/data-peminjaman-history', [PeminjamanController::class, 'history']);
+    Route::get('/peminjaman-hapus/{id}', [PeminjamanController::class, 'destroy']);
+    Route::post('/peminjaman-tambah', [PeminjamanController::class, 'store']);
+    Route::put('/peminjaman-update', [PeminjamanController::class, 'update']);
 });
 
 Route::middleware(['userRole:siswa,admin'])->group(function () {
