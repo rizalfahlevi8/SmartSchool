@@ -27,7 +27,7 @@ class PeminjamanController extends Controller
 
         $ruang = Ruang::all();
 
-        return view('pages.data-peminjaman.peminjaman', [
+        return view('pages.humas.peminjaman-ruang.peminjaman', [
             'hariini'      => $hariini,
             'peminjaman'   => $peminjaman,
             'ruang'        => $ruang
@@ -211,7 +211,7 @@ class PeminjamanController extends Controller
     {
         $peminjaman = Peminjaman::whereDate('tanggal_pengembalian', '<', now())
             ->get();
-        return view('pages.data-peminjaman.history', [
+        return view('pages.humas.peminjaman-ruang.history', [
             'peminjaman'   => $peminjaman
         ])->with('title', 'Data Peminjaman');
     }
