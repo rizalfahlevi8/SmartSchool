@@ -16,7 +16,7 @@ return new class extends Migration
             $table->time('jam_mulai');
             $table->time('jam_selesai');
             $table->text('keterangan')->nullable(true);
-            $table->unsignedBigInteger('id_ruang');
+            $table->unsignedBigInteger('id_ruang')->nullable();
             $table->unsignedBigInteger('id_guru');
             $table->unsignedBigInteger('id_mapel');
             $table->unsignedBigInteger('id_jadwal');

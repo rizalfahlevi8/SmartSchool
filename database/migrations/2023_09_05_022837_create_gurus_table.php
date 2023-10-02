@@ -28,7 +28,7 @@ return new class extends Migration
             $table->timestamps();
             $table->string('signature');
             $table->unsignedBigInteger('id_user')->unique()->nullable();
-            $table->foreign('id_user')->references('id')->on('users')->onDelete('set null');
+            $table->foreign('id_user')->references('id')->on('users')->nullOnDelete();
         });
     }
 
