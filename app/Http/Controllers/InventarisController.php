@@ -9,18 +9,20 @@ use Illuminate\Http\Request;
 
 class InventarisController extends Controller
 {
-    public function showInventaris()
+    public function index()
     {
-        $dataRuangan = Ruang::all();
-        return view('datainventaris.inventaris', compact('dataRuangan'));
+        $ruang = Ruang::all();
+        return view('pages.sarana.data-inventaris.inventaris', [
+            'ruangs'      => $ruang
+        ])->with('title', 'Daftar Ruangan');
     }
 
     public function aturBarang($id)
     {
         $ruang = Ruang::findOrFail($id);
-        $inventaris = Inventaris::where('id_ruang', $id)->get();
+        $inventaris = Inventaris::where('ruang_id', $id)->get();
 
-        return view('datainventaris.inventaris', compact('inventaris', 'ruang'));
+        return view('pages.sarana.data-inventaris.inventaris', compact('inventaris', 'ruang'));
     }
 
 
