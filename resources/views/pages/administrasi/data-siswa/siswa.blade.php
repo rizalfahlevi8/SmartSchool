@@ -69,7 +69,7 @@
                             <div style="display: flex; column-gap: 10px; align-items: center; justify-content: flex-start"
                                 class="my-3">
                                 <select class="form-select form-select-sm" aria-label=".form-select-sm example"
-                                    name="filter_kelas" id="" style="text-transform: capitalize; width: 200px">
+                                    name="kelas" id="" style="text-transform: capitalize; width: 200px">
                                     <option selected value="">-- Pilih Kelas --</option>
                                     @foreach ($kelas as $k)
                                     <option value="{{ $k->id }}" @if (old('kelas') == '{{ $k->id }}' ||(request('kelas') == $k->id)|| (isset($_GET['kelas']) && $_GET['kelas'] == '{{ $k->d }}')) selected @endif>{{ $k->nama_kelas }}</option>

@@ -58,10 +58,6 @@ class Siswa extends Model
 
     public function scopeFilter($query, array $filters)
     {
-        $query->when($filters['nama'] ?? false, function ($query, $nama) {
-            return $query->where('nama', 'like', '%' . $nama . '%');
-        });
-
         $query->when($filters['status'] ?? false, function ($query, $status) {
             return $query->where('status', 'like', '%' . $status . '%');
         });
