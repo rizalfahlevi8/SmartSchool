@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Ruang;
 use App\Models\Inventaris;
-use App\Models\DaftarBarang;
+use App\Models\Barang;
 use Illuminate\Http\Request;
 
 class InventarisController extends Controller
@@ -60,7 +60,6 @@ class InventarisController extends Controller
 
     public function hapusBarang($id)
     {
-        // Hapus barang berdasarkan ID
         $barang = Inventaris::findOrFail($id);
         $barang->delete();
 
