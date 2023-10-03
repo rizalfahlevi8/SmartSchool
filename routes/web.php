@@ -11,6 +11,7 @@ use App\Http\Controllers\MapelController;
 use App\Http\Controllers\RuangController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\BarangController;
+use App\Http\Controllers\InventarisController;
 use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\RaportController;
 use App\Http\Controllers\PegawaiController;
@@ -115,11 +116,14 @@ Route::middleware(['userRole:admin'])->group(function () {
     Route::get('/sarana/barang-update/{barang}', [BarangController::class, 'edit'])->name('update-barang');
     Route::put('/sarana/barang-update/{barang}', [BarangController::class, 'update']);
     Route::get('/sarana/barang-hapus/{barang}', [BarangController::class, 'destroy'])->name('hapus-barang');
-
+    // Ruang
     Route::get('/sarana/ruang', [RuangController::class, 'index'])->name('ruang_main');
     Route::post('/sarana/ruang-tambah', [RuangController::class, 'store'])->name('tambah-ruang');
     Route::put('/sarana/ruang-update', [RuangController::class, 'update'])->name('update-ruang');
     Route::get('/sarana/ruang-hapus/{ruang}', [RuangController::class, 'destroy'])->name('hapus-ruang');
+    // Inventaris
+    Route::get('/sarana/inventaris', [InventarisController::class, 'index'])->name('inventaris_main');
+    Route::get('atur-barang/{id}', [InventarisController::class, 'aturBarang'])->name('atur-barang');
 });
 //==========================================================================================
 
