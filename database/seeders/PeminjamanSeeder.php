@@ -20,7 +20,7 @@ class PeminjamanSeeder extends Seeder
         $faker = Faker::create();
 
         // Hapus semua data yang ada di tabel peminjaman
-        DB::table('peminjamen')->truncate();
+        DB::table('peminjamans')->truncate();
 
         // Isi data dummy dengan Faker
         foreach (range(1, 10) as $index) {
