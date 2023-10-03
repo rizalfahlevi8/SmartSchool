@@ -22,7 +22,7 @@ class CreateInventarisTable extends Migration
 
             // Setup foreign key constraints
             $table->foreign('id_ruang')->references('id')->on('ruangs')->onDelete('cascade');  
-            $table->foreign('id_barangbarang')->references('id')->on('barangs')->onDelete('cascade');  
+            $table->foreign('id_barang')->references('id')->on('barangs')->onDelete('cascade');  
         });
     }
 
