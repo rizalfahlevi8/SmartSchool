@@ -10,8 +10,8 @@ class CreateInventarisTable extends Migration
     {
         Schema::create('inventaris', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_ruang');  // Ganti 'ruang_id' menjadi 'id_ruang'
-            $table->unsignedBigInteger('id_daftarbarang');  // Ganti 'daftar_barang_id' menjadi 'id_daftarbarang'
+            $table->unsignedBigInteger('id_ruang');
+            $table->unsignedBigInteger('id_barang');  
             $table->string('nama_barang');
             $table->date('tahun_pengadaan');
             $table->string('jenis');
@@ -21,8 +21,8 @@ class CreateInventarisTable extends Migration
             $table->timestamps();
 
             // Setup foreign key constraints
-            $table->foreign('id_ruang')->references('id')->on('ruang')->onDelete('cascade');  // Ganti 'ruang_id' menjadi 'id_ruang'
-            $table->foreign('id_daftarbarang')->references('id')->on('daftarbarang')->onDelete('cascade');  // Ganti 'daftar_barang_id' menjadi 'id_daftarbarang'
+            $table->foreign('id_ruang')->references('id')->on('ruangs')->onDelete('cascade');  
+            $table->foreign('id_barangbarang')->references('id')->on('barangs')->onDelete('cascade');  
         });
     }
 
