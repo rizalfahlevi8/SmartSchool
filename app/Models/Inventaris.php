@@ -18,17 +18,17 @@ class Inventaris extends Model
         'jumlah_barang',
         'jumlah_baik',
         'jumlah_rusak',
-        'id_ruang',  // Sesuaikan dengan foreign key di migrasi
-        'id_daftarbarang'  // Sesuaikan dengan foreign key di migrasi
+        'ruang_id',  
+        'barang_id'  
     ];
 
     public function ruang()
     {
-        return $this->belongsTo(Ruang::class, 'id_ruang', 'id');  // Sesuaikan dengan foreign key di migrasi
+        return $this->belongsTo(ruangs::class, 'ruang_id', 'id');  
     }
 
-    public function daftarBarang()
+    public function Barang()
     {
-        return $this->belongsTo(DaftarBarang::class, 'id_daftarbarang', 'id');  // Sesuaikan dengan foreign key di migrasi
+        return $this->belongsTo(barangs::class, 'barang_id', 'id');  
     }
 }
