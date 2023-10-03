@@ -76,7 +76,15 @@
                     <span class="nav-link-text ms-1">Data Barang</span>
                 </a>
             </li>
-
+            <li class="nav-item">
+                <a class="nav-link text-white {{ Request::is('sarana/inventaris*') ? 'bg-gradient-primary ' : '' }}"
+                    href="/sarana/inventaris">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="material-icons opacity-10">task</i>
+                    </div>
+                    <span class="nav-link-text ms-1">Inventaris</span>
+                </a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link text-white {{ Request::is('akademik/jadwal*') ? 'bg-gradient-primary ' : '' }}"
                     href="/akademik/jadwal">
