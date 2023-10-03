@@ -1,4 +1,4 @@
-@extends('admin.app')
+@extends('components.main')
 
 @section('title-content')
     Inventaris
@@ -36,7 +36,7 @@
                                     </div>
                                     <div class="modal-body">
                                         <!-- Form to add a new record -->
-                                        <form action="{{ route('store-inventaris', $ruang->id) }}" method="POST">
+                                        <form action="{{ route('store-inventaris', $ruangs->id) }}" method="POST">
                                         @csrf
                                         <!-- ID Barang -->
                                         <div class="mb-3">

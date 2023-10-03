@@ -14,7 +14,7 @@ class InventarisController extends Controller
         $ruang = Ruang::all();
         return view('pages.sarana.data-inventaris.inventaris', [
             'ruangs'      => $ruang
-        ])->with('title', 'Daftar Ruangan');
+        ])->with('title', 'Daftar Inventaris');
     }
 
     public function aturBarang($id)
@@ -22,7 +22,10 @@ class InventarisController extends Controller
         $ruang = Ruang::findOrFail($id);
         $inventaris = Inventaris::where('ruang_id', $id)->get();
 
-        return view('pages.sarana.data-inventaris.inventaris', compact('inventaris', 'ruang'));
+        return view('pages.sarana.data-inventaris.kelolabarang', [
+            'ruangs'      => $ruang,
+            'inventaris'  => $inventaris
+        ])->with('title', 'Daftar Inventaris');
     }
 
 
@@ -44,7 +47,7 @@ class InventarisController extends Controller
 
         // Simpan data inventaris
         Inventaris::create([
-            'id_ruang' => $id,
+            // 'id_ruang' => $id,
             'id_daftarbarang' => $request->id_daftarbarang,
             'nama_barang' => $request->nama_barang,
             'tahun_pengadaan' => $request->tahun_pengadaan,

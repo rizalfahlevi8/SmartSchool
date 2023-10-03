@@ -124,6 +124,7 @@ Route::middleware(['userRole:admin'])->group(function () {
     // Inventaris
     Route::get('/sarana/inventaris', [InventarisController::class, 'index'])->name('inventaris_main');
     Route::get('atur-barang/{id}', [InventarisController::class, 'aturBarang'])->name('atur-barang');
+    Route::post('/store-inventaris/{id}', [InventarisController::class, 'store'])->name('store-inventaris');
 });
 //==========================================================================================
 
