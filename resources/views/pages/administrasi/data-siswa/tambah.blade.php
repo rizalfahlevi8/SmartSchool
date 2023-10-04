@@ -30,6 +30,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             const statusSelect = document.getElementById('status');
             const asalSekolah = document.getElementById('asal_sekolah');
+            const tglMasuk = document.getElementById('tgl_masuk');
 
             if (statusSelect.value === 'pindahan') {
                 asalSekolah.style.display = 'block';
@@ -214,11 +215,10 @@
                                     <select class="form-select rounded-3 form-control-lg text-sm"
                                         aria-label="Default select example" name="status" id="status" required>
                                         <option selected>-- Pilih Status --</option>
-                                        @foreach ($status_siswas as $status_siswa)
-                                            <option value={{ $status_siswa }}
-                                                @if (old('status') == $status_siswa) {{ 'selected' }} @endif>
-                                                {{ ucfirst($status_siswa) }}</option>
-                                        @endforeach
+                                        <option value="bukan pindahan" @if (old('status') == 'bukan pindahan' || request('status') == 'bukan pindahan' || (isset($_GET['status']) && $_GET['status'] == 'bukan pindahan')) selected @endif>Baru
+                                        </option>
+                                        <option value="pindahan" @if (old('status') == 'pindahan' || request('status') == 'dipindah' || (isset($_GET['status']) && $_GET['status'] == 'pindahan')) selected @endif>Pindahan
+                                        </option>
                                     </select>
                                 </div>
                             </div>

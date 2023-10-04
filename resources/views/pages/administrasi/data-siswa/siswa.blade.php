@@ -170,7 +170,10 @@
                                                 <button type="button"data-bs-toggle="modal" data-bs-target="#leave-modal"
                                                     class="btn btn-danger font-weight-bold text-sm rounded-circle"
                                                     data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                    style="margin-bottom: 0" title="Keluar">
+                                                    style="margin-bottom: 0" title="Detail" id-siswa="{{ $siswa->id }}" nama-siswa="{{ $siswa->nama }}"
+                                                    nis="{{ $siswa->nis }}" nisn="{{ $siswa->nisn }}"
+                                                    kelas="{{ $siswa->kelas->nama_kelas }}"
+                                                    onclick="showModalLeave(this)">
                                                     <i class="fa fa-trash"></i>
                                                 </button>
                                             </td>
@@ -389,7 +392,7 @@
                         </h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form action="/data-siswa-leave/" class="row g-3 py-1 px-4" method="post"
+                    <form id="siswaForm" class="row g-3 py-1 px-4" method="post"
                         enctype="multipart/form-data">
                         @method('PUT')
                         @csrf
@@ -403,8 +406,8 @@
                                                     <span class="float-start fw-bold">Nama</span>
                                                     <div class="float-end">:</div>
                                                 </div>
-                                                <div class="col-md-7">
-
+                                                <div id="nama-siswa" class="col-md-7" style="text-transform: uppercase">
+    
                                                 </div>
                                             </div>
                                         </li>
@@ -414,8 +417,8 @@
                                                     <span class="float-start fw-bold">NISN</span>
                                                     <div class="float-end">:</div>
                                                 </div>
-                                                <div class="col-md-7">
-
+                                                <div id="nisn" class="col-md-7">
+    
                                                 </div>
                                             </div>
                                         </li>
@@ -425,8 +428,8 @@
                                                     <span class="float-start fw-bold">NIS</span>
                                                     <div class="float-end">:</div>
                                                 </div>
-                                                <div class="col-md-7">
-
+                                                <div id="nis" class="col-md-7">
+    
                                                 </div>
                                             </div>
                                         </li>
@@ -436,8 +439,8 @@
                                                     <span class="float-start fw-bold">Kelas</span>
                                                     <div class="float-end">:</div>
                                                 </div>
-                                                <div class="col-md-7">
-
+                                                <div id="kelas" class="col-md-7" style="text-transform: uppercase">
+    
                                                 </div>
                                             </div>
                                         </li>
@@ -551,6 +554,28 @@
                     value.style.display = 'none';
                 });
             }
+        }
+        function showModalLeave(element) {
+            const detailModalDialog = document.getElementById('leave-modal');
+            const nama_siswa = detailModalDialog.querySelector('#nama-siswa');
+            const nis = detailModalDialog.querySelector('#nis');
+            const nisn = detailModalDialog.querySelector('#nisn');
+            const kelas = detailModalDialog.querySelector('#kelas');
+            const form = document.getElementById("siswaForm");
+    
+            // Mengasumsikan idSiswa adalah variabel yang ingin Anda gunakan
+            const idSiswa = element.getAttribute("id-siswa");
+
+            form.action = "/administrasi/siswa-keluar/" + idSiswa;
+
+            nama_siswa.innerText = element.getAttribute('nama-siswa');
+            nis.innerText = element.getAttribute('nis');
+            nisn.innerText = element.getAttribute('nisn');
+            kelas.innerText = element.getAttribute('kelas');
+
+            // Jika Anda memiliki elemen dengan id 'nik', Anda juga dapat mengatur innerText-nya
+            const nik = detailModalDialog.querySelector('#nik');
+            nik.innerText = element.getAttribute('nik');
         }
     </script>
 @endsection

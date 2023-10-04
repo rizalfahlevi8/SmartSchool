@@ -30,7 +30,6 @@ class SiswaController extends Controller
         $kelas = Kelas::all();
         return view('pages.administrasi.data-siswa.tambah', [
             'agamas' => ['islam', 'kristen', 'buddha', 'konghucu', 'hindu'],
-            'status_siswas' => ['baru', 'pindahan'],
             'list_kelas'      => $kelas
         ])->with('title', 'Tambah siswa');
     }
