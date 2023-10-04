@@ -29,7 +29,7 @@ return new class extends Migration
             $table->enum('agama', ['islam', 'kristen', 'hindu', 'buddha', 'konghucu']);
             $table->integer('semester')->default('1');
             $table->string('foto')->default('default_img.png');
-            $table->enum('status', ['lulus', 'belum lulus', 'mutasi', 'keluar'])->default('belum lulus');
+            $table->enum('status', ['bukan pindahan', 'pindahan', 'mutasi', 'lulus'])->default('bukan pindahan');
             $table->timestamps();
             $table->unsignedBigInteger('id_user')->unique()->nullable();
             $table->unsignedBigInteger('id_angkatan')->nullable(true);

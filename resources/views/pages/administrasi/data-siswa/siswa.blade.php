@@ -75,6 +75,17 @@
                                     <option value="{{ $k->id }}" @if (old('kelas') == '{{ $k->id }}' ||(request('kelas') == $k->id)|| (isset($_GET['kelas']) && $_GET['kelas'] == '{{ $k->d }}')) selected @endif>{{ $k->nama_kelas }}</option>
                                     @endforeach
                                 </select>
+                            </div>
+                            <div style="display: flex; column-gap: 10px; align-items: center; justify-content: flex-start"
+                                class="my-3">
+                                <select class="form-select form-select-sm" aria-label=".form-select-sm example"
+                                    name="status" id="" style="text-transform: capitalize; width: 200px">
+                                    <option selected value="">-- Pilih Status --</option>
+                                        <option value="bukan pindahan" @if (old('status') == 'bukan pindahan' || request('status') == 'bukan pindahan' || (isset($_GET['status']) && $_GET['status'] == 'bukan pindahan')) selected @endif>Bukan Pindahan
+                                        </option>
+                                        <option value="pindahan" @if (old('status') == 'pindahan' || request('status') == 'pindahan' || (isset($_GET['status']) && $_GET['status'] == 'pindahan')) selected @endif>Pindahan
+                                        </option>
+                                </select>
                                 <button type="submit" class="btn btn-outline-primary btn-sm"
                                     style="margin-bottom: 0">Cari</button>
                             </div>

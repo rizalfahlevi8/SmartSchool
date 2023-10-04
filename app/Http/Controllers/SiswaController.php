@@ -17,7 +17,7 @@ class SiswaController extends Controller
 {
     public function index()
     {
-        $siswa = Siswa::with('kelas')->where('status', 'belum lulus')->orWhere('status', 'mutasi')->filter(request(['status', 'kelas']))->get();;
+        $siswa = Siswa::with('kelas')->where('status', 'bukan pindahan')->orWhere('status', 'pindahan')->filter(request(['status', 'kelas']))->get();;
         $kelas = Kelas::all();
         return view('pages.administrasi.data-siswa.siswa', [
             'siswas'      => $siswa,

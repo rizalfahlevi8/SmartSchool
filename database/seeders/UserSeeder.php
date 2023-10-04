@@ -21,7 +21,7 @@ class UserSeeder extends Seeder
     public function run()
     {
         $guru = 20;
-        $siswa_per_kelas = 30;
+        $siswa_per_kelas = 10;
         $jumlah_angkatan = Data_angkatan::count();
         for ($i = 2; $i <= $guru + 1; $i++) {
             DB::table('users')->insert([
@@ -68,7 +68,7 @@ class UserSeeder extends Seeder
                         'nama_ayah' => $ayah = fake('id_ID')->name('male'),
                         'nama_ibu' => fake('id_ID')->name('female'),
                         'nama_wali' => $ayah,
-                        'status' => 'belum lulus',
+                        'status' => fake('id_ID')->randomElement(['bukan pindahan', 'pindahan', 'lulus', 'mutasi']),
                         'tanggal_lahir' => fake('id_ID')->date(),
                         'tempat_lahir' => fake('id_ID')->citySuffix(),
                         'alamat' => fake('id_ID')->city(),
