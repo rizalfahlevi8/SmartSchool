@@ -19,4 +19,8 @@ class Akademik extends Model
     {
         return $this->hasMany(Jadwal::class, 'id_akademik', 'id');
     }
+    public function absensi()
+    {
+        return $this->hasMany(Absensi::class, 'id_akademik', 'id');
+    }
 }

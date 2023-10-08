@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AbsensiController;
 use Illuminate\Http\Request;
 use App\Models\Data_angkatan;
 use Illuminate\Support\Facades\Auth;
@@ -20,6 +21,8 @@ use App\Http\Controllers\InputNilaiController;
 use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\EditPasswordController;
 use App\Http\Controllers\JadwalMengajarController;
+use App\Models\Absensi;
+use App\Models\Akademik;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +43,11 @@ Route::post('/api/request-dd', function (Request $request) {
 });
 Route::get('/api/tes', function (Request $request) {
     // return view('test');
+});
+
+Route::get('/api/testing', function () {
+
+    return Akademik::all();
 });
 
 Route::get('/', function () {
@@ -191,6 +199,12 @@ Route::middleware(['userRole:admin'])->group(function () {
     Route::get('/akademik/raport-cetak/{id}/{smt}', [RaportController::class, 'cetakraport']);
     Route::post('/akademik/raport-update/{id_siswa}', [RaportController::class, 'update_nilai_raport']);
 
+    // ==============[ D a t a - R a p o r t ]===============
+    Route::get('/akademik/absensi', [AbsensiController::class, 'index']);
+    Route::get('/akademik/absensi/{akademik}/{kelas}', [AbsensiController::class, 'showKelasAbsensi']);
+    Route::post('/akademik/absensi/{akademik}/{kelas}', [AbsensiController::class, 'showKelasAbsensi']);
+    Route::post('/api/akademik/absensi-update/{absensi}', [AbsensiController::class, 'apiUpdateAbsensi'])->name('api.update-absensi');
+
     // ==============[ D a t a - P e m i n j a m a n ]===============
     Route::get('/data-peminjaman', [PeminjamanController::class, 'index']);
     Route::get('/data-peminjaman-history', [PeminjamanController::class, 'history']);
@@ -204,7 +218,6 @@ Route::middleware(['userRole:siswa,admin'])->group(function () {
     Route::get('/akademik/jadwal-siswa', [JadwalController::class, 'showJadwalSiswa']);
     Route::get('/akademik/raport/{jenis_nilai}/{siswa}', [RaportController::class, 'show']);
 });
-
 
 // =============================================
 // kurang

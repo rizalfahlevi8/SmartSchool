@@ -22,7 +22,6 @@ class UserSeeder extends Seeder
     {
         $guru = 20;
         $siswa_per_kelas = 10;
-        $jumlah_angkatan = Data_angkatan::count();
         for ($i = 2; $i <= $guru + 1; $i++) {
             DB::table('users')->insert([
                 'username' => fake('id_ID')->unique()->userName(),
