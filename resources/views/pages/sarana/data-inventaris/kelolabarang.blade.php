@@ -33,7 +33,7 @@
                             <thead>
                                 <tr>
                                     <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">No</th>
-                                    <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Nama Barang (Daftar Barang)</th>
+                                    <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Nama Barang</th>
                                     <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Tahun Pengadaan</th>
                                     <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Jenis</th>
                                     <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Jumlah Barang</th>
@@ -46,7 +46,7 @@
                                 @foreach ($inventaris as $i)
                                 <tr>
                                     <td class="text-center">{{ $loop->iteration }}</td>
-                                    <td class="text-center">{{ $i->daftarbarang->nama_barang ?? '-' }}</td>
+                                    <td class="text-center">{{ $i->barang->nama_barang ?? '-' }}</td>
                                     <td class="text-center">{{ $i->tahun_pengadaan ?? '-' }}</td>
                                     <td class="text-center">{{ $i->jenis ?? '-' }}</td>
                                     <td class="text-center">{{ $i->jumlah_barang ?? '-' }}</td>
@@ -84,6 +84,11 @@
                     <!-- Form to add a new record -->
                     <form action="{{ route('store-inventaris', $ruangs->id) }}" method="POST">
                         @csrf
+                        <!-- ID Barang -->
+                        <div class="mb-3">
+                            <label for="barang_id" class="form-label">ID Barang</label>
+                            <input type="text" class="form-control" id="barang_id" name="barang_id" required>
+                        </div>
                         <!-- Nama Barang -->
                         <div class="mb-3">
                             <label for="nama_barang" class="form-label">Nama Barang</label>
