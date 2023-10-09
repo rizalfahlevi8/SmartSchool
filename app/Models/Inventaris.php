@@ -27,8 +27,8 @@ class Inventaris extends Model
         return $this->belongsTo(ruangs::class, 'ruang_id', 'id');  
     }
 
-    public function Barang()
+    public function barang()
     {
-        return $this->belongsTo(barangs::class, 'barang_id', 'id');  
+        return $this->belongsTo(Barang::class, 'barang_id', 'id');
     }
 }
