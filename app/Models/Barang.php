@@ -26,4 +26,8 @@ class Barang extends Model
     {
         return $this->belongsTo(Ruang::class, 'id_ruang', 'id');
     }
+    public function inventaris()
+    {
+        return $this->hasMany(Inventaris::class, 'barang_id', 'id');
+    }
 }
