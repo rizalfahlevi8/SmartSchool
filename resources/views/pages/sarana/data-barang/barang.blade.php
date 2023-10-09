@@ -19,7 +19,6 @@
                 </div>
                 <div class="card-body px-0 pb-2">
                     <div class="table-responsive pb-2 px-3">
-                        <a href="{{ route('tambah-barang') }}" class="btn btn-primary mb-3">Tambah Barang</a>
                         <table id="example" class="table align-items-center mb-0">
                             <thead>
                                 <tr>
@@ -41,9 +40,6 @@
                                     {{-- <th
                                         class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
                                         Ruang</th> --}}
-                                    <th
-                                        class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
-                                        Aksi</th> <!-- Tambah kolom Aksi -->
                                 </tr>
                             </thead>
                             <tbody>
@@ -55,19 +51,6 @@
                                         <td class="text-center">{{ $barang->jenis }}</td>
                                         <td class="text-center">{{ $barang->jumlah_seluruh_barang }}</td>
                                         {{-- <td class="text-center">{{ $barang->ruang->nama_ruang }}</td> --}}
-                                        <td class="text-center">
-                                            <a href="{{ route('update-barang', $barang->id) }}"
-                                                class="btn btn-warning font-weight-bold text-sm rounded-circle"
-                                                data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit">
-                                                <i class="fa fa-edit"></i>
-                                            </a>
-                                            <a href="{{ route('hapus-barang', $barang->id) }}"
-                                                class="btn btn-danger font-weight-bold text-sm rounded-circle"
-                                                data-bs-toggle="tooltip" data-bs-placement="bottom" title="Hapus"
-                                                onclick="return confirm('Anda yakin akan menghapus data ini?')">
-                                                <i class="fa fa-trash"></i>
-                                            </a>
-                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
