@@ -60,6 +60,6 @@ class Detail_jadwal extends Model
 
         return self::whereHas('jadwal', function ($query) use ($hari_ini) {
             $query->where('hari', $hari_ini);
-        })->where('jam_mulai', '>', Carbon::now())->orWhere('jam_selesai', '>', Carbon::now())->where('id_guru', $guruId)->get;
+        })->where('jam_mulai', '>', Carbon::now())->orWhere('jam_selesai', '>', Carbon::now())->where('id_guru', $guruId)->get();
     }
 }

@@ -123,8 +123,8 @@
             </li>
         @elseif(auth()->user()->hasRole('guru'))
             <li class="nav-item">
-                <a class="nav-link text-white {{ Request::is('data-jadwalguru') ? 'bg-gradient-primary ' : '' }} "
-                    href="/data-jadwalguru/{{ auth()->user()->guru->id }}">
+                <a class="nav-link text-white {{ Request::is('akademik/jadwal*') ? 'bg-gradient-primary ' : '' }} "
+                    href="/akademik/jadwal/{{ auth()->user()->guru->id }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="material-icons opacity-10">description</i>
                     </div>
@@ -132,8 +132,8 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white {{ request()->segment(1) == 'data-inputnilai' ? 'bg-gradient-primary ' : '' }} {{ request()->segment(1) == 'data-nilai-atur' ? 'bg-gradient-primary ' : '' }} {{ request()->segment(1) == 'data-detail-nilai' ? 'bg-gradient-primary ' : '' }} {{ request()->segment(1) == 'data-input-nilai' ? 'bg-gradient-primary ' : '' }}"
-                    href="/data-inputnilai/{{ auth()->user()->guru->id }}">
+                <a class="nav-link text-white {{ Request::is('akademik/input-nilai*') ? 'bg-gradient-primary ' : '' }}"
+                    href="/akademik/input-nilai/{{ auth()->user()->guru->id }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="material-icons opacity-10">grading</i>
                     </div>
@@ -142,8 +142,8 @@
             </li>
             @if (true)
                 <li class="nav-item">
-                    <a class="nav-link text-white {{ request()->segment(1) == 'data-raport' ? 'bg-gradient-primary ' : '' }}   {{ request()->segment(1) == 'data-raport-input' ? 'bg-gradient-primary ' : '' }} "
-                        href="/data-raport">
+                    <a class="nav-link text-white {{ Request::is('akademik/input-raport*') ? 'bg-gradient-primary ' : '' }} "
+                        href="/akademik/input-raport">
                         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="material-icons opacity-10">document_scanner</i>
                         </div>

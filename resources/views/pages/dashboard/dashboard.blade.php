@@ -29,7 +29,8 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="foto">
-                                    <img src="{{ $myData->foto }}" alt="" width="100%" height="auto">
+                                    <img src="{{ asset('storage/guru/img/' . $myData->foto) }}" alt="" width="100%"
+                                        height="auto">
                                 </div>
                             </div>
                             <div class="col-md-8">

@@ -49,7 +49,7 @@
                                             <div class="btn-group">
                                                 <button type="button" class="btn btn-success dropdown-toggle text-sm"
                                                     data-bs-toggle="dropdown" aria-expanded="true" data-boundary="viewport">
-                                                    <strong>Input Raport</strong>
+                                                    <strong>Lihat Absen</strong>
                                                 </button>
                                                 <ul class="dropdown-menu">
                                                     <li><a class="dropdown-item"

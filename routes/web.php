@@ -71,16 +71,16 @@ Route::middleware(['auth'])->group(function () {
 
     // ==============[ D A S H B O A R D ]===============
     Route::get('/dashboard', [DashboardController::class, 'index']);
-});
 
-Route::middleware(['userRole:admin,guru'])->group(function () {
     //edit password
     Route::get('/editpassword', [EditPasswordController::class, 'index']);
     Route::post('/edit-password/{id}', [EditPasswordController::class, 'ubah']);
     Route::post('/edit-passwordsiswa/{id}', [EditPasswordController::class, 'ubahpwdsiswa']);
+});
 
-    Route::get('/data-jadwalguru/{id}', [JadwalMengajarController::class, 'jadwalguru']);
-    Route::get('/data-jadwalguru/cetak_pdf/{id}', [JadwalMengajarController::class, 'cetakjadwalguru']);
+Route::middleware(['userRole:admin,guru'])->group(function () {
+    Route::get('/akademik/jadwal/{id_guru}', [JadwalMengajarController::class, 'jadwalguru']);
+    Route::get('/akademik/jadwal/cetak_pdf/{id_guru}', [JadwalMengajarController::class, 'cetakjadwalguru']);
 
     // input nilai
     Route::get('/data-inputnilai/{id}', [InputNilaiController::class, 'index']);
@@ -218,7 +218,3 @@ Route::middleware(['userRole:siswa,admin'])->group(function () {
     Route::get('/akademik/jadwal-siswa', [JadwalController::class, 'showJadwalSiswa']);
     Route::get('/akademik/raport/{jenis_nilai}/{siswa}', [RaportController::class, 'show']);
 });
-
-// =============================================
-// kurang
-// - inventaris : sultan
