@@ -95,7 +95,7 @@
                                                 {{ $siswa->status }}
                                             </td>
                                             <td class="text-center">
-                                                {{ $siswa->detail_siswa->tanggal_keluar ?? '' }}
+                                                {{ $siswa->updated_at }}
                                             </td>
                                             <td class="text-center">
                                                 <button type="button"data-bs-toggle="modal" data-bs-target="#detail-modal"

@@ -7,7 +7,7 @@
     <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('assets/img/apple-icon.png') }}">
     <link rel="icon" type="image/png" href="{{ asset('assets/img/favicon.png') }}">
     <title>
-        SIAKUR
+        Smart School
     </title>
     <!--     Fonts and icons     -->
     <link rel="stylesheet" type="text/css"
@@ -55,7 +55,7 @@
                                             src="{{ asset('assets/img/login3.png') }}" alt="HTML tutorial"
                                             style="width:50px;height:50px;"></h4>
                                     <div class="row mt-2">
-                                        <h4 class="text-white font-weight-bolder text-center mb-0">SIAKUR</h4>
+                                        <h4 class="text-white font-weight-bolder text-center mb-0">Smart School</h4>
                                         <p class=" text-white text-center mb-0 mt-1 ">Silahkan masuk untuk
                                             melanjutkan.</p>
                                     </div>

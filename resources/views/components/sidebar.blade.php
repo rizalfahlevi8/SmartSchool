@@ -5,7 +5,7 @@
         <div class="text-white w-auto "
             style="display: flex; align-items: center; justify-content: start; column-gap: 10px">
             <i class="material-icons opacity-10" style="font-size:35px">school</i> <span
-                class="ms-1 font-weight-bold text-white" style="font-size:23px">SIAKUR</span>
+                class="ms-1 font-weight-bold text-white" style="font-size:23px">Smart School</span>
         </div>
     </a>
 </div>
