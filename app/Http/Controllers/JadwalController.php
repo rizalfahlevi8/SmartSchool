@@ -11,6 +11,8 @@ use App\Models\Ruang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class JadwalController extends Controller
 {
@@ -62,13 +64,94 @@ class JadwalController extends Controller
 
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'jam_mulai' => [
+                'required',
+                'date_format:H:i',
+            ],
+            'jam_selesai' => [
+                'required',
+                'date_format:H:i',
+                'after:jam_mulai',
+            ],
+            'id_ruang' => 'required',
+            'id_mapel' => 'required',
+            'id_guru' => 'required',
+        ], [
+            'jam_selesai.after' => 'Jam selesai harus setelah jam mulai.',
+        ]);
+
+        $apiData = Detail_jadwal::where('id_jadwal', $request->id_jadwal)->get();
+
+        $jamMulai = \Carbon\Carbon::createFromFormat('H:i', $request->jam_mulai);
+        $jamSelesai = \Carbon\Carbon::createFromFormat('H:i', $request->jam_selesai);
+
+        $selisihMenit = $jamSelesai->diffInMinutes($jamMulai);
+
+        if ($selisihMenit < 45) {
+            return redirect()->back()->with('toast_error', 'Durasi pelajaran minimal 45 menit.');
+        }
+
+        foreach ($apiData as $data) {
+            if ($data['id'] != $request->id_jadwal) {
+                $existingJamMulai = \Carbon\Carbon::createFromFormat('H:i:s', $data['jam_mulai']);
+                $existingJamSelesai = \Carbon\Carbon::createFromFormat('H:i:s', $data['jam_selesai']);
+
+                if (($jamMulai >= $existingJamMulai && $jamMulai < $existingJamSelesai) ||
+                    ($jamSelesai > $existingJamMulai && $jamSelesai <= $existingJamSelesai)
+                ) {
+                    return redirect()->back()->with('toast_error', 'Jam yang Anda masukkan tumpang tindih dengan jadwal yang sudah ada.');
+                }
+            }
+        }
+
         $jadwal = $request->all();
         Detail_jadwal::create($jadwal);
         return Redirect::back()->with('toast_success', 'Data berhasil ditambahkan !');
     }
     public function update(Request $request, Detail_jadwal $detail_jadwal)
     {
-        //dd($jadwaldata);
+        $this->validate($request, [
+            'jam_mulai' => [
+                'required',
+                'date_format:H:i',
+            ],
+            'jam_selesai' => [
+                'required',
+                'date_format:H:i',
+            ],
+            'ruang' => 'required',
+            'mapel' => 'required',
+            'guru' => 'required',
+        ]);
+
+        $apiData = Detail_jadwal::where('id_jadwal', $detail_jadwal->id_jadwal)->get();
+
+        $jamMulai = \Carbon\Carbon::createFromFormat('H:i', $request->jam_mulai);
+        $jamSelesai = \Carbon\Carbon::createFromFormat('H:i', $request->jam_selesai);
+
+        $selisihMenit = $jamSelesai->diffInMinutes($jamMulai);
+
+        if ($jamSelesai->isBefore($jamMulai)) {
+            return redirect()->back()->with('toast_error', "Jam mulai tidak valid");
+        }
+        if ($selisihMenit < 45 && $selisihMenit >= 0) {
+            return redirect()->back()->with('toast_error', 'Durasi pelajaran minimal 45 menit.' . $selisihMenit);
+        }
+
+        foreach ($apiData as $data) {
+            if ($data['id'] != $detail_jadwal->id) {
+                $existingJamMulai = \Carbon\Carbon::createFromFormat('H:i:s', $data['jam_mulai']);
+                $existingJamSelesai = \Carbon\Carbon::createFromFormat('H:i:s', $data['jam_selesai']);
+
+                if (($jamMulai >= $existingJamMulai && $jamMulai < $existingJamSelesai) ||
+                    ($jamSelesai > $existingJamMulai && $jamSelesai <= $existingJamSelesai)
+                ) {
+                    return redirect()->back()->with('toast_error', 'Jam yang Anda masukkan tumpang tindih dengan jadwal yang sudah ada.');
+                }
+            }
+        }
+
         $detail_jadwal->update([
             'jam_mulai' => $request->jam_mulai,
             'jam_selesai' => $request->jam_selesai,

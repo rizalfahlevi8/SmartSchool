@@ -106,8 +106,14 @@
                                                     @foreach ($jadwal->detail_jadwal as $detail_jadwal)
                                                         <div>
                                                             <div>
-                                                                {{ $detail_jadwal->jam_mulai }} -
-                                                                {{ $detail_jadwal->jam_selesai }}
+                                                                @php
+                                                                    $raw_timeMulai = new DateTime($detail_jadwal->jam_mulai);
+                                                                    $timeMulai = $raw_timeMulai->format('H:i');
+                                                                    $raw_timeSelesai = new DateTime($detail_jadwal->jam_selesai);
+                                                                    $timeSelesai = $raw_timeSelesai->format('H:i');
+                                                                @endphp
+                                                                {{ $timeMulai }} -
+                                                                {{ $timeSelesai }}
                                                                 <b>({{ $detail_jadwal->ruang->nama_ruang }})</b>
                                                             </div>
                                                             <div>
@@ -119,8 +125,8 @@
                                                             <div
                                                                 style="display: flex; justify-content: end; column-gap: 10px; margin: 10px 0px; align-items: center">
                                                                 <button type="button" data-bs-toggle="modal"
-                                                                    jam-mulai="{{ $detail_jadwal->jam_mulai }}"
-                                                                    jam-selesai="{{ $detail_jadwal->jam_selesai }}"
+                                                                    jam-mulai="{{ $timeMulai }}"
+                                                                    jam-selesai="{{ $timeSelesai }}"
                                                                     mapel="{{ $detail_jadwal->id_mapel }}"
                                                                     ruang="{{ $detail_jadwal->id_ruang }}"
                                                                     guru="{{ $detail_jadwal->id_guru }}"
