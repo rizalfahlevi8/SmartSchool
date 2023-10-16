@@ -21,6 +21,7 @@ use App\Http\Controllers\InputNilaiController;
 use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\EditPasswordController;
 use App\Http\Controllers\JadwalMengajarController;
+use App\Http\Controllers\UserController;
 use App\Models\Absensi;
 use App\Models\Akademik;
 
@@ -113,6 +114,9 @@ Route::middleware(['userRole:admin,guru'])->group(function () {
     Route::get('/data-jadwalmengajar-cek/{id}', [JadwalMengajarController::class, 'cekjadwal']);
     Route::get('/data-jadwal-cek', [JadwalController::class, 'lihat']);
     Route::get('/data-jadwal-cekjadwal/{id}', [JadwalController::class, 'cekjadwal']);
+
+    Route::get('/administrasi/users', [UserController::class, 'index'])->name('user_management');
+    Route::post('/administrasi/users/{user}', ['UserController', 'update']);
 });
 
 //==========================================================================================
