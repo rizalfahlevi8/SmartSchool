@@ -99,7 +99,6 @@
             </div>
             <footer class="footer position-absolute bottom-2 py-2 w-100">
                 <div class="container">
-
                 </div>
             </footer>
         </div>

@@ -20,7 +20,7 @@ class DashboardController extends Controller
             $siswa = Siswa::where('status', 'belum lulus')->orWhere('status', 'mutasi')->get();
 
             $datas = array();
-            $role = auth()->user()->role;
+            $role = auth()->user()->current_role;
             switch ($role) {
                 case 'admin':
                 case 'kepsek':
@@ -52,7 +52,7 @@ class DashboardController extends Controller
                     ];
                     break;
                 case 'guru':
-                    $myData = Guru::all()->where('id_user', '=', auth()->user()->id)->first()->load('kelas');
+                    $myData = auth()->user()->guru->load('kelas');
 
                     $datas = [
                         'myData' => $myData

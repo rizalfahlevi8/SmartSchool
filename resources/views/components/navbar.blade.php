@@ -3,7 +3,7 @@
         <nav aria-label="breadcrumb">
             @yield('breadcrumbs')
         </nav>
-        <div class="collapse navbar-collapse" id="navbar">
+        <div class="collapse navbar-collapse" id="navbar" style="overflow: visible !important;">
             <div class="dropdown show"
                 style="justify-self: flex-end; max-width: fit-content; margin: 0; margin-left: auto">
                 <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
@@ -19,19 +19,74 @@
                                 {{ auth()->user()->guru->nama }}
                             @elseif (auth()->user()->hasRole('siswa'))
                                 {{ auth()->user()->siswa->nama }}
-                            @elseif (Auth::guard('kepsek')->check())
-                                {{ Auth::guard('kepsek')->user()->nama }}
+                            @elseif ('kepsek' == 'kepsek')
+                                {{ var_dump(auth()->user()->role) }}
                             @endif
                         </span>
                     </strong>
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="profile-dropdown">
                     <li><a class="dropdown-item" href="editpassword">Edit password</a></li>
+                    @if (count(explode(',', auth()->user()->role)) > 1)
+                        <li><a href="javacript(0)" data-bs-toggle="modal" data-bs-target="#update-navbar-role-modal"
+                                class="dropdown-item" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Detail"
+                                onclick="navbarSetCheckedRole()">Ganti Role
+                            </a>
+                        </li>
+                    @endif
                     <li><a class="dropdown-item" href="/logout"
                             onclick="return confirm('Apakah anda yakin akan keluar?')">Logout</a></li>
                 </ul>
             </div>
         </div>
     </div>
-    </div>
+
+    @if (count(explode(',', auth()->user()->role)) > 1)
+        <div class="modal fade" id="update-navbar-role-modal" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-primary">
+                        <h5 class="modal-title text-white" id="exampleModalLabel">Ganti role</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{ route('set_role') }}" class="row g-3 px-4" method="post"
+                            enctype="multipart/form-data">
+                            @csrf
+                            <div style="display: flex;flex-wrap: wrap; column-gap: 10px;row-gap: 5px;">
+                                @foreach (explode(',', auth()->user()->role) as $value_role)
+                                    <div style="display: flex; column-gap: 5px;">
+                                        <input type="radio" name="role" value="{{ $value_role }}"
+                                            id="navbar-role-{{ $value_role }}"
+                                            current-role = "{{ auth()->user()->current_role }}">
+                                        <label style="margin: 0"
+                                            for="navbar-role-{{ $value_role }}">{{ ucfirst($value_role) }}</label>
+                                    </div>
+                                @endforeach
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-sm btn-secondary"
+                                    data-bs-dismiss="modal">Tutup</button>
+                                <button type="submit" class="btn btn-sm btn-primary">Simpan</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            function navbarSetCheckedRole() {
+                const input = document.querySelectorAll("#update-navbar-role-modal input[type='radio']");
+
+                input.forEach(function(radio) {
+                    if (radio.getAttribute('current-role') == radio.getAttribute('value')) {
+                        radio.checked = true;
+                        return;
+                    }
+                });
+            }
+        </script>
+    @endif
+
 </nav>

@@ -1,0 +1,10 @@
+Database option
+    - table: user, column: role | menambah atau mengurangi role bisa dilakukan pada file "config/app.php"
+
+Middleware
+    - Langkah-langkah membuat middleware baru
+        1. buat file baru didalam app/Http/Middleware
+        2. lanjut tuliskan script untuk middleware
+        3. buka kernel.php dan cari variabel $routeMiddleware
+        4. tambahkan file yang baru dibuat tadi pada variabel tersebut
+

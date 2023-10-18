@@ -70,8 +70,10 @@ Route::middleware(['auth'])->group(function () {
         return redirect('/')->with('toast_success', 'Anda telah berhasil logout.');
     })->name('logout');
 
+    Route::post('/login/setRole', [LoginController::class, 'setRole'])->name('set_role');
+
     // ==============[ D A S H B O A R D ]===============
-    Route::get('/dashboard', [DashboardController::class, 'index']);
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     //edit password
     Route::get('/editpassword', [EditPasswordController::class, 'index']);
@@ -114,10 +116,8 @@ Route::middleware(['userRole:admin,guru'])->group(function () {
     Route::get('/data-jadwalmengajar-cek/{id}', [JadwalMengajarController::class, 'cekjadwal']);
     Route::get('/data-jadwal-cek', [JadwalController::class, 'lihat']);
     Route::get('/data-jadwal-cekjadwal/{id}', [JadwalController::class, 'cekjadwal']);
-
-    Route::get('/administrasi/users', [UserController::class, 'index'])->name('user_management');
-    Route::post('/administrasi/users/{user}', ['UserController', 'update']);
 });
+
 
 //==========================================================================================
 Route::middleware(['userRole:admin'])->group(function () {
@@ -137,6 +137,9 @@ Route::middleware(['userRole:admin'])->group(function () {
     Route::get('/sarana/inventaris', [InventarisController::class, 'index'])->name('inventaris_main');
     Route::get('atur-barang/{id}', [InventarisController::class, 'aturBarang'])->name('atur-barang');
     Route::post('/store-inventaris/{id}', [InventarisController::class, 'store'])->name('store-inventaris');
+
+    Route::get('/administrasi/users', [UserController::class, 'index'])->name('user_management');
+    Route::patch('/administrasi/users/{user}', [UserController::class, 'update']);
 });
 //==========================================================================================
 
