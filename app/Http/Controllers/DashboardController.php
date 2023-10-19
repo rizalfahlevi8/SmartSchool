@@ -52,7 +52,7 @@ class DashboardController extends Controller
                     ];
                     break;
                 case 'guru':
-                    $myData = auth()->user()->guru->load('kelas');
+                    $myData = Guru::all()->where('id_user', '=', auth()->user()->id)->load('kelas')->first();
 
                     $datas = [
                         'myData' => $myData

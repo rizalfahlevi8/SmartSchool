@@ -29,8 +29,8 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="foto">
-                                    <img src="{{ asset('storage/guru/img/' . $myData->foto) }}" alt=""
-                                        width="100%" height="auto">
+                                    <img src="{{ asset('storage/guru/img/' . $myData?->foto) ?? asset('storage/guru/img/default_img.png') }}"
+                                        alt="" width="100%" height="auto">
                                 </div>
                             </div>
                             <div class="col-md-8">
@@ -42,7 +42,7 @@
                                                 <div class="float-end">:</div>
                                             </div>
                                             <div class="col-md-7">
-                                                {{ $myData->nip }}
+                                                {{ $myData->nip ?? '' }}
                                             </div>
                                         </div>
                                     </li>
@@ -53,7 +53,7 @@
                                                 <div class="float-end">:</div>
                                             </div>
                                             <div class="col-md-7">
-                                                {{ $myData->nama }}
+                                                {{ $myData->nama ?? '' }}
                                             </div>
                                         </div>
                                     </li>
@@ -65,7 +65,7 @@
                                                 <div class="float-end">:</div>
                                             </div>
                                             <div class="col-md-7">
-                                                {{ $myData->jenis_kelamin }}
+                                                {{ $myData->jenis_kelamin ?? '' }}
                                             </div>
                                         </div>
                                     </li>
@@ -78,8 +78,10 @@
                                                 <div class="float-end">:</div>
                                             </div>
                                             <div class="col-md-7">
-                                                {{ $myData->tempat_lahir }}
-                                                {{ \Carbon\Carbon::parse($myData->tanggal_lahir)->format('d-m-Y') }}
+                                                {{ $myData->tempat_lahir ?? '' }}
+                                                @if ($myData->tanggal_lahir)
+                                                    {{ \Carbon\Carbon::parse($myData->tanggal_lahir)->format('d-m-Y') ?? '' }}
+                                                @endif
                                             </div>
                                         </div>
                                     </li>
@@ -91,7 +93,7 @@
                                                 <div class="float-end">:</div>
                                             </div>
                                             <div class="col-md-7">
-                                                {{ $myData->no_telp }}
+                                                {{ $myData->no_telp ?? '' }}
                                             </div>
                                         </div>
                                     </li>
@@ -102,7 +104,7 @@
                                                 <div class="float-end">:</div>
                                             </div>
                                             <div class="col-md-7">
-                                                {{ $myData->agama }}
+                                                {{ $myData->agama ?? '' }}
                                             </div>
                                         </div>
                                     </li>
@@ -113,7 +115,7 @@
                                                 <div class="float-end">:</div>
                                             </div>
                                             <div class="col-md-7">
-                                                {{ $myData->alamat }}
+                                                {{ $myData->alamat ?? '' }}
                                             </div>
                                         </div>
                                     </li>
@@ -125,7 +127,7 @@
                                                     <div class="float-end">:</div>
                                                 </div>
                                                 <div class="col-md-7">
-                                                    {{ $myData->kelas->nama_kelas }}
+                                                    {{ $myData->kelas->nama_kelas ?? '' }}
                                                 </div>
                                             </div>
                                         </li>

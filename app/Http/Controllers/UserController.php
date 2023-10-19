@@ -20,25 +20,38 @@ class UserController extends Controller
             'roles' => 'required',
         ]);
 
-        $role_str = '';
-        $role_str_cocunter = count($request->roles);
+        $role_from_db = explode(',', $user->role);
+        $role_to_submit = [];
+        $role_cocunter = count($request->roles);
+        $updated_data = [];
+
         foreach ($request->roles as $key => $role) {
             if (in_array($role, config('app.DB_user_roles'))) {
-                $role_str .= $role;
-                if ($role_str_cocunter > 1) {
-                    $role_str .= ',';
-                    $role_str_cocunter -= 1;
+                array_push($role_to_submit, $role);
+                if ($role_cocunter > 1) {
+                    $role_cocunter -= 1;
                 }
             }
         }
 
-        if (strlen($role_str) <= 0) {
+        if (in_array('root', $role_from_db) && !in_array('root', $role_to_submit)) {
+            array_push($role_to_submit, 'root');
+            if (!in_array('admin', $role_to_submit)) {
+                array_push($role_to_submit, 'admin');
+            }
+        }
+
+        if (count($role_to_submit) <= 0) {
             return back()->with('toast_error', "Role yang dimasukkan tidak ada yang valid");
         }
 
-        $user->update([
-            'role' => $role_str,
-        ]);
+        if (!in_array($user->current_role, $role_to_submit)) {
+            $updated_data['current_role'] = $role_to_submit[0];
+        }
+
+        $updated_data['role'] = implode(',', $role_to_submit);
+
+        $user->update($updated_data);
 
         return back()->with('toast_success', "User: $user->username berhasil diperbarui");
     }

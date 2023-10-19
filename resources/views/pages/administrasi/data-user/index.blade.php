@@ -174,7 +174,9 @@
                 item.checked = false;
             });
             selected_roles.forEach((role) => {
-                roles.querySelector(`input[type='checkbox'][name='roles[]'][value='${role}']`).checked = true;
+                if (roles.querySelector(`input[type='checkbox'][name='roles[]'][value='${role}']`)) {
+                    roles.querySelector(`input[type='checkbox'][name='roles[]'][value='${role}']`).checked = true;
+                }
             });
         }
     </script>
