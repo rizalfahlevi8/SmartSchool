@@ -25,6 +25,10 @@ class UserController extends Controller
         $role_cocunter = count($request->roles);
         $updated_data = [];
 
+        if (in_array('root', $role_from_db) && $user->id != auth()->user()->id) {
+            return back()->with('toast_error', "Anda tidak memiliki akses untuk mengubah data ini");
+        }
+
         foreach ($request->roles as $key => $role) {
             if (in_array($role, config('app.DB_user_roles'))) {
                 array_push($role_to_submit, $role);
