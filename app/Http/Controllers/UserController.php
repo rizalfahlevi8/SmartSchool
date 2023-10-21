@@ -10,8 +10,11 @@ class UserController extends Controller
 {
     public function index()
     {
+        //data filter
+        $dtfilter = User::select('role')->groupBy('role')->get();
         return view('pages.administrasi.data-user.index', [
             'users' => User::query()->filter(request(['role']))->get(),
+            'filter' => $dtfilter
         ])->with('title', 'User Management');
     }
 
