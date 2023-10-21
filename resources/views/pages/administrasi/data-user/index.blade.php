@@ -16,6 +16,21 @@
                             Tambah
                         </button> --}}
                         <!-- Button trigger modal -->
+                        {{-- Filter --}}
+                        <form action="/administrasi/users" method="get">
+                            <div style="display: flex; column-gap: 10px; align-items: center; justify-content: flex-start"
+                                class="my-3">
+                                <select class="form-select form-select-sm" aria-label=".form-select-sm example"
+                                    name="role" id="" style="text-transform: capitalize; width: 200px">
+                                    <option selected value="">-- Pilih Role --</option>
+                                    @foreach ($filter as $f)
+                                    <option value="{{ $f->role }}" @if (old('role') == $f->role || request('role') == $f->role || (isset($_GET['role']) && $_GET['role'] == $f->role)) selected @endif>{{ $f->role }}</option>
+                                    @endforeach
+                                </select>
+                                <button type="submit" class="btn btn-outline-primary btn-sm"
+                                    style="margin-bottom: 0">Cari</button>
+                            </div>
+                        </form>
 
                         <table id="example" class="table align-items-center mb-0">
                             <thead>

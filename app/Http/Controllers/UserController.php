@@ -11,7 +11,7 @@ class UserController extends Controller
     public function index()
     {
         return view('pages.administrasi.data-user.index', [
-            'users' => User::all(),
+            'users' => User::query()->filter(request(['role']))->get(),
         ])->with('title', 'User Management');
     }
 
