@@ -26,7 +26,7 @@
                     </strong>
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="profile-dropdown">
-                    <li><a class="dropdown-item" href="editpassword">Edit password</a></li>
+                    <li><a class="dropdown-item" href="/option/change-password">Edit password</a></li>
                     @if (count(array_diff(explode(',', auth()->user()->role), ['root'])) > 1)
                         <li><a href="javacript(0)" data-bs-toggle="modal" data-bs-target="#update-navbar-role-modal"
                                 class="dropdown-item" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Detail"

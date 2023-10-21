@@ -70,6 +70,12 @@
                                 href="/akademik/jadwal"><i class="material-icons opacity-10 mx-2">receipt_long</i>
                                 Jadwal Pelajaran</a></li>
                     </ul>
+                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li><a class="link-light rounded mb-1 {{ Request::is('akademik/kalender*') ? 'bg-gradient-primary ' : '' }}"
+                                style="width: 100%" href="/akademik/kalender/index"><i
+                                    class="material-icons opacity-10 mx-2">receipt_long</i>
+                                Kalender Akademik</a></li>
+                    </ul>
                 </div>
             </li>
             <li class="mb-1" style="width: 100%">

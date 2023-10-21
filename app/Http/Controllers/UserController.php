@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -58,5 +59,14 @@ class UserController extends Controller
         $user->update($updated_data);
 
         return back()->with('toast_success', "User: $user->username berhasil diperbarui");
+    }
+    public function reset(Request $request, User $user)
+    {
+        $hashedPassword = Hash::make($request->username);
+        $data = [
+            'password'      => $hashedPassword,
+        ];
+        $user->update($data);
+        return redirect()->route('user_management')->with('toast_success', 'Password Berhasil di Reset');
     }
 }

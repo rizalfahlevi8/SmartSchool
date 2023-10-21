@@ -5,16 +5,16 @@
             <div class="card my-4">
                 <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                     <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
-                        <h6 class="text-white text-capitalize ps-3">Data Kelas</h6>
+                        <h6 class="text-white text-capitalize ps-3">Data User</h6>
                     </div>
                 </div>
                 <div class="card-body px-0 pb-2">
                     <div class="table-responsive pb-2 px-3">
-                        <button type="button" id="btntambah" class="btn btn-primary font-weight-bold text-xs"
+                        {{-- <button type="button" id="btntambah" class="btn btn-primary font-weight-bold text-xs"
                             data-bs-toggle="modal" data-bs-target="#insert-modal">
                             <i class="material-icons opacity-10">add</i>
                             Tambah
-                        </button>
+                        </button> --}}
                         <!-- Button trigger modal -->
 
                         <table id="example" class="table align-items-center mb-0">
@@ -42,12 +42,19 @@
                                         <td class="text-center"> {{ $user->role }} </td>
                                         <td class="text-center">
                                             <button type="button"data-bs-toggle="modal" data-bs-target="#update-modal"
-                                                class="btn
-                                        btn-warning font-weight-bold btn--edit text-sm rounded-circle"
+                                                class="btn  btn-warning font-weight-bold btn--edit text-sm rounded mx-3"
                                                 data-bs-toggle="tooltip" data-bs-placement="bottom" title="Detail"
                                                 onclick="showUpdateModal(this)" id_user="{{ $user->id }}"
                                                 username ="{{ $user->username }}" user-roles = "{{ $user->role }}">Set
-                                                Roles</button>
+                                                Roles
+                                            </button>
+                                            <button type="button"data-bs-toggle="modal" data-bs-target="#reset-modal"
+                                                class="btn  btn-danger font-weight-bold btn--edit text-sm rounded"
+                                                data-bs-toggle="tooltip" data-bs-placement="bottom" title="Detail"
+                                                onclick="showResetModal(this)" id_user="{{ $user->id }}"
+                                                username ="{{ $user->username }}" nama ="{{ $user->nama }}"
+                                                user-roles = "{{ $user->role }}">Reset Password
+                                            </button>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -111,7 +118,46 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="insert-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+    <div class="modal fade" id="reset-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger">
+                    <h5 class="modal-title text-white" id="exampleModalLabel">Reset Password
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <br>
+                    <form action="modal-title text-black" class="row g-3 px-4" method="post"
+                        enctype="multipart/form-data">
+                        @method('PUT')
+                        @csrf
+                        <div class=" g-2 align-items-center px-3">
+                            <h5 style="font-family: 'Roboto', Helvetica, Arial, sans-serif">
+                                Apakah Anda yakin ingin mereset password</h5>
+                            <h5 id="nama_reset" style="display: inline; font-weight: bold;"></h5> <b>(<h5
+                                    id="username_reset" style="display: inline; font-weight: bold;"
+                                    nama="username_reset"></h5>)</b>
+                            <hr>
+                            <h6><b>Note:</b> password akan sama dengan <b>username</b></h6>
+                        </div>
+                        <div class="col-md-9">
+                            <input type="text" name="username" class="form-control text-sm" id="username" required
+                                readonly hidden style="max-width: 302px;">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-sm btn-primary" data-bs-dismiss="modal">Tutup</button>
+                            <button type="submit" class="btn btn-sm btn-secondary">Reset</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    {{-- <div class="modal fade" id="insert-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header bg-primary">
@@ -159,7 +205,7 @@
 
             </div>
         </div>
-    </div>
+    </div> --}}
     <script>
         function showUpdateModal(element) {
             const updateModalForm = document.querySelector('#update-modal form');
@@ -178,6 +224,18 @@
                     roles.querySelector(`input[type='checkbox'][name='roles[]'][value='${role}']`).checked = true;
                 }
             });
+        }
+
+        function showResetModal(element) {
+            const updateModalForm = document.querySelector('#reset-modal form');
+            const username = updateModalForm.querySelector('#username_reset');
+            const usernameValue = updateModalForm.querySelector('#username');
+            const nama = updateModalForm.querySelector('#nama_reset');
+
+            updateModalForm.setAttribute('action', `/administrasi/users/reset/${element.getAttribute('id_user')}`);
+            username.innerText = element.getAttribute('username');
+            usernameValue.value = element.getAttribute('username');
+            nama.innerText = element.getAttribute('nama');
         }
     </script>
 @endsection

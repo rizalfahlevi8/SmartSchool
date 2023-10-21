@@ -21,6 +21,7 @@ use App\Http\Controllers\InputNilaiController;
 use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\EditPasswordController;
 use App\Http\Controllers\JadwalMengajarController;
+use App\Http\Controllers\KalenderAkademikController;
 use App\Http\Controllers\UserController;
 use App\Models\Absensi;
 use App\Models\Akademik;
@@ -76,8 +77,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     //edit password
-    Route::get('/editpassword', [EditPasswordController::class, 'index']);
-    Route::post('/edit-password/{id}', [EditPasswordController::class, 'ubah']);
+    Route::get('/option/change-password', [EditPasswordController::class, 'index']);
+    Route::post('/option/change-password/{user}', [EditPasswordController::class, 'ubah'])->name('option.change-password');
     Route::post('/edit-passwordsiswa/{id}', [EditPasswordController::class, 'ubahpwdsiswa']);
 });
 
@@ -140,6 +141,17 @@ Route::middleware(['userRole:admin'])->group(function () {
 
     Route::get('/administrasi/users', [UserController::class, 'index'])->name('user_management');
     Route::patch('/administrasi/users/{user}', [UserController::class, 'update']);
+
+    // ==============[ D a t a - K a l e n d e r - A k a d e m i k ]===============
+    Route::get('/akademik/kalender/index', [KalenderAkademikController::class, 'index'])->name('calendar.index');
+    Route::post('/akademik/kalender', [KalenderAkademikController::class, 'store'])->name('calendar.store');
+    Route::patch('/akademik/kalender/update/{id}', [KalenderAkademikController::class, 'update'])->name('calendar.update');
+    Route::delete('/akademik/kalender/destroy/{id}', [KalenderAkademikController::class, 'destroy'])->name('calendar.destroy');
+
+    // User
+    Route::get('/administrasi/users', [UserController::class, 'index'])->name('user_management');
+    Route::patch('/administrasi/users/{user}', [UserController::class, 'update']);
+    Route::put('/administrasi/users/reset/{user}', [UserController::class, 'reset']);
 });
 //==========================================================================================
 
