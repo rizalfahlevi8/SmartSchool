@@ -21,7 +21,7 @@
                     <span class="material-symbols-outlined"> database </span> Master <i
                         class="material-icons opacity-10 ms-auto" style="">expand_more</i>
                 </button>
-                <div class="collapse {{ Request::is('administrasi/guru*') || Request::is('administrasi/siswa*') || Request::is('akademik/mapel*') || Request::is('sarana/kelas*') || Request::is('sarana/ruang*') || Request::is('sarana/barang*') ? 'show' : '' }}"
+                <div class="collapse {{ Request::is('administrasi/guru*') || Request::is('administrasi/siswa*') || Request::is('akademik/mapel*') || Request::is('sarana/kelas*') || Request::is('sarana/ruang*') || Request::is('sarana/barang*') || Request::is('administrasi/users*') ? 'show' : '' }}"
                     id="master-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                         <li><a class="link-light rounded mb-1 {{ Request::is('administrasi/users*') ? 'bg-gradient-primary ' : '' }}"
@@ -64,16 +64,15 @@
                     </span>
                     Kurikulum <i class="material-icons opacity-10 ms-auto">expand_more</i>
                 </button>
-                <div class="collapse {{ Request::is('akademik/jadwal*') ? 'show' : '' }}" id="kurikulum-collapse">
+                <div class="collapse {{ Request::is('akademik/jadwal*') || Request::is('akademik/kalender*') ? 'show' : '' }}" id="kurikulum-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                         <li><a class="link-light rounded mb-1 {{ Request::is('akademik/jadwal*') ? 'bg-gradient-primary ' : '' }}"
-                                href="/akademik/jadwal"><i class="material-icons opacity-10 mx-2">receipt_long</i>
+                            style="width: 100%" href="/akademik/jadwal"><i class="material-icons opacity-10 mx-2">receipt_long</i>
                                 Jadwal Pelajaran</a></li>
                     </ul>
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                         <li><a class="link-light rounded mb-1 {{ Request::is('akademik/kalender*') ? 'bg-gradient-primary ' : '' }}"
-                                style="width: 100%" href="/akademik/kalender/index"><i
-                                    class="material-icons opacity-10 mx-2">receipt_long</i>
+                            style="width: 100%" href="/akademik/kalender/index"><i class="material-icons opacity-10 mx-2">receipt_long</i>
                                 Kalender Akademik</a></li>
                     </ul>
                 </div>
@@ -90,7 +89,7 @@
                 <div class="collapse {{ Request::is('akademik/absensi*') ? 'show' : '' }}" id="kesiswaan-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                         <li><a class="link-light rounded mb-1 {{ Request::is('akademik/absensi*') ? 'bg-gradient-primary ' : '' }}"
-                                href="/akademik/absensi"> <i class="material-icons opacity-10 mx-2">receipt_long</i>
+                            style="width: 100%" href="/akademik/absensi"> <i class="material-icons opacity-10 mx-2">receipt_long</i>
                                 Presensi</a></li>
                     </ul>
                 </div>
@@ -108,12 +107,12 @@
                     id="sarpras-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                         <li><a class="link-light rounded mb-1 {{ Request::is('sarana/inventaris*') ? 'bg-gradient-primary ' : '' }}"
-                                href="/sarana/inventaris"> <i class="material-icons opacity-10 mx-2">task</i>
+                            style="width: 100%" href="/sarana/inventaris"> <i class="material-icons opacity-10 mx-2">task</i>
                                 Inventaris</a></li>
                     </ul>
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                         <li><a class="link-light rounded mb-1 {{ Request::is('data-peminjaman*') ? 'bg-gradient-primary ' : '' }}"
-                                href="/data-peminjaman"> <i class="material-icons opacity-10 mx-2">task</i>
+                            style="width: 100%" href="/data-peminjaman"> <i class="material-icons opacity-10 mx-2">task</i>
                                 Peminjaman</a></li>
                     </ul>
                 </div>
@@ -129,8 +128,9 @@
                 </button>
                 <div class="collapse" id="humas-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                        <li><a class="link-light rounded mb-1" href="#"> <i
-                                    class="material-icons opacity-10 ms-auto">groups</i> Tamu</a></li>
+                        <li><a class="link-light rounded mb-1"
+                            style="width: 100%" href="#"> <i class="material-icons opacity-10 mx-2">groups</i>
+                                Tamu</a></li>
                     </ul>
                 </div>
             </li>
