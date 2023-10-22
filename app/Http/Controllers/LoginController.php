@@ -26,9 +26,12 @@ class LoginController extends Controller
             'username' => ['required'],
             'password' => ['required'],
         ]);
-
         if (Auth::attempt($credentials)) {
-            if (count($role_array = explode(',', auth()->user()->role)) == 1) {
+            $role_array = array_values(array_filter(explode(',', auth()->user()->role), function ($value) {
+                return $value !== 'root';
+            }));
+
+            if (count($role_array) == 1) {
                 DB::table('users')->where('id', '=', auth()->user()->id)->update(['current_role' => auth()->user()->role]);
             } else {
                 if (auth()->user()->current_role == null) {
