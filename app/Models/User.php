@@ -63,14 +63,5 @@ class User extends Authenticatable
         return in_array($this->current_role, $roles);
     }
 
-    public function scopeFilter($query, array $filters)
-    {
-        $role = $filters['role'] ?? null;
-
-        if ($role) {
-            $query->where('role', 'like', '%' . $role . '%');
-        }
-    }
-
     // public function
 }
