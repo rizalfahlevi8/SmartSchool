@@ -1,10 +1,18 @@
 <div class="flex-shrink-0 p-3 bg-transparent" style="">
     <a href="/" class="d-flex align-items-center pb-3 my-4 link-dark text-decoration-none"
-        style="border-bottom: 2px solid white;">
+        style="border-bottom: 2px solid white; justify-content: center">
         <div class="text-white w-auto "
-            style="display: flex; align-items: center; justify-content: start; column-gap: 10px">
-            <i class="material-icons opacity-10" style="font-size:35px">school</i> <span
-                class="ms-1 font-weight-bold text-white" style="font-size:23px">Smart School</span>
+            style="display: flex; align-items: center; justify-content: center; column-gap: 3px">
+            {{-- <img src="{{ asset('assets/img/web-icon-brain.png') }}" alt="HTML tutorial"
+                style="height: 36px;filter:brightness(0%) invert(90%)"> --}}
+            <img src="{{ asset('assets/img/web-icon-brain.png') }}" alt="HTML tutorial" style="height: 36px;">
+            {{-- <span class="ms-1 font-weight-bold text-white" style="font-size:23px">Smart School</span> --}}
+            <span class="ms-1 font-weight-bold"
+                style="font-size: 24px; background-image: linear-gradient(to right, #0cb1d8, #00c4dc, #00d5d1, #00e4b8, #29f194);
+                   -webkit-background-clip: text;color: transparent;">
+                Smart School
+            </span>
+
         </div>
     </a>
     <ul class="list-unstyled ps-0" style="width: 100%">
