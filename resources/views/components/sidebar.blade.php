@@ -142,6 +142,23 @@
                     </ul>
                 </div>
             </li>
+        @elseif (auth()->user()->hasRole('guru'))
+        <li class="mb-1" style="">
+            <a class="btn rounded text-white font-weight-bold {{ Request::is('#*') ? 'bg-gradient-primary ' : '' }}"
+                style="text-transform: none; width: 100%;display: flex; align-items: center; column-gap:10px"
+                href="/#"> <span class="material-symbols-outlined">groups</span> Data Siswa</a>
+        </li>
+        <li class="mb-1" style="">
+            <a class="btn rounded text-white font-weight-bold {{ Request::is('#*') ? 'bg-gradient-primary ' : '' }}"
+                style="text-transform: none; width: 100%;display: flex; align-items: center; column-gap:10px"
+                href="/#"> <span class="material-symbols-outlined">event_note</span> Jadwal Mengajar</a>
+        </li>
+        @elseif (auth()->user()->hasRole('siswa'))
+        <li class="mb-1" style="">
+            <a class="btn rounded text-white font-weight-bold {{ Request::is('#*') ? 'bg-gradient-primary ' : '' }}"
+                style="text-transform: none; width: 100%;display: flex; align-items: center; column-gap:10px"
+                href="/#"> <span class="material-symbols-outlined">event_note</span> Jadwal Pelajaran</a>
+        </li>
         @endif
     </ul>
 </div>

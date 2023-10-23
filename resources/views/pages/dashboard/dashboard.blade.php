@@ -152,25 +152,22 @@
                 </div>
             </div>
         @endif
-    @elseif(auth()->user()->hasRole('siswa'))
+        @elseif(auth()->user()->hasRole('siswa'))
         <div class="row">
             <div class="col-lg-12 col-md-6 mb-4">
                 <div class="card z-index-2 ">
                     <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
                         <div class="bg-gradient-primary shadow-primary border-radius-lg py-3 pe-1">
                             <div class="chart">
-
-                                <h6 class="text-white text-capitalize ps-3">Data Siswa
-                                </h6>
+                                <h6 class="text-white text-capitalize ps-3">Data Siswa</h6>
                             </div>
                         </div>
-
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="foto">
-                                    <img src="{{ Auth::guard('siswa')->user()->foto ? asset('assets/img/pegawai/' . Auth::guard('siswa')->user()->foto) : asset('assets/img/thumbnail.png') }} "
+                                    <img src="{{ $myData->foto ? asset('storage/murid/img/' . $myData->foto) : asset('storage/murid/img/default_img.png') }}"
                                         alt="" width="100%" height="auto">
                                 </div>
                             </div>
@@ -183,8 +180,7 @@
                                                 <div class="float-end">:</div>
                                             </div>
                                             <div class="col-md-7">
-                                                {{ Auth::guard('siswa')->user()->nisn }}
-                                                {{-- {{ $g->NIP }} --}}
+                                                {{ $myData->nisn }}
                                             </div>
                                         </div>
                                     </li>
@@ -196,7 +192,7 @@
                                                 <div class="float-end">:</div>
                                             </div>
                                             <div class="col-md-7">
-                                                {{ Auth::guard('siswa')->user()->fullname }}
+                                                {{ $myData->nama }}
                                             </div>
                                         </div>
                                     </li>
@@ -207,7 +203,7 @@
                                                 <div class="float-end">:</div>
                                             </div>
                                             <div class="col-md-7">
-                                                {{ Auth::guard('siswa')->user()->kelas->namakelas }}
+                                                {{ $myData->kelas->nama_kelas }}
 
                                             </div>
                                         </div>
@@ -220,7 +216,7 @@
                                                 <div class="float-end">:</div>
                                             </div>
                                             <div class="col-md-7 text-capitalize">
-                                                {{ Auth::guard('siswa')->user()->jk }}
+                                                {{ $myData->jenis_kelamin }}
                                             </div>
                                         </div>
                                     </li>
@@ -233,7 +229,7 @@
                                                 <div class="float-end">:</div>
                                             </div>
                                             <div class="col-md-7">
-                                                {{ Auth::guard('siswa')->user()->notelp }}
+                                                {{ $myData->no_telp }}
                                             </div>
                                         </div>
                                     </li>
@@ -244,7 +240,7 @@
                                                 <div class="float-end">:</div>
                                             </div>
                                             <div class="col-md-7">
-                                                {{ Auth::guard('siswa')->user()->agama }}
+                                                {{ $myData->agama }}
                                             </div>
                                         </div>
                                     </li>
@@ -255,7 +251,7 @@
                                                 <div class="float-end">:</div>
                                             </div>
                                             <div class="col-md-7">
-                                                {{ Auth::guard('siswa')->user()->alamat }}
+                                                {{ $myData->alamat }}
 
                                             </div>
                                         </div>
