@@ -146,6 +146,25 @@
                                         @endif
                                     </ul>
                                 </div>
+                                 <div class="card mt-4">
+                                <div class="card-header">
+                                    <h4 class="card-title">Pengumuman</h4>
+                                </div>
+                                <div class="card-body">
+                                    @if ($pengumumans->isEmpty())
+                                        <p class="text-muted">Tidak ada pengumuman saat ini.</p>
+                                    @else
+                                        <ul class="list-group">
+                                            @foreach ($pengumumans as $pengumuman)
+                                                <li class="list-group-item">
+                                                    <h5>{{ $pengumuman->title }}</h5>
+                                                    <p>{{ $pengumuman->message }}</p>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    @endif
+                                </div>
+                            </div>
                             </div>
                         </div>
                     </div>
@@ -261,6 +280,25 @@
                                         </div>
                                     </li>
                                 </ul>
+                            </div>
+                            <div class="card mt-4">
+                                <div class="card-header">
+                                    <h4 class="card-title">Pengumuman</h4>
+                                </div>
+                                <div class="card-body">
+                                    @if ($pengumumans->isEmpty())
+                                        <p class="text-muted">Tidak ada pengumuman saat ini.</p>
+                                    @else
+                                        <ul class="list-group">
+                                            @foreach ($pengumumans as $pengumuman)
+                                                <li class="list-group-item">
+                                                    <h5>{{ $pengumuman->title }}</h5>
+                                                    <p>{{ $pengumuman->message }}</p>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    @endif
+                                </div>
                             </div>
                         </div>
                     </div>
