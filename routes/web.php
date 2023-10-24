@@ -23,6 +23,7 @@ use App\Http\Controllers\EditPasswordController;
 use App\Http\Controllers\JadwalMengajarController;
 use App\Http\Controllers\KalenderAkademikController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\PengumumanController;
 use App\Models\Absensi;
 use App\Models\Akademik;
 
@@ -122,6 +123,11 @@ Route::middleware(['userRole:admin,guru'])->group(function () {
 
 //==========================================================================================
 Route::middleware(['userRole:admin'])->group(function () {
+    // Pengumuman
+    Route::get('/dashboard/buat-pengumuman', [PengumumanController::class, 'create'])->name('buat-pengumuman');
+    Route::post('/dashboard/buat-pengumuman', [PengumumanController::class, 'store']);
+    Route::get('/dashboard/hapus-pengumuman/{pengumuman}', [PengumumanController::class, 'destroy']);
+    Route::put('/dashboard/update-pengumuman/{pengumuman}', [PengumumanController::class, 'update'])->name('update-pengumuman');
     // Daftar Barang
     Route::get('/sarana/barang', [BarangController::class, 'index'])->name('barang_main');
     Route::get('/sarana/barang-tambah', [BarangController::class, 'create'])->name('tambah-barang');

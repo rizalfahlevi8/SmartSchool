@@ -68,6 +68,20 @@ class DashboardController extends Controller
                     # code...
                     break;
             }
+            if (Auth::check()) {
+                $query = Pengumuman::orderBy('created_at', 'desc');               
+                // Admin
+                if (auth()->user()->hasRole('admin', 'kepsek')) {
+                    $pengumumans = $query->get();
+                } else {
+                    // Selain admin
+                    $pengumumans = $query->where('role', auth()->user()->role)->get();
+                }
+                
+                $datas['pengumumans'] = $pengumumans;
+                $rolePengumuman = $pengumumans->pluck('role')->unique()->toArray();
+
+            }
 
             return view('pages.dashboard.dashboard', $datas)->with('title', 'Dashboard');
         }

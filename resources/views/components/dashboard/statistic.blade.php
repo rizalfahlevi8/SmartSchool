@@ -56,5 +56,128 @@
                 </div>
             </div>
         </div>
+        <!-- Pengumuman -->
+        <div class="card mt-4">
+            <div class="card-header">
+            <h4 class="card-title">Pengumuman</h4>
+                </div>
+                <div class="card-body">
+        @if ($pengumumans->isEmpty())
+            <p class="text-muted">Tidak ada pengumuman saat ini.</p>
+        @else
+            <ul class="list-group">
+                @foreach ($pengumumans as $pengumuman)
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div class="col-md-4">
+                            <h5>{{ $pengumuman->title }}</h5>
+                        </div>
+                        <div class="col-md-4">
+                            <p>{{ $pengumuman->message }}</p>
+                        </div>
+                        <div class="col-md-4 text-end">
+                            <p class="text-muted">{{ $pengumuman->role }}</p>
+                            <button class="btn btn-sm btn-warning edit-notification" data-bs-toggle="modal" data-bs-target="#editPengumuman{{ $pengumuman->id }}">
+                                <i class="fa fa-edit"></i>
+                            </button>
+                            <a href="/dashboard/hapus-pengumuman/{{ $pengumuman->id }}" onclick="return confirm('Anda yakin akan menghapus pengumuman ini?')" class="btn btn-sm btn-danger" data-bs-toggle="tooltip" title="Hapus">
+                                <i class="fa fa-trash"></i>
+                            </a>
+                        </div>
+                    </li>
+                            <!-- Modal Edit Pengumuman -->   
+                                <div class="modal fade" id="editPengumuman{{ $pengumuman->id }}" tabindex="-1" role="dialog" aria-labelledby="editPengumumanLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="editPengumumanLabel">Edit Pengumuman</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <form method="post" action="{{ route('update-pengumuman', ['pengumuman' => $pengumuman->id]) }}">
+                                            @csrf
+                                            @method('PUT')
+                                            <div class="modal-body">
+                                                <div class="mb-3">
+                                                    <label for="notificationTitle" class="form-label">Judul Pengumuman</label>
+                                                    <input type="text" class="form-control" id="notificationTitle" name="title" value="{{ $pengumuman->title }}" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="notificationMessage" class="form-label">Isi Pengumuman</label>
+                                                    <textarea class="form-control" id="notificationMessage" name="message" rows="4" required>{{ $pengumuman->message }}</textarea>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="notificationRoles" class="form-label">Select Roles</label>
+                                                    @foreach ($rolePengumuman as $role)
+                                                        @php
+                                                        $selectedRoles = explode(',', $pengumuman->roles);
+                                                        @endphp
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" name="roles[]" value="{{ $role }}" id="role{{ $role }}" @if(in_array($role, $selectedRoles)) checked @endif>
+                                                            <label class="form-check-label" for="role{{ $role }}">
+                                                                {{ $role }}
+                                                            </label>
+                                                        </div>
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="submit" class="btn btn-primary">Edit</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                        </ul>
+                        @endif
+                        <div class="card-footer" style="padding: 0.5rem;">
+                            <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-xl-0 mb-4">
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#buatPengumuman">
+                                Buat Pengumuman
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+    <!-- Modal Buat Pengumuman -->   
+    <div class="modal fade" id="buatPengumuman" tabindex="-1" role="dialog" aria-labelledby="buatPengumumanLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="buatPengumumanLabel">Buat Pengumuman</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" action="{{ route('buat-pengumuman') }}">
+                        @csrf
+
+                        <div class="mb-3">
+                            <label for="notificationTitle" class="form-label">Judul Pengumuman</label>
+                            <input type="text" class="form-control" id="notificationTitle" name="title" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="notificationMessage" class="form-label">Isi Pengumuman</label>
+                            <textarea class="form-control" id="notificationMessage" name="message" rows="4" required></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                        <label for="notificationRoles" class="form-label">Select Roles</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="roles[]" value="guru" id="roleGuru">
+                            <label class="form-check-label" for="roleGuru">Guru</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="roles[]" value="siswa" id="roleStudent">
+                            <label class="form-check-label" for="roleStudent">Siswa</label>
+                        </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Buat</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+</div>
+    </div>
     </div>
 @endif
