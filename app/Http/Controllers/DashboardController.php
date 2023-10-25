@@ -19,6 +19,7 @@ class DashboardController extends Controller
             $guru = Guru::where('deleted', 0)->get();
             $kelas = Kelas::where('deleted', 0)->get();
             $siswa = Siswa::where('status', 'belum lulus')->orWhere('status', 'mutasi')->get();
+            $rolePengumuman = [];
 
             $datas = array();
             $role = auth()->user()->current_role;
@@ -83,7 +84,7 @@ class DashboardController extends Controller
                 $rolePengumuman = $pengumumans->pluck('role')->unique()->toArray();
             }
 
-            return view('pages.dashboard.dashboard', $datas)->with('title', 'Dashboard');
+            return view('pages.dashboard.dashboard', ['rolePengumuman' => $rolePengumuman] + $datas)->with('title', 'Dashboard');
         }
     }
 }
