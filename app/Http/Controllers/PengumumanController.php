@@ -34,7 +34,7 @@ class PengumumanController extends Controller
 
         return redirect()->back()->with('success', 'Pengumuman berhasil dihapus.');
     }
-    
+
     public function update(Request $request, Pengumuman $pengumuman)
     {
         $request->validate([

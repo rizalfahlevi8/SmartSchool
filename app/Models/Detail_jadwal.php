@@ -3,9 +3,13 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Guru;
+use App\Models\Mapel;
+use App\Models\Ruang;
+use App\Models\Jadwal;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Detail_jadwal extends Model
 {
@@ -21,6 +25,10 @@ class Detail_jadwal extends Model
         'id_mapel',
         'id_jadwal'
     ];
+    public function kelas()
+    {
+        return $this->belongsTo(Ruang::class, 'id_kelas', 'id');
+    }
     public function ruang()
     {
         return $this->belongsTo(Ruang::class, 'id_ruang', 'id');

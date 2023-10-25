@@ -45,20 +45,20 @@ class JadwalSeeder extends Seeder
                             'id_kelas' => $kelas->id
                         ]);
 
-                        for ($hour = 1; $hour <= 4; $hour++) {
-                            $startTime = Carbon::createFromTime(6 + $hour, 0, 0);
-                            $endTime = $startTime->copy()->addMinutes(45);
+                        // for ($hour = 1; $hour <= 4; $hour++) {
+                        //     $startTime = Carbon::createFromTime(6 + $hour, 0, 0);
+                        //     $endTime = $startTime->copy()->addMinutes(45);
 
-                            DB::table('detail_jadwals')->insert([
-                                'jam_mulai' => $startTime->format('H:i:s'),
-                                'jam_selesai' => $endTime->format('H:i:s'),
-                                'keterangan' => 'Tidak Ada',
-                                'id_ruang' => random_int(1, $numberOfRooms),
-                                'id_guru' => random_int(1, $numberOfTeachers),
-                                'id_mapel' => random_int(1, $numberOfSubjects),
-                                'id_jadwal' => $jadwalId,
-                            ]);
-                        }
+                        //     DB::table('detail_jadwals')->insert([
+                        //         'jam_mulai' => $startTime->format('H:i:s'),
+                        //         'jam_selesai' => $endTime->format('H:i:s'),
+                        //         'keterangan' => 'Tidak Ada',
+                        //         'id_ruang' => random_int(1, $numberOfRooms),
+                        //         'id_guru' => random_int(1, $numberOfTeachers),
+                        //         'id_mapel' => random_int(1, $numberOfSubjects),
+                        //         'id_jadwal' => $jadwalId,
+                        //     ]);
+                        // }
                     }
                     // ...
                 } catch (\Exception $e) {

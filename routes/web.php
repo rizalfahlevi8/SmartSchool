@@ -84,7 +84,7 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::middleware(['userRole:admin,guru'])->group(function () {
-    Route::get('/akademik/jadwal/{id_guru}', [JadwalMengajarController::class, 'jadwalguru']);
+    Route::get('/akademik/jadwal/{id}', [JadwalMengajarController::class, 'jadwalguru']);
     Route::get('/akademik/jadwal/cetak_pdf/{id_guru}', [JadwalMengajarController::class, 'cetakjadwalguru']);
 
     // input nilai
@@ -236,6 +236,10 @@ Route::middleware(['userRole:admin'])->group(function () {
     Route::get('/peminjaman-hapus/{id}', [PeminjamanController::class, 'destroy']);
     Route::post('/peminjaman-tambah', [PeminjamanController::class, 'store']);
     Route::put('/peminjaman-update', [PeminjamanController::class, 'update']);
+});
+//======================== G U R U =========================================================
+Route::middleware(['userRole:guru'])->group(function () {
+    
 });
 
 Route::middleware(['userRole:siswa,admin'])->group(function () {
