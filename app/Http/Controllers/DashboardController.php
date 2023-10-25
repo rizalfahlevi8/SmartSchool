@@ -6,6 +6,7 @@ use App\Models\Guru;
 use App\Models\Kelas;
 use App\Models\Siswa;
 use App\Models\User;
+use App\Models\Pengumuman;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -69,7 +70,7 @@ class DashboardController extends Controller
                     break;
             }
             if (Auth::check()) {
-                $query = Pengumuman::orderBy('created_at', 'desc');               
+                $query = Pengumuman::orderBy('created_at', 'desc');
                 // Admin
                 if (auth()->user()->hasRole('admin', 'kepsek')) {
                     $pengumumans = $query->get();
@@ -77,10 +78,9 @@ class DashboardController extends Controller
                     // Selain admin
                     $pengumumans = $query->where('role', auth()->user()->role)->get();
                 }
-                
+
                 $datas['pengumumans'] = $pengumumans;
                 $rolePengumuman = $pengumumans->pluck('role')->unique()->toArray();
-
             }
 
             return view('pages.dashboard.dashboard', $datas)->with('title', 'Dashboard');
