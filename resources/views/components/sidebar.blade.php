@@ -148,6 +148,11 @@
                 style="text-transform: none; width: 100%;display: flex; align-items: center; column-gap:10px"
                 href="/akademik/jadwal/{{ auth()->user()->id }}"> <span class="material-symbols-outlined">event_note</span> Jadwal Mengajar</a>
         </li>
+        <li class="mb-1" style="">
+            <a class="btn rounded text-white font-weight-bold {{ Request::is('#*') ? 'bg-gradient-primary ' : '' }}"
+                style="text-transform: none; width: 100%;display: flex; align-items: center; column-gap:10px"
+                href="/#"> <span class="material-symbols-outlined">event_note</span> Data Siswa</a>
+        </li>
         @elseif (auth()->user()->hasRole('siswa'))
         <li class="mb-1" style="">
             <a class="btn rounded text-white font-weight-bold {{ Request::is('#*') ? 'bg-gradient-primary ' : '' }}"
