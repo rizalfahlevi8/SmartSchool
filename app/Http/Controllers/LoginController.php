@@ -32,7 +32,7 @@ class LoginController extends Controller
             }));
 
             if (count($role_array) == 1) {
-                DB::table('users')->where('id', '=', auth()->user()->id)->update(['current_role' => auth()->user()->role]);
+                DB::table('users')->where('id', '=', auth()->user()->id)->update(['current_role' => $role_array[0]]);
             } else {
                 if (auth()->user()->current_role == null) {
                     DB::table('users')->where('id', '=', auth()->user()->id)->update(['current_role' => $role_array[0]]);
