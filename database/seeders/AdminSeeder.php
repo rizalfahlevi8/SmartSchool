@@ -19,7 +19,7 @@ class AdminSeeder extends Seeder
             'username' => 'root',
             'email' => 'admin@polije.ac.co.id',
             'password' => bcrypt('admin'),
-            'role' => 'admin',
+            'role' => 'root,admin',
             'remember_token' => Str::random(20)
         ]);
     }
