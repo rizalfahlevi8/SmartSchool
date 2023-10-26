@@ -53,15 +53,13 @@
                                     <td class="text-center">{{ $i->jumlah_baik ?? '-' }}</td>
                                     <td class="text-center">{{ $i->jumlah_rusak ?? '-' }}</td>
                                     <td class="text-center">
-                                                <button type="button"data-bs-toggle="modal" class="btn btn-warning font-weight-bold btn--edit text-sm rounded-circle"
-                                                    data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit"">
-                                                    <i class="fa fa-edit"></i>
-                                                </button>
-                                                <a class=" btn btn-danger font-weight-bold text-sm rounded-circle"
-                                                    data-bs-toggle="tooltip" data-bs-placement="bottom" title="Hapus">
-                                                    <i class="fa fa-trash"></i>
-                                                </a>
-                                            </td>
+                                    <a href="{{ route('delete-inventaris', ['id' => $i->id]) }}"
+                                        onclick="return confirm('Anda yakin akan menghapus data ini?')"
+                                        class="btn btn-danger font-weight-bold text-sm rounded-circle"
+                                        data-bs-toggle="tooltip" data-bs-placement="bottom" title="Hapus">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+
                                 </tr>
                                 @endforeach
                             </tbody>
