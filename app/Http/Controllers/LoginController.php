@@ -31,12 +31,8 @@ class LoginController extends Controller
                 return $value !== 'root';
             }));
 
-            if (count($role_array) == 1) {
+            if (auth()->user()->current_role == null) {
                 DB::table('users')->where('id', '=', auth()->user()->id)->update(['current_role' => $role_array[0]]);
-            } else {
-                if (auth()->user()->current_role == null) {
-                    DB::table('users')->where('id', '=', auth()->user()->id)->update(['current_role' => $role_array[0]]);
-                }
             }
             $request->session()->regenerate();
             return redirect()->intended('/dashboard');
