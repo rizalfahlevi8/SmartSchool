@@ -121,13 +121,22 @@ class JadwalMengajarController extends Controller
         );
         $hari_ini = strtolower($hari_list[Carbon::now()->dayOfWeek]);
 
-        $all_jadwal = Detail_jadwal::whereHas('jadwal', function ($query) use ($hari_ini) {
-            $query->whereHas('akademik', function ($query) {
-                $query->where('selected', 1);
-            });
-            $query->where('hari', $hari_ini);
-        })->orderBy('jam_mulai', 'asc')->get();
+        // $all_jadwal = Detail_jadwal::whereHas('jadwal', function ($query) use ($hari_ini) {
+        //     $query->whereHas('akademik', function ($query) {
+        //         $query->where('selected', 1);
+        //     });
+        //     $query->where('hari', $hari_ini);
+        // })->orderBy('jam_mulai', 'asc')->get();
 
+        $all_jadwal = Detail_jadwal::with('jadwal', 'mapel', 'ruang')
+            ->whereHas('guru', function ($query) use ($guruId) {
+                $query->where('id', $guruId);
+            })
+            ->whereHas('jadwal', function ($query) use ($hari_ini) {
+                $query->where('hari', $hari_ini);
+            })
+            ->orderBy('jam_mulai', 'asc')
+            ->get();
 
         return view('pages.akademik.data-jadwal-guru.jadwalguru', [
             'jadwals' => $detail_jadwal,
