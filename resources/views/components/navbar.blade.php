@@ -18,9 +18,11 @@
                             @elseif (auth()->user()->hasRole('guru'))
                                 {{ auth()->user()->guru->nama ?? auth()->user()->username }}
                             @elseif (auth()->user()->hasRole('siswa'))
-                                {{ auth()->user()->siswa->nama }}
-                            @elseif ('kepsek' == 'kepsek')
-                                {{ var_dump(auth()->user()->role) }}
+                                {{ auth()->user()->siswa->nama ?? auth()->user()->username }}
+                            @elseif (auth()->user()->hasRole('kepsek'))
+                                {{ auth()->user()->guru->nama ?? auth()->user()->username }}
+                            @else
+                                {{ auth()->user()->username }}
                             @endif
                         </span>
                     </strong>

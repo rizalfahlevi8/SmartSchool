@@ -146,160 +146,173 @@
                                         @endif
                                     </ul>
                                 </div>
-                                 <div class="card mt-4">
-                                <div class="card-header">
-                                    <h4 class="card-title">Pengumuman</h4>
+                                <div class="card mt-4">
+                                    <div class="card-header">
+                                        <h4 class="card-title">Pengumuman</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        @if ($pengumumans->isEmpty())
+                                            <p class="text-muted">Tidak ada pengumuman saat ini.</p>
+                                        @else
+                                            <ul class="list-group">
+                                                @foreach ($pengumumans as $pengumuman)
+                                                    <li class="list-group-item">
+                                                        <h5>{{ $pengumuman->title }}</h5>
+                                                        <p>{{ $pengumuman->message }}</p>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        @endif
+                                    </div>
                                 </div>
-                                <div class="card-body">
-                                    @if ($pengumumans->isEmpty())
-                                        <p class="text-muted">Tidak ada pengumuman saat ini.</p>
-                                    @else
-                                        <ul class="list-group">
-                                            @foreach ($pengumumans as $pengumuman)
-                                                <li class="list-group-item">
-                                                    <h5>{{ $pengumuman->title }}</h5>
-                                                    <p>{{ $pengumuman->message }}</p>
-                                                </li>
-                                            @endforeach
-                                        </ul>
-                                    @endif
-                                </div>
-                            </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         @endif
-        @elseif(auth()->user()->hasRole('siswa'))
-        <div class="row">
-            <div class="col-lg-12 col-md-6 mb-4">
-                <div class="card z-index-2 ">
-                    <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
-                        <div class="bg-gradient-primary shadow-primary border-radius-lg py-3 pe-1">
-                            <div class="chart">
-                                <h6 class="text-white text-capitalize ps-3">Data Siswa</h6>
+    @elseif(auth()->user()->hasRole('siswa'))
+        @if ($myData == null)
+            <div class="row">
+                <div class="col-lg-12 col-md-6 mb-4">
+                    <div class="card z-index-2 ">
+                        <h4 style="text-align: center; width: 100%; padding: 40px 10px">Anda Tidak
+                            memiliki informasi pribadi
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        @else
+            <div class="row">
+                <div class="col-lg-12 col-md-6 mb-4">
+                    <div class="card z-index-2 ">
+                        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
+                            <div class="bg-gradient-primary shadow-primary border-radius-lg py-3 pe-1">
+                                <div class="chart">
+                                    <h6 class="text-white text-capitalize ps-3">Data Siswa</h6>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="foto">
-                                    <img src="{{ $myData->foto ? asset('storage/murid/img/' . $myData->foto) : asset('storage/murid/img/default_img.png') }}"
-                                        alt="" width="100%" height="auto">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="foto">
+                                        <img src="{{ $myData->foto ? asset('storage/murid/img/' . $myData->foto) : asset('storage/murid/img/default_img.png') }}"
+                                            alt="" width="100%" height="auto">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-8">
-                                <ul class="list-group">
-                                    <li class="list-group-item">
-                                        <div class="row">
-                                            <div class="col-md-5">
-                                                <span class="float-start fw-bold">NISN</span>
-                                                <div class="float-end">:</div>
+                                <div class="col-md-8">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">
+                                            <div class="row">
+                                                <div class="col-md-5">
+                                                    <span class="float-start fw-bold">NISN</span>
+                                                    <div class="float-end">:</div>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    {{ $myData->nisn }}
+                                                </div>
                                             </div>
-                                            <div class="col-md-7">
-                                                {{ $myData->nisn }}
-                                            </div>
-                                        </div>
-                                    </li>
+                                        </li>
 
-                                    <li class="list-group-item">
-                                        <div class="row">
-                                            <div class="col-md-5">
-                                                <span class="float-start fw-bold">Nama</span>
-                                                <div class="float-end">:</div>
+                                        <li class="list-group-item">
+                                            <div class="row">
+                                                <div class="col-md-5">
+                                                    <span class="float-start fw-bold">Nama</span>
+                                                    <div class="float-end">:</div>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    {{ $myData->nama }}
+                                                </div>
                                             </div>
-                                            <div class="col-md-7">
-                                                {{ $myData->nama }}
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <div class="row">
-                                            <div class="col-md-5">
-                                                <span class="float-start fw-bold">Kelas</span>
-                                                <div class="float-end">:</div>
-                                            </div>
-                                            <div class="col-md-7">
-                                                {{ $myData->kelas->nama_kelas }}
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="row">
+                                                <div class="col-md-5">
+                                                    <span class="float-start fw-bold">Kelas</span>
+                                                    <div class="float-end">:</div>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    {{ $myData->kelas->nama_kelas }}
 
+                                                </div>
                                             </div>
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <div class="row">
-                                            <div class="col-md-5">
-                                                <span class="float-start fw-bold">Jenis
-                                                    Kelamin</span>
-                                                <div class="float-end">:</div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="row">
+                                                <div class="col-md-5">
+                                                    <span class="float-start fw-bold">Jenis
+                                                        Kelamin</span>
+                                                    <div class="float-end">:</div>
+                                                </div>
+                                                <div class="col-md-7 text-capitalize">
+                                                    {{ $myData->jenis_kelamin }}
+                                                </div>
                                             </div>
-                                            <div class="col-md-7 text-capitalize">
-                                                {{ $myData->jenis_kelamin }}
-                                            </div>
-                                        </div>
-                                    </li>
+                                        </li>
 
-                                    <li class="list-group-item">
-                                        <div class="row">
-                                            <div class="col-md-5">
-                                                <span class="float-start fw-bold">No Telepon
-                                                </span>
-                                                <div class="float-end">:</div>
+                                        <li class="list-group-item">
+                                            <div class="row">
+                                                <div class="col-md-5">
+                                                    <span class="float-start fw-bold">No Telepon
+                                                    </span>
+                                                    <div class="float-end">:</div>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    {{ $myData->no_telp }}
+                                                </div>
                                             </div>
-                                            <div class="col-md-7">
-                                                {{ $myData->no_telp }}
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="row">
+                                                <div class="col-md-5">
+                                                    <span class="float-start fw-bold">Agama</span>
+                                                    <div class="float-end">:</div>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    {{ $myData->agama }}
+                                                </div>
                                             </div>
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <div class="row">
-                                            <div class="col-md-5">
-                                                <span class="float-start fw-bold">Agama</span>
-                                                <div class="float-end">:</div>
-                                            </div>
-                                            <div class="col-md-7">
-                                                {{ $myData->agama }}
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <div class="row">
-                                            <div class="col-md-5">
-                                                <span class="float-start fw-bold">Alamat</span>
-                                                <div class="float-end">:</div>
-                                            </div>
-                                            <div class="col-md-7">
-                                                {{ $myData->alamat }}
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="row">
+                                                <div class="col-md-5">
+                                                    <span class="float-start fw-bold">Alamat</span>
+                                                    <div class="float-end">:</div>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    {{ $myData->alamat }}
 
+                                                </div>
                                             </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="card mt-4">
-                                <div class="card-header">
-                                    <h4 class="card-title">Pengumuman</h4>
+                                        </li>
+                                    </ul>
                                 </div>
-                                <div class="card-body">
-                                    @if ($pengumumans->isEmpty())
-                                        <p class="text-muted">Tidak ada pengumuman saat ini.</p>
-                                    @else
-                                        <ul class="list-group">
-                                            @foreach ($pengumumans as $pengumuman)
-                                                <li class="list-group-item">
-                                                    <h5>{{ $pengumuman->title }}</h5>
-                                                    <p>{{ $pengumuman->message }}</p>
-                                                </li>
-                                            @endforeach
-                                        </ul>
-                                    @endif
+                                <div class="card mt-4">
+                                    <div class="card-header">
+                                        <h4 class="card-title">Pengumuman</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        @if ($pengumumans->isEmpty())
+                                            <p class="text-muted">Tidak ada pengumuman saat ini.</p>
+                                        @else
+                                            <ul class="list-group">
+                                                @foreach ($pengumumans as $pengumuman)
+                                                    <li class="list-group-item">
+                                                        <h5>{{ $pengumuman->title }}</h5>
+                                                        <p>{{ $pengumuman->message }}</p>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        @endif
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+
+        @endif
     @endif
 @endsection

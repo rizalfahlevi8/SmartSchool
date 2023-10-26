@@ -46,7 +46,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <input type="text" class="form-control" id="kalender-akademik-title">
+                    <input type="text" class="form-control" id="kalender-akademik-title" autofocus>
                     <span id="titleError" class="text-danger"></span>
                 </div>
                 <div class="modal-footer">
@@ -79,40 +79,8 @@
                 selectHelper: true,
                 select: function(start, end, allDays) {
                     $('#bookingModal').modal('toggle');
-
-                    $('#saveKalenderBtn').click(function() {
-                        var title = $('#kalender-akademik-title').val();
-                        var start_date = moment(start).format('YYYY-MM-DD');
-                        var end_date = moment(end).format('YYYY-MM-DD');
-
-                        $.ajax({
-                            url: "{!! route('calendar.store') !!}",
-                            type: "POST",
-                            dataType: 'json',
-                            data: {
-                                title,
-                                start_date,
-                                end_date
-                            },
-                            success: function(response) {
-                                $('#bookingModal').modal('hide')
-                                $('#calendar').fullCalendar('renderEvent', {
-                                    'id': response.id,
-                                    'title': response.title,
-                                    'start': response.start,
-                                    'end': response.end,
-                                    'color': response.color
-                                });
-
-                            },
-                            error: function(error) {
-                                if (error.responseJSON.errors) {
-                                    $('#titleError').html(error.responseJSON.errors
-                                        .title);
-                                }
-                            },
-                        });
-                    });
+                    localStorage.setItem('kalender-start-date', moment(start).format('YYYY-MM-DD'));
+                    localStorage.setItem('kalender-end-date', moment(end).format('YYYY-MM-DD'))
                 },
                 editable: true,
                 eventDrop: function(event) {
@@ -164,6 +132,41 @@
 
             $("#bookingModal").on("hidden.bs.modal", function() {
                 $('#saveBtn').unbind();
+            });
+
+            $('#saveKalenderBtn').click(function() {
+                var title = $('#kalender-akademik-title').val();
+                var start_date = localStorage.getItem('kalender-start-date');
+                var end_date = localStorage.getItem('kalender-end-date');
+
+                $.ajax({
+                    url: "{!! route('calendar.store') !!}",
+                    type: "POST",
+                    dataType: 'json',
+                    data: {
+                        title,
+                        start_date,
+                        end_date
+                    },
+                    success: function(response) {
+                        $('#bookingModal').modal('hide')
+                        $('#calendar').fullCalendar('renderEvent', {
+                            'id': response.id,
+                            'title': response.title,
+                            'start': response.start,
+                            'end': response.end,
+                            'color': response.color
+                        });
+                        document.querySelector('#bookingModal input').value = '';
+
+                    },
+                    error: function(error) {
+                        if (error.responseJSON.errors) {
+                            $('#titleError').html(error.responseJSON.errors
+                                .title);
+                        }
+                    },
+                });
             });
         });
     </script>
