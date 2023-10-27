@@ -34,10 +34,10 @@
     <h2>Panduan Penggunaan</h2>
     <ol>
         <li>Clone repositori ini ke server lokal Anda.
-            <pre>git clone https://github.com/tim-fahim/smart-school.git</pre>
+            <pre>git clone https://github.com/Rynare/siakad.git</pre>
         </li>
         <li>Masuk ke direktori proyek.
-            <pre>cd smart-school</pre>
+            <pre>cd siakad</pre>
         </li>
         <li>Instal dependensi dengan Composer.
             <pre>composer install</pre>
@@ -49,7 +49,7 @@
             <pre>php artisan key:generate</pre>
         </li>
         <li>Migrasi dan seeding basis data.
-            <pre>php artisan migrate --seed</pre>
+            <pre>php artisan migrate:fresh --seed</pre>
         </li>
         <li>Jalankan server lokal.
             <pre>php artisan serve</pre>
