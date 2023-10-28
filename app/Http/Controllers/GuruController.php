@@ -92,7 +92,7 @@ class GuruController extends Controller
         $filesignature = 'default_signature.png';
 
         if ($request->hasFile('foto')) {
-            $tujuan_upload = 'storage/guru/img/';
+            $tujuan_upload = asset('storage/guru/img/');
             $file = $request->file('foto');
             $filegambar = time() . "_" . $file->getClientOriginalName();
             // isi dengan nama folder tempat kemana file diupload
@@ -100,7 +100,7 @@ class GuruController extends Controller
         }
         if ($request->has('signature')) {
             $signatureData = $request->input('signature');
-            $file_path = 'storage/guru/signatures/';
+            $file_path = asset('storage/guru/signatures/');
             $filesignature = time() . "_$request->nip" . "_signature.png";
             $signature = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $signatureData));
             $result_file = file_put_contents($file_path . $filesignature, $signature);
