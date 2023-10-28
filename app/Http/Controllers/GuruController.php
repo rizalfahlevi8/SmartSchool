@@ -31,7 +31,8 @@ class GuruController extends Controller
     {
         $messages = [
             'regex' => ':attribute harus diisi dengan huruf saja',
-            'unique' => 'Data ini sudah digunakan'
+            'unique' => 'Data ini sudah digunakan',
+            'required' => 'Harap isi kolom',
         ];
 
         $this->validate($request, [
@@ -60,16 +61,15 @@ class GuruController extends Controller
             'nip' => 'required|unique:gurus',
             'jenis_kelamin' => 'required',
             'no_telp' => 'required|unique:gurus',
-            'signature' => 'required',
             "agama" => 'required',
             "tempat_lahir" => "required",
             "tanggal_lahir" => "required|date",
-            "alamat" => "required",
             "alamat.provinsi" => "required",
             "alamat.kabupaten" => "required",
             "alamat.kecamatan" => "required",
             "alamat.desa" => "required",
             "status" => "required",
+            'signature' => 'required',
             "foto" => "required",
         ], $messages);
 
@@ -92,7 +92,7 @@ class GuruController extends Controller
         $filesignature = 'default_signature.png';
 
         if ($request->hasFile('foto')) {
-            $tujuan_upload = asset('storage/guru/img/');
+            $tujuan_upload = 'storage/guru/img/';
             $file = $request->file('foto');
             $filegambar = time() . "_" . $file->getClientOriginalName();
             // isi dengan nama folder tempat kemana file diupload
@@ -100,7 +100,7 @@ class GuruController extends Controller
         }
         if ($request->has('signature')) {
             $signatureData = $request->input('signature');
-            $file_path = asset('storage/guru/signatures/');
+            $file_path = 'storage/guru/signatures/';
             $filesignature = time() . "_$request->nip" . "_signature.png";
             $signature = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $signatureData));
             $result_file = file_put_contents($file_path . $filesignature, $signature);

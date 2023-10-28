@@ -34,6 +34,7 @@
                 <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                     <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
                         <h6 class="text-white text-capitalize ps-3">Tambah Data Guru</h6>
+
                     </div>
                 </div>
                 <div class="card-body px-0 pb-2">
@@ -187,7 +188,8 @@
                                 style="margin-bottom: 0;">
                                 <i class="fa fa-arrow-left"></i> Kembali
                             </a>
-                            <button type="submit" onclick="return confirm('Apakah anda yakin data sudah benar?')"
+                            <button type="submit"
+                                onclick="insertBlobToInput();return confirm('Apakah anda yakin data sudah benar?')"
                                 class="btn btn-primary text-sm rounded-3 mr-2" style="margin-bottom: 0;">
                                 <i class="fa fa-save"></i> Simpan
                             </button>
@@ -222,13 +224,10 @@
             }
         }
 
-        document.querySelector("form").addEventListener("submit", function() {
-
+        function insertBlobToInput() {
             var signatureDataUrl = getSignatureImage();
-
-
             document.querySelector("#signature-input").value = signatureDataUrl;
-        });
+        };
 
         function resizeCanvas() {
 
@@ -271,21 +270,21 @@
         clearButton.addEventListener("click", function(event) {
             signaturePad.clear();
         });
-        changeColorButton.addEventListener("click", function(event) {
-            var r = Math.round(Math.random() * 255);
-            var g = Math.round(Math.random() * 255);
-            var b = Math.round(Math.random() * 255);
-            var color = "rgb(" + r + "," + g + "," + b + ")";
-            signaturePad.penColor = color;
-        });
-        savePNGButton.addEventListener("click", function(event) {
-            if (signaturePad.isEmpty()) {
-                alert("Please provide a signature first.");
-            } else {
-                var dataURL = signaturePad.toDataURL();
-                download(dataURL, "signature.png");
-            }
-        });
+        // changeColorButton.addEventListener("click", function(event) {
+        //     var r = Math.round(Math.random() * 255);
+        //     var g = Math.round(Math.random() * 255);
+        //     var b = Math.round(Math.random() * 255);
+        //     var color = "rgb(" + r + "," + g + "," + b + ")";
+        //     signaturePad.penColor = color;
+        // });
+        // savePNGButton.addEventListener("click", function(event) {
+        //     if (signaturePad.isEmpty()) {
+        //         alert("Please provide a signature first.");
+        //     } else {
+        //         var dataURL = signaturePad.toDataURL();
+        //         download(dataURL, "signature.png");
+        //     }
+        // });
 
         function hanyaAngka(evt) {
             var charCode = (evt.which) ? evt.which : event.keyCode
