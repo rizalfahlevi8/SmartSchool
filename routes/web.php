@@ -84,7 +84,7 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::middleware(['userRole:admin,guru'])->group(function () {
-    Route::get('/akademik/jadwal/{id}', [JadwalMengajarController::class, 'jadwalguru']);
+    Route::get('/akademik/jadwal-guru/{id}', [JadwalMengajarController::class, 'jadwalguru']);
     Route::get('/akademik/jadwal/cetak_pdf/{id_guru}', [JadwalMengajarController::class, 'cetakjadwalguru']);
 
     // input nilai
@@ -104,11 +104,6 @@ Route::middleware(['userRole:admin,guru'])->group(function () {
 
     //raport siswa
     Route::post('/data-raport-siswa/{id}', [RaportController::class, 'raportsiswa']);
-
-    //jadwal siswa
-    Route::get('/data-jadwal/{id}', [JadwalController::class, 'jadwalsiswa']);
-    Route::get('/data-jadwalsiswa/cetak_pdf/{id}', [JadwalController::class, 'cetakjadwalsiswa']);
-
     Route::get('/data-raport-cetak-siswa/{id}/{smt}', [RaportController::class, 'cetakraportsiswa']);
 
     //kepsek
@@ -240,11 +235,9 @@ Route::middleware(['userRole:admin'])->group(function () {
 });
 //======================== G U R U =========================================================
 Route::middleware(['userRole:guru'])->group(function () {
-    
 });
 
 Route::middleware(['userRole:siswa,admin'])->group(function () {
-    Route::get('/akademik/raport-siswa/{jenis_raport}', [RaportController::class, 'show_raport']);
-    Route::get('/akademik/jadwal-siswa', [JadwalController::class, 'showJadwalSiswa']);
-    Route::get('/akademik/raport/{jenis_nilai}/{siswa}', [RaportController::class, 'show']);
+    //jadwal pelajaran
+    Route::get('/akademik/jadwal-siswa/{id}', [JadwalController::class, 'jadwalsiswa']);
 });

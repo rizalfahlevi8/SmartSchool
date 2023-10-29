@@ -99,7 +99,7 @@
                         <div class="col text-right">
                         </div>
                         <!-- Button trigger modal -->
-                        <table id="example" class="table align-items-center mb-0">
+                        <table class="table align-items-center mb-0">
                             <thead>
                                 <tr>
                                     <th

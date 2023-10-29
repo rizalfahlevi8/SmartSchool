@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Carbon\Carbon;
 
 class JadwalController extends Controller
 {
@@ -208,26 +209,41 @@ class JadwalController extends Controller
 
     public function jadwalsiswa($id)
     {
-        $hari = [
-            1 => 'Senin',
-            2 => 'Selasa',
-            3 => 'Rabu',
-            4 => 'Kamis',
-            5 => 'Jumat',
-            6 => 'Sabtu',
-        ];
-        $jadwal = Jadwal::where("kelas_id", $id)->orderBy("hari", 'asc')->get();
-        $kelas  =  Kelas::find($id);
-        $mapel  =  Mapel::select('id', 'namamapel')->get();
-        $guru   =  Guru::select('id', 'nama')->get();
-        return view('pages.data-jadwal.jadwalsiswa', [
-            'guru'      => $guru,
-            'mapel'     => $mapel,
-            'jadwal'    => $jadwal,
-            'kelas'     => $kelas,
-            'hari' => $hari
+        $kelasId = $id;
+        // $detail_jadwal = Detail_jadwal::todaySchedule($guruId);
+        $jadwal = Detail_jadwal::with('jadwal', 'mapel', 'ruang')
+            ->whereHas('jadwal', function ($query) use ($kelasId) {
+                $query->where('id_kelas', $kelasId);
+            })
+            ->get();
+        $kelas = Kelas::find($id);
+        $hari_list = array(
+            'Minggu',
+            'Senin',
+            'Selasa',
+            'Rabu',
+            'Kamis',
+            'Jumat',
+            'Sabtu'
+        );
+        $hari_ini = strtolower($hari_list[Carbon::now()->dayOfWeek]);
 
-        ]);
+        // $all_jadwal = Detail_jadwal::with('jadwal', 'mapel', 'ruang')
+        //     ->whereHas('guru', function ($query) use ($guruId) {
+        //         $query->where('id', $guruId);
+        //     })
+        //     ->whereHas('jadwal', function ($query) use ($hari_ini) {
+        //         $query->where('hari', $hari_ini);
+        //     })
+        //     ->orderBy('jam_mulai', 'asc')
+        //     ->get();
+
+        return view('pages.akademik.data-jadwal-siswa.jadwalsiswa', [
+            'jadwals'    => $jadwal,
+            'kelas' => $kelas,
+            'hari_ini' => $hari_ini
+
+        ])->with('title', 'Jadwal Pelajaran');
     }
 
     public function cetakjadwalsiswa($id)
