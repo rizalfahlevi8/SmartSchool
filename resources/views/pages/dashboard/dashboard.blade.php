@@ -7,6 +7,17 @@
     </ol>
     <h6 class="font-weight-bolder mb-0">Dashboard</h6>
 @endsection
+@section('additional-js-top')
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
+
+    <!-- Calendar -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+@endsection
 @section('content')
     <!-- End Navbar -->
     @include('components.dashboard.statistic')
@@ -165,6 +176,17 @@
                                         @endif
                                     </div>
                                 </div>
+                                <div class="card mt-4">
+                                    <div class="card-header">
+                                        <h4 class="card-title">Kalender Akademik</h4>
+                                    </div>
+                                    <div class="card-body px-0 pb-2">
+                                        <div class="table-responsive pb-2 px-3">
+                                            <div id="calendar">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -314,5 +336,38 @@
             </div>
 
         @endif
+    @endif
+
+    @if (auth()->user()->hasRole('guru'))
+    <script>
+        $(document).ready(function() {
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            var booking = @json($events);
+
+            $('#calendar').fullCalendar({
+                header: {
+                    left: 'prev, next today',
+                    center: 'title',
+                    right: 'month, agendaWeek, agendaDay',
+                },
+                events: booking,
+                selectable: true,
+                selectHelper: true,
+                select: function(start, end, allDays) {
+                    $('#bookingModal').modal('toggle');
+                    localStorage.setItem('kalender-start-date', moment(start).format('YYYY-MM-DD'));
+                    localStorage.setItem('kalender-end-date', moment(end).format('YYYY-MM-DD'))
+                },
+                editable: true,
+            });
+
+        });
+    </script>
     @endif
 @endsection
