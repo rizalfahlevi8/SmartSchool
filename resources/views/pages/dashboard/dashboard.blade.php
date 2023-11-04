@@ -329,6 +329,17 @@
                                         @endif
                                     </div>
                                 </div>
+                                <div class="card mt-4">
+                                    <div class="card-header">
+                                        <h4 class="card-title">Kalender Akademik</h4>
+                                    </div>
+                                    <div class="card-body px-0 pb-2">
+                                        <div class="table-responsive pb-2 px-3">
+                                            <div id="calendar">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -338,7 +349,7 @@
         @endif
     @endif
 
-    @if (auth()->user()->hasRole('guru'))
+    @if (auth()->user()->hasRole('guru') || auth()->user()->hasRole('siswa') )
     <script>
         $(document).ready(function() {
 
