@@ -209,6 +209,9 @@ class JadwalController extends Controller
 
     public function jadwalsiswa($id)
     {
+        if ($id == 'null') {
+            return back()->with('toast_warning', 'Fitur ini masih dikerjakan');
+        }
         $kelasId = $id;
         // $detail_jadwal = Detail_jadwal::todaySchedule($guruId);
         $jadwal = Detail_jadwal::with('jadwal', 'mapel', 'ruang')

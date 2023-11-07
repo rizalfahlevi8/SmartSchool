@@ -72,15 +72,18 @@
                     </span>
                     Kurikulum <i class="material-icons opacity-10 ms-auto">expand_more</i>
                 </button>
-                <div class="collapse {{ Request::is('akademik/jadwal*') || Request::is('akademik/kalender*') ? 'show' : '' }}" id="kurikulum-collapse">
+                <div class="collapse {{ Request::is('akademik/jadwal*') || Request::is('akademik/kalender*') ? 'show' : '' }}"
+                    id="kurikulum-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                         <li><a class="link-light rounded mb-1 {{ Request::is('akademik/jadwal*') ? 'bg-gradient-primary ' : '' }}"
-                            style="width: 100%" href="/akademik/jadwal"><i class="material-icons opacity-10 mx-2">receipt_long</i>
+                                style="width: 100%" href="/akademik/jadwal"><i
+                                    class="material-icons opacity-10 mx-2">receipt_long</i>
                                 Jadwal Pelajaran</a></li>
                     </ul>
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                         <li><a class="link-light rounded mb-1 {{ Request::is('akademik/kalender*') ? 'bg-gradient-primary ' : '' }}"
-                            style="width: 100%" href="/akademik/kalender/index"><i class="material-icons opacity-10 mx-2">receipt_long</i>
+                                style="width: 100%" href="/akademik/kalender/index"><i
+                                    class="material-icons opacity-10 mx-2">receipt_long</i>
                                 Kalender Akademik</a></li>
                     </ul>
                 </div>
@@ -97,7 +100,8 @@
                 <div class="collapse {{ Request::is('akademik/absensi*') ? 'show' : '' }}" id="kesiswaan-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                         <li><a class="link-light rounded mb-1 {{ Request::is('akademik/absensi*') ? 'bg-gradient-primary ' : '' }}"
-                            style="width: 100%" href="/akademik/absensi"> <i class="material-icons opacity-10 mx-2">receipt_long</i>
+                                style="width: 100%" href="/akademik/absensi"> <i
+                                    class="material-icons opacity-10 mx-2">receipt_long</i>
                                 Presensi</a></li>
                     </ul>
                 </div>
@@ -115,12 +119,14 @@
                     id="sarpras-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                         <li><a class="link-light rounded mb-1 {{ Request::is('sarana/inventaris*') ? 'bg-gradient-primary ' : '' }}"
-                            style="width: 100%" href="/sarana/inventaris"> <i class="material-icons opacity-10 mx-2">task</i>
+                                style="width: 100%" href="/sarana/inventaris"> <i
+                                    class="material-icons opacity-10 mx-2">task</i>
                                 Inventaris</a></li>
                     </ul>
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                         <li><a class="link-light rounded mb-1 {{ Request::is('data-peminjaman*') ? 'bg-gradient-primary ' : '' }}"
-                            style="width: 100%" href="/data-peminjaman"> <i class="material-icons opacity-10 mx-2">task</i>
+                                style="width: 100%" href="/data-peminjaman"> <i
+                                    class="material-icons opacity-10 mx-2">task</i>
                                 Peminjaman</a></li>
                     </ul>
                 </div>
@@ -136,29 +142,31 @@
                 </button>
                 <div class="collapse" id="humas-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                        <li><a class="link-light rounded mb-1"
-                            style="width: 100%" href="#"> <i class="material-icons opacity-10 mx-2">groups</i>
+                        <li><a class="link-light rounded mb-1" style="width: 100%" href="#"> <i
+                                    class="material-icons opacity-10 mx-2">groups</i>
                                 Tamu</a></li>
                     </ul>
                 </div>
             </li>
         @elseif (auth()->user()->hasRole('guru'))
-        <li class="mb-1" style="">
-            <a class="btn rounded text-white font-weight-bold {{ Request::is('#*') ? 'bg-gradient-primary ' : '' }}"
-                style="text-transform: none; width: 100%;display: flex; align-items: center; column-gap:10px"
-                href="/#"> <span class="material-symbols-outlined">groups</span> Data Siswa</a>
-        </li>
-        <li class="mb-1" style="">
-            <a class="btn rounded text-white font-weight-bold {{ Request::is('/akademik/jadwal-guru*') ? 'bg-gradient-primary ' : '' }}"
-                style="text-transform: none; width: 100%;display: flex; align-items: center; column-gap:10px"
-                href="/akademik/jadwal-guru/{{ auth()->user()->id }}"> <span class="material-symbols-outlined">event_note</span> Jadwal Mengajar</a>
-        </li>
+            <li class="mb-1" style="">
+                <a class="btn rounded text-white font-weight-bold {{ Request::is('#*') ? 'bg-gradient-primary ' : '' }}"
+                    style="text-transform: none; width: 100%;display: flex; align-items: center; column-gap:10px"
+                    href="/#"> <span class="material-symbols-outlined">groups</span> Data Siswa</a>
+            </li>
+            <li class="mb-1" style="">
+                <a class="btn rounded text-white font-weight-bold {{ Request::is('/akademik/jadwal-guru*') ? 'bg-gradient-primary ' : '' }}"
+                    style="text-transform: none; width: 100%;display: flex; align-items: center; column-gap:10px"
+                    href="/akademik/jadwal-guru/{{ auth()->user()->id }}"> <span
+                        class="material-symbols-outlined">event_note</span> Jadwal Mengajar</a>
+            </li>
         @elseif (auth()->user()->hasRole('siswa'))
-        <li class="mb-1" style="">
-            <a class="btn rounded text-white font-weight-bold {{ Request::is('/akademik/jadwal-siswa/*') ? 'bg-gradient-primary ' : '' }}"
-                style="text-transform: none; width: 100%;display: flex; align-items: center; column-gap:10px"
-                href="/akademik/jadwal-siswa/{{ auth()->user()->siswa->id_kelas }}"> <span class="material-symbols-outlined">event_note</span> Jadwal Pelajaran</a>
-        </li>
+            <li class="mb-1" style="">
+                <a class="btn rounded text-white font-weight-bold {{ Request::is('/akademik/jadwal-siswa/*') ? 'bg-gradient-primary ' : '' }}"
+                    style="text-transform: none; width: 100%;display: flex; align-items: center; column-gap:10px"
+                    href="/akademik/jadwal-siswa/{{ auth()->user()->siswa->id_kelas ?? 'null' }}"> <span
+                        class="material-symbols-outlined">event_note</span> Jadwal Pelajaran</a>
+            </li>
         @endif
     </ul>
 </div>
