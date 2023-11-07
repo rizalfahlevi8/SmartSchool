@@ -66,9 +66,15 @@
                                     <td class="text-center">
                                         {{ $ruang->lokasi }}
                                     </td>
+                                    @if (auth()->user()->hasRole('admin'))
                                     <td class="text-center">
                                         <a href="{{ route('atur-barang', $ruang->id) }}" class="btn btn-primary">Atur Barang</a>
                                     </td>
+                                    @elseif (auth()->user()->hasRole('waka'))
+                                    <td class="text-center">
+                                        <a href="{{ route('atur-barang', $ruang->id) }}" class="btn btn-primary">detail Barang</a>
+                                    </td>
+                                    @endif
                                 </tr>
                             @endforeach
                         </tbody>

@@ -6,8 +6,8 @@
 
 @section('breadcrumbs')
     <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
-        <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="/persediaan">Inventaris</a></li>
-        <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Kelola Barang</li>
+        <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="/sarana/inventaris">Inventaris</a></li>
+        <li class="breadcrumb-item text-sm text-dark active" aria-current="page">inventaris Barang</li>
     </ol>
     <h6 class="font-weight-bolder mb-0">Persediaan barang</h6>
     <h6 class="font-weight-bolder mb-0">Ruang : {{$ruangs->nama_ruang}}</h6>
@@ -23,9 +23,11 @@
                         
 
                             <div class="col-12">
+                            @if (auth()->user()->hasRole('admin'))
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahBarangModal">
                                     Tambah Barang
                                 </button>
+                            @endif
                             </div>
                         </div>
                         <!-- Tabel untuk menampilkan inventaris -->
@@ -39,7 +41,9 @@
                                     <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Jumlah Barang</th>
                                     <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Jumlah Barang Baik</th>
                                     <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Jumlah Barang Rusak</th>
+                                    @if (auth()->user()->hasRole('admin'))
                                     <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Aksi</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody>
@@ -52,6 +56,7 @@
                                     <td class="text-center">{{ $i->jumlah_barang ?? '-' }}</td>
                                     <td class="text-center">{{ $i->jumlah_baik ?? '-' }}</td>
                                     <td class="text-center">{{ $i->jumlah_rusak ?? '-' }}</td>
+                                    @if (auth()->user()->hasRole('admin'))
                                     <td class="text-center">
                                     <a href="{{ route('delete-inventaris', ['id' => $i->id]) }}"
                                         onclick="return confirm('Anda yakin akan menghapus data ini?')"
@@ -59,6 +64,7 @@
                                         data-bs-toggle="tooltip" data-bs-placement="bottom" title="Hapus">
                                         <i class="fa fa-trash"></i>
                                     </a>
+                                    @endif
 
                                 </tr>
                                 @endforeach
