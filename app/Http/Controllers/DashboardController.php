@@ -7,6 +7,7 @@ use App\Models\Kelas;
 use App\Models\Siswa;
 use App\Models\User;
 use App\Models\Pengumuman;
+use App\Models\KalenderAkademik;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -23,6 +24,29 @@ class DashboardController extends Controller
 
             $datas = array();
             $role = auth()->user()->current_role;
+
+            //Kalender Akademik
+            $events = array();
+            $kalender = KalenderAkademik::all();
+            foreach ($kalender as $k) {
+                $color = null;
+                if ($k->status == 'masuk') {
+                    $color = '#924ACE';
+                }
+                if ($k->title == 'libur') {
+                    $color = '#68B01A';
+                }
+
+                $events[] = [
+                    'id'   => $k->id,
+                    'title' => $k->title,
+                    'start' => $k->start_date,
+                    'end' => $k->end_date,
+                    'status' => $k->status,
+                    'color' => $color
+                ];
+            }
+
             switch ($role) {
                 case 'admin':
                 case 'kepsek':
@@ -57,13 +81,15 @@ class DashboardController extends Controller
                     $myData = Guru::all()->where('id_user', '=', auth()->user()->id)->load('kelas')->first();
 
                     $datas = [
-                        'myData' => $myData
+                        'myData' => $myData,
+                        'events' => $events
                     ];
                     break;
                 case 'siswa':
                     $myData = Siswa::all()->where('id_user', '=', auth()->user()->id)->first();
                     $datas = [
-                        'myData' => $myData
+                        'myData' => $myData,
+                        'events' => $events
                     ];
                     break;
                 default:
