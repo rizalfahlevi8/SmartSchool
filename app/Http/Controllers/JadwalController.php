@@ -164,7 +164,7 @@ class JadwalController extends Controller
         $jadwal_api = Jadwal::find($detail_jadwal->id_jadwal);
         $jadwal_hari = $jadwal_api->hari;
         $jadwal_akademik_id = $jadwal_api->akademik->id;
-        $apiGuruWithNotSameMapel = Detail_jadwal::where('id_guru', $request->guru)->where('id', '!=', $detail_jadwal->id)->whereHas('jadwal', function ($query) use ($jadwal_hari, $jadwal_akademik_id) {
+        $apiGuruWithNotSameMapel = Detail_jadwal::where('id_guru', $request->guru)->where('id_jadwal', '!=', $jadwal_api->id)->where('id', '!=', $detail_jadwal->id)->whereHas('jadwal', function ($query) use ($jadwal_hari, $jadwal_akademik_id) {
             $query->where('hari', $jadwal_hari)->whereHas('akademik', function ($query) use ($jadwal_akademik_id) {
                 $query->where('id', $jadwal_akademik_id);
             });
