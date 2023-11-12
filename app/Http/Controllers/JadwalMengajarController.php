@@ -103,6 +103,10 @@ class JadwalMengajarController extends Controller
     }
     public function jadwalguru()
     {
+        if (auth()->user()->guru == null) {
+            return back()->with('toast_error', 'Anda tidak memiliki data guru yang valid');
+        }
+
         $guruId = auth()->user()->guru->id;
         // $detail_jadwal = Detail_jadwal::todaySchedule($guruId);
         $detail_jadwal = Detail_jadwal::with('jadwal', 'mapel', 'ruang')

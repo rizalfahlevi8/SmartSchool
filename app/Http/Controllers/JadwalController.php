@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Akademik;
 use App\Models\Detail_jadwal;
 use App\Models\Guru;
 use App\Models\Jadwal;
@@ -82,10 +83,37 @@ class JadwalController extends Controller
             'jam_selesai.after' => 'Jam selesai harus setelah jam mulai.',
         ]);
 
-        $apiData = Detail_jadwal::where('id_jadwal', $request->id_jadwal)->get();
-
+        $toast_success_msg = 'Data berhasil ditambahkan!';
         $jamMulai = \Carbon\Carbon::createFromFormat('H:i', $request->jam_mulai);
         $jamSelesai = \Carbon\Carbon::createFromFormat('H:i', $request->jam_selesai);
+
+        $jadwal_api = Jadwal::find($request->id_jadwal);
+        $jadwal_hari = $jadwal_api->hari;
+        $jadwal_akademik_id = $jadwal_api->akademik->id;
+        $apiGuruWithNotSameMapel = Detail_jadwal::where('id_guru', $request->id_guru)->whereHas('jadwal', function ($query) use ($jadwal_hari, $jadwal_akademik_id) {
+            $query->where('hari', $jadwal_hari)->whereHas('akademik', function ($query) use ($jadwal_akademik_id) {
+                $query->where('id', $jadwal_akademik_id);
+            });
+        })->get();
+
+        if (count($apiGuruWithNotSameMapel) > 0) {
+            if ($apiGuruWithNotSameMapel->first()->id_mapel != $request->id_mapel) {
+                $existingJamMulai = \Carbon\Carbon::createFromFormat('H:i:s', $apiGuruWithNotSameMapel->first()['jam_mulai']);
+                $existingJamSelesai = \Carbon\Carbon::createFromFormat('H:i:s', $apiGuruWithNotSameMapel->first()['jam_selesai']);
+
+                if (($jamMulai >= $existingJamMulai && $jamMulai < $existingJamSelesai) ||
+                    ($jamSelesai > $existingJamMulai && $jamSelesai <= $existingJamSelesai) || ($jamMulai == $existingJamMulai && $jamSelesai == $existingJamSelesai)
+                ) {
+                    return redirect()->back()->with('toast_error', $apiGuruWithNotSameMapel->first()->guru->nama . ' telah mengajar mapel ' . $apiGuruWithNotSameMapel->first()->mapel->nama_mapel . ' dikelas ' . $apiGuruWithNotSameMapel->first()->jadwal->kelas->nama_kelas . ' pada waktu ' . $apiGuruWithNotSameMapel->first()->jam_mulai  . ' sampai ' . $apiGuruWithNotSameMapel->first()->jam_selesai);
+                }
+            } else {
+                $request['jam_mulai'] = $apiGuruWithNotSameMapel->first()['jam_mulai'];
+                $request['jam_selesai'] = $apiGuruWithNotSameMapel->first()['jam_selesai'];
+                $toast_success_msg = 'Data berhasil ditambahkan! kelas ini digabung dengan kelas ' . $apiGuruWithNotSameMapel->first()->jadwal->kelas->nama_kelas . ' karena memiliki guru dan mapel yang sama dan dengan waktu yang saling tumpang tindih';
+            }
+        }
+
+        $apiData = Detail_jadwal::where('id_jadwal', $request->id_jadwal)->get();
 
         $selisihMenit = $jamSelesai->diffInMinutes($jamMulai);
 
@@ -94,21 +122,23 @@ class JadwalController extends Controller
         }
 
         foreach ($apiData as $data) {
-            if ($data['id'] != $request->id_jadwal) {
+            if ($data['id_jadwal'] == $request->id_jadwal) {
                 $existingJamMulai = \Carbon\Carbon::createFromFormat('H:i:s', $data['jam_mulai']);
                 $existingJamSelesai = \Carbon\Carbon::createFromFormat('H:i:s', $data['jam_selesai']);
 
                 if (($jamMulai >= $existingJamMulai && $jamMulai < $existingJamSelesai) ||
-                    ($jamSelesai > $existingJamMulai && $jamSelesai <= $existingJamSelesai)
+                    ($jamSelesai > $existingJamMulai && $jamSelesai <= $existingJamSelesai) || ($jamMulai == $existingJamMulai && $jamSelesai == $existingJamSelesai)
                 ) {
                     return redirect()->back()->with('toast_error', 'Jam yang Anda masukkan tumpang tindih dengan jadwal yang sudah ada.');
                 }
             }
         }
 
+
         $jadwal = $request->all();
         Detail_jadwal::create($jadwal);
-        return Redirect::back()->with('toast_success', 'Data berhasil ditambahkan !');
+
+        return Redirect::back()->with('toast_success', $toast_success_msg);
     }
     public function update(Request $request, Detail_jadwal $detail_jadwal)
     {
@@ -137,16 +167,16 @@ class JadwalController extends Controller
             return redirect()->back()->with('toast_error', "Jam mulai tidak valid");
         }
         if ($selisihMenit < 45 && $selisihMenit >= 0) {
-            return redirect()->back()->with('toast_error', 'Durasi pelajaran minimal 45 menit.' . $selisihMenit);
+            return redirect()->back()->with('toast_error', 'Durasi pelajaran minimal 45 menit.');
         }
 
         foreach ($apiData as $data) {
-            if ($data['id'] != $detail_jadwal->id) {
+            if ($data['id_jadwal'] == $request->id_jadwal) {
                 $existingJamMulai = \Carbon\Carbon::createFromFormat('H:i:s', $data['jam_mulai']);
                 $existingJamSelesai = \Carbon\Carbon::createFromFormat('H:i:s', $data['jam_selesai']);
 
                 if (($jamMulai >= $existingJamMulai && $jamMulai < $existingJamSelesai) ||
-                    ($jamSelesai > $existingJamMulai && $jamSelesai <= $existingJamSelesai)
+                    ($jamSelesai > $existingJamMulai && $jamSelesai <= $existingJamSelesai) || ($jamMulai == $existingJamMulai && $jamSelesai == $existingJamSelesai)
                 ) {
                     return redirect()->back()->with('toast_error', 'Jam yang Anda masukkan tumpang tindih dengan jadwal yang sudah ada.');
                 }
