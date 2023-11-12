@@ -128,7 +128,7 @@
 
                                         <td class="text-center"
                                             style= "background-color: {{ $jadwal->jadwal->hari == $hari_ini ? 'green' : '' }};color: {{ $jadwal->jadwal->hari == $hari_ini ? 'white' : '' }}">
-                                            {{ $jadwal->jadwal->hari }} {{ $jadwal->jadwal->kelas->nama_kelas }}
+                                            {{ $jadwal->jadwal->hari }}
                                         </td>
 
                                         <td class="text-center"
