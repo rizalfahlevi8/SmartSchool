@@ -112,8 +112,13 @@ class JadwalMengajarController extends Controller
         $detail_jadwal = Detail_jadwal::with('jadwal', 'mapel', 'ruang')
             ->whereHas('guru', function ($query) use ($guruId) {
                 $query->where('id', $guruId);
+            })->whereHas('jadwal', function ($query) {
+                $query->whereHas('akademik', function ($query) {
+                    $query->where('selected', 1);
+                });
             })
             ->get();
+
         $hari_list = array(
             'Minggu',
             'Senin',
@@ -143,8 +148,8 @@ class JadwalMengajarController extends Controller
             ->get();
 
         return view('pages.akademik.data-jadwal-guru.jadwalguru', [
-            'jadwals' => $detail_jadwal,
             'all_jadwal' => $all_jadwal,
+            'all_jadwals' => $detail_jadwal,
             'hari_ini' => $hari_ini
         ])->with('title', 'Jadwal Mengajar');
     }

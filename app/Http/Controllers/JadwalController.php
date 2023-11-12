@@ -97,19 +97,22 @@ class JadwalController extends Controller
         })->get();
 
         if (count($apiGuruWithNotSameMapel) > 0) {
-            if ($apiGuruWithNotSameMapel->first()->id_mapel != $request->id_mapel) {
-                $existingJamMulai = \Carbon\Carbon::createFromFormat('H:i:s', $apiGuruWithNotSameMapel->first()['jam_mulai']);
-                $existingJamSelesai = \Carbon\Carbon::createFromFormat('H:i:s', $apiGuruWithNotSameMapel->first()['jam_selesai']);
+            foreach ($apiGuruWithNotSameMapel as $key => $value) {
+                if ($value->id_mapel != $request->id_mapel) {
+                    $existingJamMulai = \Carbon\Carbon::createFromFormat('H:i:s', $value['jam_mulai']);
+                    $existingJamSelesai = \Carbon\Carbon::createFromFormat('H:i:s', $value['jam_selesai']);
 
-                if (($jamMulai >= $existingJamMulai && $jamMulai < $existingJamSelesai) ||
-                    ($jamSelesai > $existingJamMulai && $jamSelesai <= $existingJamSelesai) || ($jamMulai == $existingJamMulai && $jamSelesai == $existingJamSelesai)
-                ) {
-                    return redirect()->back()->with('toast_error', $apiGuruWithNotSameMapel->first()->guru->nama . ' telah mengajar mapel ' . $apiGuruWithNotSameMapel->first()->mapel->nama_mapel . ' dikelas ' . $apiGuruWithNotSameMapel->first()->jadwal->kelas->nama_kelas . ' pada waktu ' . $apiGuruWithNotSameMapel->first()->jam_mulai  . ' sampai ' . $apiGuruWithNotSameMapel->first()->jam_selesai);
+                    if (($jamMulai >= $existingJamMulai && $jamMulai < $existingJamSelesai) ||
+                        ($jamSelesai > $existingJamMulai && $jamSelesai <= $existingJamSelesai) || ($jamMulai == $existingJamMulai && $jamSelesai == $existingJamSelesai)
+                    ) {
+                        return redirect()->back()->with('toast_error', $value->guru->nama . ' telah mengajar mapel ' . $value->mapel->nama_mapel . ' dikelas ' . $value->jadwal->kelas->nama_kelas . ' pada waktu ' . $value->jam_mulai  . ' sampai ' . $value->jam_selesai);
+                    }
+                } else {
+                    $request['jam_mulai'] = $value['jam_mulai'];
+                    $request['jam_selesai'] = $value['jam_selesai'];
+                    $toast_success_msg = 'Data berhasil diubah! kelas ini digabung dengan kelas ' . $value->jadwal->kelas->nama_kelas . ' karena memiliki guru dan mapel yang sama dan dengan waktu yang saling tumpang tindih';
+                    break;
                 }
-            } else {
-                $request['jam_mulai'] = $apiGuruWithNotSameMapel->first()['jam_mulai'];
-                $request['jam_selesai'] = $apiGuruWithNotSameMapel->first()['jam_selesai'];
-                $toast_success_msg = 'Data berhasil ditambahkan! kelas ini digabung dengan kelas ' . $apiGuruWithNotSameMapel->first()->jadwal->kelas->nama_kelas . ' karena memiliki guru dan mapel yang sama dan dengan waktu yang saling tumpang tindih';
             }
         }
 
@@ -164,26 +167,29 @@ class JadwalController extends Controller
         $jadwal_api = Jadwal::find($detail_jadwal->id_jadwal);
         $jadwal_hari = $jadwal_api->hari;
         $jadwal_akademik_id = $jadwal_api->akademik->id;
-        $apiGuruWithNotSameMapel = Detail_jadwal::where('id_guru', $request->guru)->where('id_jadwal', '!=', $jadwal_api->id)->where('id', '!=', $detail_jadwal->id)->whereHas('jadwal', function ($query) use ($jadwal_hari, $jadwal_akademik_id) {
+        $apiGuruWithNotSameMapel = Detail_jadwal::where('id_guru', $request->guru)->where('id_jadwal', '!=', $jadwal_api->id)->whereHas('jadwal', function ($query) use ($jadwal_hari, $jadwal_akademik_id) {
             $query->where('hari', $jadwal_hari)->whereHas('akademik', function ($query) use ($jadwal_akademik_id) {
                 $query->where('id', $jadwal_akademik_id);
             });
         })->get();
 
         if (count($apiGuruWithNotSameMapel) > 0) {
-            if ($apiGuruWithNotSameMapel->first()->id_mapel != $request->mapel) {
-                $existingJamMulai = \Carbon\Carbon::createFromFormat('H:i:s', $apiGuruWithNotSameMapel->first()['jam_mulai']);
-                $existingJamSelesai = \Carbon\Carbon::createFromFormat('H:i:s', $apiGuruWithNotSameMapel->first()['jam_selesai']);
+            foreach ($apiGuruWithNotSameMapel as $key => $value) {
+                if ($value->id_mapel != $request->mapel) {
+                    $existingJamMulai = \Carbon\Carbon::createFromFormat('H:i:s', $value['jam_mulai']);
+                    $existingJamSelesai = \Carbon\Carbon::createFromFormat('H:i:s', $value['jam_selesai']);
 
-                if (($jamMulai >= $existingJamMulai && $jamMulai < $existingJamSelesai) ||
-                    ($jamSelesai > $existingJamMulai && $jamSelesai <= $existingJamSelesai) || ($jamMulai == $existingJamMulai && $jamSelesai == $existingJamSelesai)
-                ) {
-                    return redirect()->back()->with('toast_error', $apiGuruWithNotSameMapel->first()->guru->nama . ' telah mengajar mapel ' . $apiGuruWithNotSameMapel->first()->mapel->nama_mapel . ' dikelas ' . $apiGuruWithNotSameMapel->first()->jadwal->kelas->nama_kelas . ' pada waktu ' . $apiGuruWithNotSameMapel->first()->jam_mulai  . ' sampai ' . $apiGuruWithNotSameMapel->first()->jam_selesai);
+                    if (($jamMulai >= $existingJamMulai && $jamMulai < $existingJamSelesai) ||
+                        ($jamSelesai > $existingJamMulai && $jamSelesai <= $existingJamSelesai) || ($jamMulai == $existingJamMulai && $jamSelesai == $existingJamSelesai)
+                    ) {
+                        return redirect()->back()->with('toast_error', $value->guru->nama . ' telah mengajar mapel ' . $value->mapel->nama_mapel . ' dikelas ' . $value->jadwal->kelas->nama_kelas . ' pada waktu ' . $value->jam_mulai  . ' sampai ' . $value->jam_selesai);
+                    }
+                } else {
+                    $request['jam_mulai'] = $value['jam_mulai'];
+                    $request['jam_selesai'] = $value['jam_selesai'];
+                    $toast_success_msg = 'Data berhasil diubah! kelas ini digabung dengan kelas ' . $value->jadwal->kelas->nama_kelas . ' karena memiliki guru dan mapel yang sama dan dengan waktu yang saling tumpang tindih';
+                    break;
                 }
-            } else {
-                $request['jam_mulai'] = $apiGuruWithNotSameMapel->first()['jam_mulai'];
-                $request['jam_selesai'] = $apiGuruWithNotSameMapel->first()['jam_selesai'];
-                $toast_success_msg = 'Data berhasil diubah! kelas ini digabung dengan kelas ' . $apiGuruWithNotSameMapel->first()->jadwal->kelas->nama_kelas . ' karena memiliki guru dan mapel yang sama dan dengan waktu yang saling tumpang tindih';
             }
         }
 
