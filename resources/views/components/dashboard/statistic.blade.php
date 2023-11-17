@@ -180,4 +180,38 @@
 </div>
     </div>
     </div>
+    @elseif (auth()->user()->hasRole('waka', ))
+    <div class="row">
+    <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+        <div class="card">
+            <div class="card-body d-flex flex-column justify-content-between">
+                <div class="text-center mb-3">
+                    <div class="icon icon-lg icon-shape bg-gradient-dark shadow-dark text-center border-radius-xl">
+                        <i class="material-icons opacity-10">groups</i>
+                    </div>
+                    <h5 class="mt-3 text-capitalize">DATA BARANG</h5>
+                </div>
+                <div class="text-end">
+                    <a href="{{ route('barang_main') }}" class="btn btn-primary">barang</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+        <div class="card">
+            <div class="card-body d-flex flex-column justify-content-between">
+                <div class="text-center mb-3">
+                    <div class="icon icon-lg icon-shape bg-gradient-success shadow-success text-center border-radius-xl">
+                        <i class="material-icons opacity-10">groups</i>
+                    </div>
+                    <h5 class="mt-3 text-capitalize">DATA RUANG</h5>
+                </div>
+                <div class="text-end">
+                    <a href="{{ route('ruang_main') }}" class="btn btn-primary">Ruang</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endif

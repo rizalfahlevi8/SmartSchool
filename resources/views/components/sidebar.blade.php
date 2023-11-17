@@ -148,6 +148,32 @@
                     </ul>
                 </div>
             </li>
+        @elseif (auth()->user()->hasRole('waka'))
+           
+           <li class="mb-1">
+               <button class="btn align-items-center rounded collapsed text-white font-weight-bold"
+                   style="text-transform: none; width: 100%;display: flex; align-items: center; column-gap:10px"
+                   data-bs-toggle="collapse" data-bs-target="#sarpras-collapse" aria-expanded="false">
+                   <span class="material-symbols-outlined">
+                       architecture
+                   </span>
+                   Sapras <i class="material-icons opacity-10 ms-auto">expand_more</i>
+               </button>
+               <div class="collapse {{ Request::is('sarana/inventaris*') || Request::is('sarana/ruang*') || Request::is('sarana/barang*')  || Request::is('data-peminjaman*') ? 'show' : '' }}"
+                   id="sarpras-collapse">
+                   <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                       <li><a class="link-light rounded mb-1 {{ Request::is('sarana/inventaris*') ? 'bg-gradient-primary ' : '' }}"
+                           style="width: 100%" href="/sarana/inventaris"> <i class="material-icons opacity-10 mx-2">task</i>
+                               Inventaris</a>
+                       </li>
+                   </ul>
+                   <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                       <li><a class="link-light rounded mb-1 {{ Request::is('data-peminjaman*') ? 'bg-gradient-primary ' : '' }}"
+                           style="width: 100%" href="/data-peminjaman"> <i class="material-icons opacity-10 mx-2">task</i>
+                               Peminjaman</a></li>
+                   </ul>
+               </div>
+           </li>
         @elseif (auth()->user()->hasRole('guru'))
             <li class="mb-1" style="">
                 <a class="btn rounded text-white font-weight-bold {{ Request::is('#*') ? 'bg-gradient-primary ' : '' }}"
