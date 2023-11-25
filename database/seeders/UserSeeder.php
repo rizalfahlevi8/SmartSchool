@@ -59,6 +59,7 @@ class UserSeeder extends Seeder
                         'remember_token' => Str::random(20)
                     ])->id;
                     DB::table('siswas')->insert([
+                        // 'no_pendaftaran' => random_int(60000, 99999). '' . random_int(100, 999) . $angkatan->id . $kelas->id . $i,
                         'nis' => random_int(60000, 99999) . '' . random_int(100, 999) . $angkatan->id . $kelas->id . $i,
                         'nisn' => random_int(60000, 99999) . '' . random_int(60000, 99999) . $angkatan->id . $kelas->id . $i,
                         'nik' => random_int(90000, 99999) . '' . random_int(90000, 99999) . '' . random_int(1, 1000) . $angkatan->id . $kelas->id,
