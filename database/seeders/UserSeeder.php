@@ -21,7 +21,7 @@ class UserSeeder extends Seeder
     public function run()
     {
         $guru = 20;
-        $siswa_per_kelas = 10;
+        $siswa_per_kelas = 2;
         for ($i = 2; $i <= $guru + 1; $i++) {
             DB::table('users')->insert([
                 'username' => fake('id_ID')->unique()->userName(),

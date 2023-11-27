@@ -95,7 +95,7 @@
                                                 {{ $siswa->status }}
                                             </td>
                                             <td class="text-center">
-                                                {{ $siswa->updated_at }}
+                                                {{ $siswa->tanggal_keluar }}
                                             </td>
                                             <td class="text-center">
                                                 <button type="button"data-bs-toggle="modal" data-bs-target="#detail-modal"
@@ -113,11 +113,6 @@
                                                     foto="{{ asset('storage/murid/img/' . $siswa->foto) }}">
                                                     <i class="fa fa-eye"></i>
                                                 </button>
-                                                <a href="data-siswa-edit/{{ $siswa->id }}"
-                                                    class=" btn btn-warning font-weight-bold text-sm rounded-circle"
-                                                    data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit">
-                                                    <i class="fa fa-edit"></i>
-                                                </a>
                                                 <a href="data-siswa-hapus/{{ $siswa->id }}"
                                                     onclick="return confirm('Anda yakin akan menghapus data ini?')"
                                                     class=" btn btn-danger font-weight-bold text-sm rounded-circle"

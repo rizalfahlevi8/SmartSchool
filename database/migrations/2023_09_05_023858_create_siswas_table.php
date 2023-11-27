@@ -32,6 +32,7 @@ return new class extends Migration
             $table->string('foto')->default('default_img.png')->nullable();
             $table->enum('status', ['bukan pindahan', 'pindahan', 'mutasi', 'lulus'])->default('bukan pindahan');
             $table->string('asal_sekolah')->nullable();
+            $table->date('tanggal_keluar');
             $table->timestamps();
             $table->unsignedBigInteger('id_user')->unique()->nullable();
             $table->unsignedBigInteger('id_angkatan')->nullable(true);

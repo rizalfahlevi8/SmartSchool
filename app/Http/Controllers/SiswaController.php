@@ -207,7 +207,7 @@ class SiswaController extends Controller
     public function out_page()
     {
         $siswa = Siswa::where(function ($query) {
-            $query->where('status', 'keluar')
+            $query->where('status', 'mutasi')
                 ->orWhere('status', 'lulus');
         })->filter(request(['nama', 'status']))->get();
         return view('pages.administrasi.data-siswa.keluar', [
@@ -217,11 +217,11 @@ class SiswaController extends Controller
 
     public function out(Request $request, Siswa $siswa)
     {
-        $data = [
-            'status'      => $request->status,
-            'kelas'       => ''
-        ];
-        $siswa->update($data);
+        $siswa->update([
+            'status' => $request->status,
+            'tanggal_keluar' => $request->tanggal_keluar,
+            'kelas' => '' 
+        ]);
         return redirect()->route('siswa_out')->with('toast_success', 'Data Siswa Berhasil di Ubah');
     }
     public function destroy(Siswa $siswa)
