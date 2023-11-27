@@ -108,16 +108,27 @@ class JadwalMengajarController extends Controller
         }
 
         $guruId = auth()->user()->guru->id;
-        // $detail_jadwal = Detail_jadwal::todaySchedule($guruId);
         $detail_jadwal = Detail_jadwal::with('jadwal', 'mapel', 'ruang')
-            ->whereHas('guru', function ($query) use ($guruId) {
-                $query->where('id', $guruId);
-            })->whereHas('jadwal', function ($query) {
-                $query->whereHas('akademik', function ($query) {
-                    $query->where('selected', 1);
-                });
-            })
-            ->get();
+        ->whereHas('guru', function ($query) use ($guruId) {
+            $query->where('id', $guruId);
+        })
+        ->whereHas('jadwal', function ($query) {
+            $query->whereHas('akademik', function ($query) {
+                $query->where('selected', 1);
+            });
+        })
+        ->get();
+    
+
+        // $detail_jadwal = Detail_jadwal::with('jadwal', 'mapel', 'ruang')
+        //     ->join('jadwals', 'detail_jadwals.id', '=', 'jadwals.id')
+        //     ->join('akademiks', 'jadwals.id_akademik', '=', 'akademiks.id')
+        //     ->whereHas('guru', function ($query) use ($guruId) {
+        //         $query->where('id', $guruId);
+        //     })
+        //     ->where('akademiks.selected', 1)
+        //     ->orderBy('jadwals.hari') // Ubah menjadi nama kolom yang sesuai
+        //     ->get();
 
         $hari_list = array(
             'Minggu',
@@ -142,10 +153,14 @@ class JadwalMengajarController extends Controller
                 $query->where('id', $guruId);
             })
             ->whereHas('jadwal', function ($query) use ($hari_ini) {
-                $query->where('hari', $hari_ini);
+                $query->where('hari', $hari_ini)
+                    ->whereHas('akademik', function ($query) {
+                        $query->where('selected', 1);
+                    });
             })
             ->orderBy('jam_mulai', 'asc')
             ->get();
+
 
         return view('pages.akademik.data-jadwal-guru.jadwalguru', [
             'all_jadwal' => $all_jadwal,

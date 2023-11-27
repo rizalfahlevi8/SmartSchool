@@ -456,8 +456,7 @@
                                                         <select class="form-select rounded-3 form-control-lg text-sm"
                                                             aria-label="Default select example" name="status"
                                                             id="status">
-                                                            <option selected>-- Pilih Status --
-                                                            </option>
+                                                            <option selected>-- Pilih Status --</option>
                                                             <option value="lulus"
                                                                 @if (old('status') == 'lulus') {{ 'selected' }} @endif>
                                                                 Lulus</option>
@@ -465,6 +464,19 @@
                                                                 @if (old('status') == 'mutasi') {{ 'selected' }} @endif>
                                                                 Mutasi</option>
                                                         </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="row">
+                                                <div class="col-md-5">
+                                                    <span class="float-start fw-bold">Tanggal Keluar</span>
+                                                    <div class="float-end">:</div>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <div class="input-group">
+                                                        <input type="date" name="tanggal_keluar" class="form-control rounded-3" id="tanggal_keluar" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -556,27 +568,32 @@
             }
         }
         function showModalLeave(element) {
-            const detailModalDialog = document.getElementById('leave-modal');
-            const nama_siswa = detailModalDialog.querySelector('#nama-siswa');
-            const nis = detailModalDialog.querySelector('#nis');
-            const nisn = detailModalDialog.querySelector('#nisn');
-            const kelas = detailModalDialog.querySelector('#kelas');
-            const form = document.getElementById("siswaForm");
-    
-            // Mengasumsikan idSiswa adalah variabel yang ingin Anda gunakan
-            const idSiswa = element.getAttribute("id-siswa");
+    const detailModalDialog = document.getElementById('leave-modal');
+    const nama_siswa = detailModalDialog.querySelector('#nama-siswa');
+    const nis = detailModalDialog.querySelector('#nis');
+    const nisn = detailModalDialog.querySelector('#nisn');
+    const kelas = detailModalDialog.querySelector('#kelas');
+    const form = document.getElementById("siswaForm");
+    const statusDropdown = detailModalDialog.querySelector('#status');
+    const tanggalKeluarInput = detailModalDialog.querySelector('#tanggal_keluar');
 
-            form.action = "/administrasi/siswa-keluar/" + idSiswa;
+    // Mengasumsikan idSiswa adalah variabel yang ingin Anda gunakan
+    const idSiswa = element.getAttribute("id-siswa");
 
-            nama_siswa.innerText = element.getAttribute('nama-siswa');
-            nis.innerText = element.getAttribute('nis');
-            nisn.innerText = element.getAttribute('nisn');
-            kelas.innerText = element.getAttribute('kelas');
+    form.action = "/administrasi/siswa-keluar/" + idSiswa;
 
-            // Jika Anda memiliki elemen dengan id 'nik', Anda juga dapat mengatur innerText-nya
-            const nik = detailModalDialog.querySelector('#nik');
-            nik.innerText = element.getAttribute('nik');
-        }
+    nama_siswa.innerText = element.getAttribute('nama-siswa');
+    nis.innerText = element.getAttribute('nis');
+    nisn.innerText = element.getAttribute('nisn');
+    kelas.innerText = element.getAttribute('kelas');
+
+    // Menambahkan nilai status ke dropdown "Status Keluar"
+    statusDropdown.value = element.getAttribute('status');
+
+    // Mengatur nilai default "Tanggal Keluar" berdasarkan status yang dipilih
+    tanggalKeluarInput.value = new Date().toISOString().split('T')[0];
+
+}
     </script>
 @endsection
 {{-- footer --}}
