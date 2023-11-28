@@ -20,6 +20,7 @@
                         <table id="example" class="table align-items-center mb-0">
                             <thead>
                                 <tr>
+<<<<<<< HEAD
                                     <td
                                         class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
                                         No
@@ -35,6 +36,23 @@
                                         class="
                                             text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
                                         Aksi</td>
+=======
+                                    <th
+                                        class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
+                                        No
+                                    </th>
+                                    <th
+                                        class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
+                                        Nama Kelas</th>
+                                    <th
+                                        class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
+                                        Wali Kelas</th>
+
+                                    <th
+                                        class="
+                                            text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
+                                        Aksi</th>
+>>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
                                 </tr>
                             </thead>
                             <tbody>

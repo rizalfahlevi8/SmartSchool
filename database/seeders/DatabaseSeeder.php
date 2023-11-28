@@ -36,11 +36,16 @@ class DatabaseSeeder extends Seeder
         $this->call(MapelSeeder::class);
         $this->call(AngkatanSeeder::class);
         $this->call(UserSeeder::class);
+<<<<<<< HEAD
         // jadwal dummy
         $this->call(JadwalSeeder::class);
         // jadwal kosong
         // $this->call(JadwalSeeder2::class);
         // $this->call(NilaiSeeder::class);
+=======
+        $this->call(JadwalSeeder::class);
+        $this->call(NilaiSeeder::class);
+>>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
         $this->call(BarangSeeder::class);
         $this->call(PeminjamanSeeder::class);
     }

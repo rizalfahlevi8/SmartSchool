@@ -21,7 +21,11 @@ class UserSeeder extends Seeder
     public function run()
     {
         $guru = 20;
+<<<<<<< HEAD
         $siswa_per_kelas = 2;
+=======
+        $siswa_per_kelas = 10;
+>>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
         for ($i = 2; $i <= $guru + 1; $i++) {
             DB::table('users')->insert([
                 'username' => fake('id_ID')->unique()->userName(),
@@ -59,7 +63,10 @@ class UserSeeder extends Seeder
                         'remember_token' => Str::random(20)
                     ])->id;
                     DB::table('siswas')->insert([
+<<<<<<< HEAD
                         // 'no_pendaftaran' => random_int(60000, 99999). '' . random_int(100, 999) . $angkatan->id . $kelas->id . $i,
+=======
+>>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
                         'nis' => random_int(60000, 99999) . '' . random_int(100, 999) . $angkatan->id . $kelas->id . $i,
                         'nisn' => random_int(60000, 99999) . '' . random_int(60000, 99999) . $angkatan->id . $kelas->id . $i,
                         'nik' => random_int(90000, 99999) . '' . random_int(90000, 99999) . '' . random_int(1, 1000) . $angkatan->id . $kelas->id,

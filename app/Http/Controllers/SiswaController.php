@@ -44,11 +44,16 @@ class SiswaController extends Controller
             'nik' => 'required|unique:siswas',
             'nis' => 'required|unique:siswas',
             'nisn' => 'required|unique:siswas',
+<<<<<<< HEAD
             // "no_pendaftaran" => 'required|unique:siswas',
+=======
+            "no_pendaftar" => 'required',
+>>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
             "tempat_lahir" => 'required',
             "tanggal_lahir" => 'required',
             "jenis_kelamin" => 'required',
             "agama" => 'required',
+<<<<<<< HEAD
             // "nama_ayah" => 'required',
             // "nama_ibu" => 'required',
             // "nama_wali" => 'required',
@@ -57,6 +62,16 @@ class SiswaController extends Controller
             "status" => 'required',
             "alamat" => 'required',
             // "foto" => 'required',
+=======
+            "nama_ayah" => 'required',
+            "nama_ibu" => 'required',
+            "nama_wali" => 'required',
+            "kelas" => 'required',
+            "no_telp" => 'required',
+            "status" => 'required',
+            "alamat" => 'required',
+            "foto" => 'required',
+>>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
         ];
 
         if ($request->status == 'pindahan') {
@@ -88,18 +103,30 @@ class SiswaController extends Controller
         ])->id;
 
         $siswa_new = Siswa::create([
+<<<<<<< HEAD
             // 'no_pendaftaran' => $request->no_pendaftaran,
             'nis'         => $request->nis,
             'nisn'        => $request->nisn,
             'nik'         => $request->nik,
             'nama'         => $request->nama,
+=======
+            'nis'         => $request->nis,
+            'nisn'        => $request->nisn,
+            'nik'         => $request->nik,
+            'no_pendaftar' => $request->no_pendaftar,
+            'nama'    => $request->nama,
+>>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
             'nama_ayah'    => $request->nama_ayah,
             'nama_ibu'    => $request->nama_ibu,
             'nama_wali'    => $request->nama_wali,
             'jenis_kelamin'          => $request->jenis_kelamin,
             'agama'       => $request->agama,
             'no_telp'      => $request->no_telp,
+<<<<<<< HEAD
             'status'      => $request->status /*== 'pindahan' ? 'mutasi' : 'belum_lulus'*/,
+=======
+            'status'      => $request->status == 'pindahan' ? 'mutasi' : 'belum_lulus',
+>>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
             'tempat_lahir' => $request->tempat_lahir,
             'tanggal_lahir'    => $request->tanggal_lahir,
             'foto'        => $filegambar,
@@ -207,7 +234,11 @@ class SiswaController extends Controller
     public function out_page()
     {
         $siswa = Siswa::where(function ($query) {
+<<<<<<< HEAD
             $query->where('status', 'mutasi')
+=======
+            $query->where('status', 'keluar')
+>>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
                 ->orWhere('status', 'lulus');
         })->filter(request(['nama', 'status']))->get();
         return view('pages.administrasi.data-siswa.keluar', [
@@ -217,6 +248,7 @@ class SiswaController extends Controller
 
     public function out(Request $request, Siswa $siswa)
     {
+<<<<<<< HEAD
         $siswa->update([
             'status' => $request->status,
             'tanggal_keluar' => $request->tanggal_keluar,
@@ -225,6 +257,15 @@ class SiswaController extends Controller
         return redirect()->route('siswa_out')->with('toast_success', 'Data Siswa Berhasil di Ubah');
     }
 
+=======
+        $data = [
+            'status'      => $request->status,
+            'kelas'       => ''
+        ];
+        $siswa->update($data);
+        return redirect()->route('siswa_out')->with('toast_success', 'Data Siswa Berhasil di Ubah');
+    }
+>>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
     public function destroy(Siswa $siswa)
     {
         //delete data

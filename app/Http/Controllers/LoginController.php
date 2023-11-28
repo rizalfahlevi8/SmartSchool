@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Alert;
+<<<<<<< HEAD
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+=======
+>>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
 use Illuminate\Support\Facades\Redirect;
 
 class LoginController extends Controller
@@ -26,6 +29,7 @@ class LoginController extends Controller
             'username' => ['required'],
             'password' => ['required'],
         ]);
+<<<<<<< HEAD
         if (Auth::attempt($credentials)) {
             $role_array = array_values(array_filter(explode(',', auth()->user()->role), function ($value) {
                 return $value !== 'root';
@@ -34,11 +38,16 @@ class LoginController extends Controller
             if (auth()->user()->current_role == null) {
                 DB::table('users')->where('id', '=', auth()->user()->id)->update(['current_role' => $role_array[0]]);
             }
+=======
+
+        if (Auth::attempt($credentials)) {
+>>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
             $request->session()->regenerate();
             return redirect()->intended('/dashboard');
         }
         return back()->with('toast_error', 'Username atau Password salah !')->withInput();
     }
+<<<<<<< HEAD
 
     public function setRole(Request $request)
     {
@@ -51,4 +60,6 @@ class LoginController extends Controller
 
         return redirect()->route('dashboard')->with('title', 'Dashboard')->with('toast_success', "Kamu sekarang " . ucfirst($role));
     }
+=======
+>>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
 }

@@ -18,10 +18,14 @@ return new class extends Migration
             $table->string('email', 50)->unique();
             $table->string('password');
             $table->boolean('deleted')->default(0);
+<<<<<<< HEAD
             $table->boolean('is_online')->default(0);
             $table->date('last_online')->nullable()->default(null);
             $table->string('current_role')->nullable()->default(null);
             $table->string('role')->default('tamu');
+=======
+            $table->enum('role', ['admin', 'guru', 'teknisi', 'siswa']);
+>>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
             $table->string('remember_token')->nullable(true);
             $table->timestamps();
         });

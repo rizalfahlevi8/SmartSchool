@@ -31,8 +31,12 @@ class GuruController extends Controller
     {
         $messages = [
             'regex' => ':attribute harus diisi dengan huruf saja',
+<<<<<<< HEAD
             'unique' => 'Data ini sudah digunakan',
             'required' => 'Harap isi kolom',
+=======
+            'unique' => 'Data ini sudah digunakan'
+>>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
         ];
 
         $this->validate($request, [
@@ -61,15 +65,26 @@ class GuruController extends Controller
             'nip' => 'required|unique:gurus',
             'jenis_kelamin' => 'required',
             'no_telp' => 'required|unique:gurus',
+<<<<<<< HEAD
             "agama" => 'required',
             "tempat_lahir" => "required",
             "tanggal_lahir" => "required|date",
+=======
+            'signature' => 'required',
+            "agama" => 'required',
+            "tempat_lahir" => "required",
+            "tanggal_lahir" => "required|date",
+            "alamat" => "required",
+>>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
             "alamat.provinsi" => "required",
             "alamat.kabupaten" => "required",
             "alamat.kecamatan" => "required",
             "alamat.desa" => "required",
             "status" => "required",
+<<<<<<< HEAD
             'signature' => 'required',
+=======
+>>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
             "foto" => "required",
         ], $messages);
 

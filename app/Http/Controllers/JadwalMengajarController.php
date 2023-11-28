@@ -103,6 +103,7 @@ class JadwalMengajarController extends Controller
     }
     public function jadwalguru()
     {
+<<<<<<< HEAD
         if (auth()->user()->guru == null) {
             return back()->with('toast_error', 'Anda tidak memiliki data guru yang valid');
         }
@@ -129,6 +130,10 @@ class JadwalMengajarController extends Controller
         //     ->where('akademiks.selected', 1)
         //     ->orderBy('jadwals.hari') // Ubah menjadi nama kolom yang sesuai
         //     ->get();
+=======
+        $guruId = auth()->user()->guru->id;
+        $detail_jadwal = Detail_jadwal::todaySchedule($guruId);
+>>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
 
         $hari_list = array(
             'Minggu',
@@ -141,6 +146,7 @@ class JadwalMengajarController extends Controller
         );
         $hari_ini = strtolower($hari_list[Carbon::now()->dayOfWeek]);
 
+<<<<<<< HEAD
         // $all_jadwal = Detail_jadwal::whereHas('jadwal', function ($query) use ($hari_ini) {
         //     $query->whereHas('akademik', function ($query) {
         //         $query->where('selected', 1);
@@ -166,6 +172,19 @@ class JadwalMengajarController extends Controller
             'all_jadwal' => $all_jadwal,
             'all_jadwals' => $detail_jadwal,
             'hari_ini' => $hari_ini
+=======
+        $all_jadwal = Detail_jadwal::whereHas('jadwal', function ($query) use ($hari_ini) {
+            $query->whereHas('akademik', function ($query) {
+                $query->where('selected', 1);
+            });
+            $query->where('hari', $hari_ini);
+        })->orderBy('jam_mulai', 'asc')->get();
+
+
+        return view('pages.akademik.data-jadwal-guru.jadwalguru', [
+            'jadwals' => $detail_jadwal,
+            'all_jadwal' => $all_jadwal,
+>>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
         ])->with('title', 'Jadwal Mengajar');
     }
     public function cetakjadwalguru($id)

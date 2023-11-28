@@ -195,6 +195,11 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
         // 'PDF' => Barryvdh\DomPDF\Facade::class,
     ])->toArray(),
+<<<<<<< HEAD
 
     'DB_user_roles' => ['admin', 'guru', 'siswa', 'tamu', 'teknisi', 'wakasek', 'kepsek'],
+=======
+  
+
+>>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
 ];
