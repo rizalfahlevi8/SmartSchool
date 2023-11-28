@@ -196,5 +196,5 @@ return [
         // 'PDF' => Barryvdh\DomPDF\Facade::class,
     ])->toArray(),
 
-    'DB_user_roles' => ['admin', 'guru', 'siswa', 'tamu', 'teknisi'],
+    'DB_user_roles' => ['admin', 'guru', 'siswa', 'tamu', 'teknisi', 'wakasek', 'kepsek'],
 ];
