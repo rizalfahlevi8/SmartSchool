@@ -220,10 +220,11 @@ class SiswaController extends Controller
         $siswa->update([
             'status' => $request->status,
             'tanggal_keluar' => $request->tanggal_keluar,
-            'kelas' => '' 
+            'id_kelas' => null 
         ]);
         return redirect()->route('siswa_out')->with('toast_success', 'Data Siswa Berhasil di Ubah');
     }
+
     public function destroy(Siswa $siswa)
     {
         //delete data
