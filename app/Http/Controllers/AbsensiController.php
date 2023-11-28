@@ -9,6 +9,12 @@ use Illuminate\Http\Request;
 
 class AbsensiController extends Controller
 {
+    public function showTest(){
+        return view('pages.akademik.absensi.absensi-admin', [
+            'absensis'=>Absensi::all()
+        ])->with('title', 'testAbsensi');
+    }
+    
     public function index()
     {
         return view('pages.akademik.absensi.absensi', [

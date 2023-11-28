@@ -226,6 +226,8 @@ Route::middleware(['userRole:admin'])->group(function () {
     Route::post('/akademik/absensi/{akademik}/{kelas}', [AbsensiController::class, 'showKelasAbsensi']);
     Route::post('/api/akademik/absensi-update/{absensi}', [AbsensiController::class, 'apiUpdateAbsensi'])->name('api.update-absensi');
 
+    Route::get('/akademik/absensi/test', [AbsensiController::class,'showTest']);
+
     // ==============[ D a t a - P e m i n j a m a n ]===============
     Route::get('/data-peminjaman', [PeminjamanController::class, 'index']);
     Route::get('/data-peminjaman-history', [PeminjamanController::class, 'history']);

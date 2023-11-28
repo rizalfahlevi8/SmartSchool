@@ -3,30 +3,35 @@
 namespace Database\Seeders;
 
 use App\Models\Absensi;
+use App\Models\AbsensiTest;
 use App\Models\Akademik;
 use App\Models\Siswa;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class AbsensisSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
-    public function run()
+    public function run(): void
     {
-        foreach (Siswa::get() as $siswa) {
-            foreach (Akademik::get() as $key => $akademik) {
-                Absensi::create([
-                    'status_absen' => $status_absen = fake()->randomElement(['tidak masuk', 'masuk', 'telat', 'izin', 'sakit']),
-                    'keterangan' => $status_absen == 'izin' ? 'Acara Keluarga' : '',
-                    'kelas' => $siswa->kelas->id,
-                    'id_siswa' => $siswa->id,
-                    'id_akademik' => $akademik->id,
+        $startDate = now()->setYear(2023)->setMonth(10)->setDay(1);
+        $currentDate = now();
+
+        while ($startDate <= $currentDate) {
+            for ($i = 0; $i < 20; $i++) {
+                $kelas = fake('id_ID')->randomElement(['siswa', 'guru']);
+                $idSiswa = ($kelas == 'siswa') ? random_int(22, 25) : random_int(2, 21);
+
+                DB::table('absensis')->insert([
+                    'status_absen' => fake('id_ID')->randomElement(['masuk', 'sakit', 'tidak masuk']),
+                    'kelas' => $kelas,
+                    'id_siswa' => $idSiswa,
+                    'created_at' => $startDate,
                 ]);
             }
+
+            $startDate->addDay();
         }
-    }
+}
 }

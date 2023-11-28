@@ -31,14 +31,16 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
-
+        
         $this->call(AdminSeeder::class);
         $this->call(MapelSeeder::class);
         $this->call(AngkatanSeeder::class);
         $this->call(UserSeeder::class);
+        $this->call(AbsensisSeeder::class);
         $this->call(JadwalSeeder::class);
         // $this->call(NilaiSeeder::class);
         $this->call(BarangSeeder::class);
         $this->call(PeminjamanSeeder::class);
+
     }
 }

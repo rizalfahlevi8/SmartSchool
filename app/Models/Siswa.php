@@ -33,10 +33,8 @@ class Siswa extends Model
         'id_user',
     ];
 
-    public function kelas()
-    {
-        return $this->belongsTo(Kelas::class, 'id_kelas', 'id');
-    }
+    
+
     public function user()
     {
         return $this->belongsTo(User::class, 'id_user', 'id');
@@ -68,5 +66,15 @@ class Siswa extends Model
         if ($kelas) {
             $query->where('id_kelas', $kelas);
         }
+    }
+
+    public function absensi()
+    {
+        return $this->hasMany(Absensi::class, 'id_siswa');
+    }
+
+    public function kelas()
+    {
+        return $this->belongsTo(Kelas::class, 'id_kelas');
     }
 }

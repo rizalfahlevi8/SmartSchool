@@ -43,4 +43,9 @@ class Guru extends Model
     {
         return $this->hasOne(Kelas::class, 'id_guru', 'id');
     }
+
+    public function absensi()
+    {
+        return $this->hasMany(Absensi::class, 'id_siswa');
+    }
 }
