@@ -105,7 +105,7 @@
                                                     onclick="showDetailModal(this)" nama-siswa="{{ $siswa->nama }}"
                                                     nis="{{ $siswa->nis }}" nisn="{{ $siswa->nisn }}"
                                                     jenis-kelamin="{{ $siswa->jenis_kelamin }}"
-                                                    kelas="{{ $siswa->kelas->nama_kelas }}" nik="{{ $siswa->nik }}"
+                                                    {{-- kelas="{{ $siswa->kelas->nama_kelas }}" --}} nik="{{ $siswa->nik }}"
                                                     tempat-lahir="{{ $siswa->tempat_lahir }}"
                                                     tanggal-lahir="{{ $siswa->tanggal_lahir }}"
                                                     nama-wali="{{ $siswa->nama_wali }}" no-telp="{{ $siswa->no_telp }}"
@@ -195,7 +195,7 @@
                                         </div>
                                     </div>
                                 </li>
-                                <li class="list-group-item">
+                                {{-- <li class="list-group-item">
                                     <div class="row">
                                         <div class="col-md-5">
                                             <span class="float-start fw-bold">Kelas</span>
@@ -205,7 +205,7 @@
 
                                         </div>
                                     </div>
-                                </li>
+                                </li> --}}
                                 <li class="list-group-item">
                                     <div class="row">
                                         <div class="col-md-5">
@@ -300,7 +300,7 @@
             const wali = detailModalDialog.querySelector('#wali');
             const ttl = detailModalDialog.querySelector('#ttl');
             const alamat = detailModalDialog.querySelector('#alamat');
-            const kelas = detailModalDialog.querySelector('#kelas');
+            // const kelas = detailModalDialog.querySelector('#kelas');
             const jenis_kelamin = detailModalDialog.querySelector('#jenis-kelamin');
             const no_telp = detailModalDialog.querySelector('#no-telp');
             const agama = detailModalDialog.querySelector('#agama');
@@ -314,7 +314,7 @@
             ttl.innerText = `${element.getAttribute('tempat-lahir')}, ${element.getAttribute('tanggal-lahir')}`;
             alamat.innerText = element.getAttribute('alamat');
             agama.innerText = element.getAttribute('agama');
-            kelas.innerText = element.getAttribute('kelas');
+            // kelas.innerText = element.getAttribute('kelas');
             jenis_kelamin.innerText = element.getAttribute('jenis-kelamin');
             no_telp.innerText = element.getAttribute('no-telp');
             foto.src = element.getAttribute('foto');
