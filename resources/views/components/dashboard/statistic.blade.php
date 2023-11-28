@@ -56,7 +56,6 @@
                 </div>
             </div>
         </div>
-<<<<<<< HEAD
         <!-- Pengumuman -->
         <div class="card mt-4">
             <div class="card-header">
@@ -215,7 +214,4 @@
     </div>
 </div>
 
-=======
-    </div>
->>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
 @endif

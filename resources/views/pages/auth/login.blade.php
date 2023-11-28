@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-=======
-
->>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,12 +5,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('assets/img/apple-icon.png') }}">
-<<<<<<< HEAD
     <link rel="icon" type="image/png" href="{{ asset('assets/img/web-icon-brain.png') }}">
 
-=======
-    <link rel="icon" type="image/png" href="{{ asset('assets/img/favicon.png') }}">
->>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
     <title>
         Smart School
     </title>
@@ -49,18 +41,10 @@
 </head>
 
 <body class="bg-gray-200">
-<<<<<<< HEAD
     @include('sweetalert::alert')
     <main class="main-content  mt-0">
         <div class="page-header align-items-start min-vh-100"
             style="background-image: url('{{ asset('assets/img/a.jpg') }}');">
-=======
-    {{-- @include('components.navbar-tamu') --}}
-    @include('sweetalert::alert')
-    <main class="main-content  mt-0 center">
-        <!-- <div class="page-header align-items-start min-vh-100"
-            style="background-image: url('{{ asset('assets/img/a.jpg') }}');"> -->
->>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
             <span class="mask bg-gradient-dark opacity-6"></span>
             <div class="container my-auto">
                 <div class="row">
@@ -68,20 +52,12 @@
                         <div class="card z-index-0 fadeIn3 fadeInBottom">
                             <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                                 <div class="bg-gradient-primary shadow-primary border-radius-lg py-3 pe-1">
-<<<<<<< HEAD
                                     <h4 class="text-white font-weight-bolder text-center mt-2 mb-0" style=""><img
                                             src="{{ asset('assets/img/web-icon-login.png') }}" alt="HTML tutorial"
                                             style="height: 90px;filter:brightness(0%) invert(90%)">
                                     </h4>
                                     <div class="row mt-2">
                                         {{-- <h4 class="text-white font-weight-bolder text-center mb-0">Smart School</h4> --}}
-=======
-                                    <h4 class="text-white font-weight-bolder text-center mt-2 mb-0"><img
-                                            src="{{ asset('assets/img/login3.png') }}" alt="HTML tutorial"
-                                            style="width:50px;height:50px;"></h4>
-                                    <div class="row mt-2">
-                                        <h4 class="text-white font-weight-bolder text-center mb-0">Smart School</h4>
->>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
                                         <p class=" text-white text-center mb-0 mt-1 ">Silahkan masuk untuk
                                             melanjutkan.</p>
                                     </div>
@@ -118,8 +94,6 @@
                                             class="btn bg-gradient-primary w-100 my-3 mb-2">MASUK</button>
                                     </div>
                                 </form>
-<<<<<<< HEAD
-=======
                                     <div>
                                         <style>
                                             .teks-style{
@@ -132,7 +106,6 @@
                                         </a>
                                     </div>
 
->>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
                             </div>
                         </div>
                     </div>
@@ -140,10 +113,6 @@
             </div>
             <footer class="footer position-absolute bottom-2 py-2 w-100">
                 <div class="container">
-<<<<<<< HEAD
-=======
-
->>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
                 </div>
             </footer>
         </div>

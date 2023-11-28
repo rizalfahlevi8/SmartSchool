@@ -30,13 +30,9 @@ class Siswa extends Model
         'agama',
         'id_kelas',
         'id_angkatan',
-<<<<<<< HEAD
         'tanggal_keluar',
         'id_user',
         'asal_sekolah'
-=======
-        'id_user',
->>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
     ];
 
     public function kelas()

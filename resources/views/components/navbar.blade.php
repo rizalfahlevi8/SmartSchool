@@ -3,11 +3,7 @@
         <nav aria-label="breadcrumb">
             @yield('breadcrumbs')
         </nav>
-<<<<<<< HEAD
         <div class="collapse navbar-collapse" id="navbar" style="overflow: visible !important;">
-=======
-        <div class="collapse navbar-collapse" id="navbar" href="/welcome">
->>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
             <div class="dropdown show"
                 style="justify-self: flex-end; max-width: fit-content; margin: 0; margin-left: auto">
                 <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
@@ -20,7 +16,6 @@
                             @if (auth()->user()->hasRole('admin'))
                                 {{ auth()->user()->username }}
                             @elseif (auth()->user()->hasRole('guru'))
-<<<<<<< HEAD
                                 {{ auth()->user()->guru->nama ?? auth()->user()->username }}
                             @elseif (auth()->user()->hasRole('siswa'))
                                 {{ auth()->user()->siswa->nama ?? auth()->user()->username }}
@@ -28,19 +23,11 @@
                                 {{ auth()->user()->guru->nama ?? auth()->user()->username }}
                             @else
                                 {{ auth()->user()->username }}
-=======
-                                {{ auth()->user()->guru->nama }}
-                            @elseif (auth()->user()->hasRole('siswa'))
-                                {{ auth()->user()->siswa->nama }}
-                            @elseif (Auth::guard('kepsek')->check())
-                                {{ Auth::guard('kepsek')->user()->nama }}
->>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
                             @endif
                         </span>
                     </strong>
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="profile-dropdown">
-<<<<<<< HEAD
                     <li><a class="dropdown-item" href="/option/change-password">Edit password</a></li>
                     @if (count(array_diff(explode(',', auth()->user()->role), ['root'])) > 1)
                         <li><a href="javacript(0)" data-bs-toggle="modal" data-bs-target="#update-navbar-role-modal"
@@ -49,16 +36,12 @@
                             </a>
                         </li>
                     @endif
-=======
-                    <li><a class="dropdown-item" href="editpassword">Edit password</a></li>
->>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
                     <li><a class="dropdown-item" href="/logout"
                             onclick="return confirm('Apakah anda yakin akan keluar?')">Logout</a></li>
                 </ul>
             </div>
         </div>
     </div>
-<<<<<<< HEAD
 
     @if (count(array_diff(explode(',', auth()->user()->role), ['root'])) > 1)
         <div class="modal fade" id="update-navbar-role-modal" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -110,7 +93,4 @@
         </script>
     @endif
 
-=======
-    </div>
->>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
 </nav>

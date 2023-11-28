@@ -2,10 +2,7 @@
 
 namespace App\Http\Controllers;
 
-<<<<<<< HEAD
 use App\Models\Akademik;
-=======
->>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
 use App\Models\Detail_jadwal;
 use App\Models\Guru;
 use App\Models\Jadwal;
@@ -17,10 +14,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
-<<<<<<< HEAD
 use Carbon\Carbon;
-=======
->>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
 
 class JadwalController extends Controller
 {
@@ -89,7 +83,6 @@ class JadwalController extends Controller
             'jam_selesai.after' => 'Jam selesai harus setelah jam mulai.',
         ]);
 
-<<<<<<< HEAD
         $toast_success_msg = 'Data berhasil ditambahkan!';
         $jamMulai = \Carbon\Carbon::createFromFormat('H:i', $request->jam_mulai);
         $jamSelesai = \Carbon\Carbon::createFromFormat('H:i', $request->jam_selesai);
@@ -125,13 +118,6 @@ class JadwalController extends Controller
 
         $apiData = Detail_jadwal::where('id_jadwal', $request->id_jadwal)->get();
 
-=======
-        $apiData = Detail_jadwal::where('id_jadwal', $request->id_jadwal)->get();
-
-        $jamMulai = \Carbon\Carbon::createFromFormat('H:i', $request->jam_mulai);
-        $jamSelesai = \Carbon\Carbon::createFromFormat('H:i', $request->jam_selesai);
-
->>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
         $selisihMenit = $jamSelesai->diffInMinutes($jamMulai);
 
         if ($selisihMenit < 45) {
@@ -139,37 +125,23 @@ class JadwalController extends Controller
         }
 
         foreach ($apiData as $data) {
-<<<<<<< HEAD
             if ($data['id_jadwal'] == $request->id_jadwal) {
-=======
-            if ($data['id'] != $request->id_jadwal) {
->>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
                 $existingJamMulai = \Carbon\Carbon::createFromFormat('H:i:s', $data['jam_mulai']);
                 $existingJamSelesai = \Carbon\Carbon::createFromFormat('H:i:s', $data['jam_selesai']);
 
                 if (($jamMulai >= $existingJamMulai && $jamMulai < $existingJamSelesai) ||
-<<<<<<< HEAD
                     ($jamSelesai > $existingJamMulai && $jamSelesai <= $existingJamSelesai) || ($jamMulai == $existingJamMulai && $jamSelesai == $existingJamSelesai)
-=======
-                    ($jamSelesai > $existingJamMulai && $jamSelesai <= $existingJamSelesai)
->>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
                 ) {
                     return redirect()->back()->with('toast_error', 'Jam yang Anda masukkan tumpang tindih dengan jadwal yang sudah ada.');
                 }
             }
         }
 
-<<<<<<< HEAD
 
         $jadwal = $request->all();
         Detail_jadwal::create($jadwal);
 
         return Redirect::back()->with('toast_success', $toast_success_msg);
-=======
-        $jadwal = $request->all();
-        Detail_jadwal::create($jadwal);
-        return Redirect::back()->with('toast_success', 'Data berhasil ditambahkan !');
->>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
     }
     public function update(Request $request, Detail_jadwal $detail_jadwal)
     {
@@ -187,16 +159,11 @@ class JadwalController extends Controller
             'guru' => 'required',
         ]);
 
-<<<<<<< HEAD
         $toast_success_msg =  'Data berhasil diubah !';
-=======
-        $apiData = Detail_jadwal::where('id_jadwal', $detail_jadwal->id_jadwal)->get();
->>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
 
         $jamMulai = \Carbon\Carbon::createFromFormat('H:i', $request->jam_mulai);
         $jamSelesai = \Carbon\Carbon::createFromFormat('H:i', $request->jam_selesai);
 
-<<<<<<< HEAD
         $jadwal_api = Jadwal::find($detail_jadwal->id_jadwal);
         $jadwal_hari = $jadwal_api->hari;
         $jadwal_akademik_id = $jadwal_api->akademik->id;
@@ -228,19 +195,13 @@ class JadwalController extends Controller
 
         $apiData = Detail_jadwal::where('id_jadwal', $detail_jadwal->id_jadwal)->get();
 
-=======
->>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
         $selisihMenit = $jamSelesai->diffInMinutes($jamMulai);
 
         if ($jamSelesai->isBefore($jamMulai)) {
             return redirect()->back()->with('toast_error', "Jam mulai tidak valid");
         }
         if ($selisihMenit < 45 && $selisihMenit >= 0) {
-<<<<<<< HEAD
             return redirect()->back()->with('toast_error', 'Durasi pelajaran minimal 45 menit.');
-=======
-            return redirect()->back()->with('toast_error', 'Durasi pelajaran minimal 45 menit.' . $selisihMenit);
->>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
         }
 
         foreach ($apiData as $data) {
@@ -249,11 +210,7 @@ class JadwalController extends Controller
                 $existingJamSelesai = \Carbon\Carbon::createFromFormat('H:i:s', $data['jam_selesai']);
 
                 if (($jamMulai >= $existingJamMulai && $jamMulai < $existingJamSelesai) ||
-<<<<<<< HEAD
                     ($jamSelesai > $existingJamMulai && $jamSelesai <= $existingJamSelesai) || ($jamMulai == $existingJamMulai && $jamSelesai == $existingJamSelesai)
-=======
-                    ($jamSelesai > $existingJamMulai && $jamSelesai <= $existingJamSelesai)
->>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
                 ) {
                     return redirect()->back()->with('toast_error', 'Jam yang Anda masukkan tumpang tindih dengan jadwal yang sudah ada.');
                 }
@@ -268,11 +225,7 @@ class JadwalController extends Controller
             'id_guru' => $request->guru,
         ]);
         // return $jadwaldata;
-<<<<<<< HEAD
         return Redirect::back()->with('toast_success', $toast_success_msg);
-=======
-        return Redirect::back()->with('toast_success', 'Data berhasil diubah !');
->>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
     }
     public function destroy($id)
     {
@@ -320,7 +273,6 @@ class JadwalController extends Controller
 
     public function jadwalsiswa($id)
     {
-<<<<<<< HEAD
         if ($id == 'null') {
             return back()->with('toast_warning', 'Fitur ini masih dikerjakan');
         }
@@ -361,28 +313,6 @@ class JadwalController extends Controller
             'hari_ini' => $hari_ini
 
         ])->with('title', 'Jadwal Pelajaran');
-=======
-        $hari = [
-            1 => 'Senin',
-            2 => 'Selasa',
-            3 => 'Rabu',
-            4 => 'Kamis',
-            5 => 'Jumat',
-            6 => 'Sabtu',
-        ];
-        $jadwal = Jadwal::where("kelas_id", $id)->orderBy("hari", 'asc')->get();
-        $kelas  =  Kelas::find($id);
-        $mapel  =  Mapel::select('id', 'namamapel')->get();
-        $guru   =  Guru::select('id', 'nama')->get();
-        return view('pages.data-jadwal.jadwalsiswa', [
-            'guru'      => $guru,
-            'mapel'     => $mapel,
-            'jadwal'    => $jadwal,
-            'kelas'     => $kelas,
-            'hari' => $hari
-
-        ]);
->>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
     }
 
     public function cetakjadwalsiswa($id)

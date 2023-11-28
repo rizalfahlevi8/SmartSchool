@@ -22,12 +22,8 @@ class UserRole
         }
 
         // Memeriksa apakah peran pengguna ada dalam array peran yang diterima
-<<<<<<< HEAD
 
         if (!in_array($request->user()->current_role, $roles)) {
-=======
-        if (!in_array($request->user()->role, $roles)) {
->>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
             abort(403, 'Anda tidak memiliki izin untuk mengakses halaman ini.')->with('toast_error', 'Anda harus login dulu !');
             // Atau, jika ingin mengarahkan ke halaman lain:
             // return redirect('/forbidden');

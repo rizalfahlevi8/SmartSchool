@@ -26,10 +26,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
-<<<<<<< HEAD
         'current_role',
-=======
->>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
         'remember_token'
     ];
 
@@ -63,11 +60,7 @@ class User extends Authenticatable
     }
     public function hasRole(...$roles)
     {
-<<<<<<< HEAD
         return in_array($this->current_role, $roles);
-=======
-        return in_array($this->role, $roles);
->>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
     }
 
     // public function

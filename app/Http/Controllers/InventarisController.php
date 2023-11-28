@@ -71,11 +71,7 @@ class InventarisController extends Controller
             // Commit transaksi
             DB::commit();
 
-<<<<<<< HEAD
             return redirect()->route('atur-barang')->with('toast_success', 'Data inventaris Berhasil di Tambahkan');
-=======
-            return redirect()->route('inventaris_main')->with('toast_success', 'Data inventaris Berhasil di Tambahkan');
->>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
         } catch (\Exception $e) {
             // Rollback transaksi jika terjadi exception
             DB::rollBack();
@@ -86,7 +82,6 @@ class InventarisController extends Controller
 
 
 
-<<<<<<< HEAD
     public function destroy($id)
     {
         try {
@@ -102,13 +97,4 @@ class InventarisController extends Controller
         }
     }
 
-=======
-    public function hapusBarang($id)
-    {
-        $barang = Inventaris::findOrFail($id);
-        $barang->delete();
-
-        return redirect()->back()->with('success', 'Barang berhasil dihapus.');
-    }
->>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
 }

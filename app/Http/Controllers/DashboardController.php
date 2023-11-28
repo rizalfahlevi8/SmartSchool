@@ -6,11 +6,8 @@ use App\Models\Guru;
 use App\Models\Kelas;
 use App\Models\Siswa;
 use App\Models\User;
-<<<<<<< HEAD
 use App\Models\Pengumuman;
 use App\Models\KalenderAkademik;
-=======
->>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -23,7 +20,6 @@ class DashboardController extends Controller
             $guru = Guru::where('deleted', 0)->get();
             $kelas = Kelas::where('deleted', 0)->get();
             $siswa = Siswa::where('status', 'belum lulus')->orWhere('status', 'mutasi')->get();
-<<<<<<< HEAD
             $rolePengumuman = [];
 
             $datas = array();
@@ -51,11 +47,6 @@ class DashboardController extends Controller
                 ];
             }
 
-=======
-
-            $datas = array();
-            $role = auth()->user()->role;
->>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
             switch ($role) {
                 case 'admin':
                 case 'kepsek':
@@ -87,36 +78,24 @@ class DashboardController extends Controller
                     ];
                     break;
                 case 'guru':
-<<<<<<< HEAD
                     $myData = Guru::all()->where('id_user', '=', auth()->user()->id)->load('kelas')->first();
 
                     $datas = [
                         'myData' => $myData,
                         'events' => $events
-=======
-                    $myData = Guru::all()->where('id_user', '=', auth()->user()->id)->first()->load('kelas');
-
-                    $datas = [
-                        'myData' => $myData
->>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
                     ];
                     break;
                 case 'siswa':
                     $myData = Siswa::all()->where('id_user', '=', auth()->user()->id)->first();
                     $datas = [
-<<<<<<< HEAD
                         'myData' => $myData,
                         'events' => $events
-=======
-                        'myData' => $myData
->>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
                     ];
                     break;
                 default:
                     # code...
                     break;
             }
-<<<<<<< HEAD
             if (Auth::check()) {
                 $query = Pengumuman::orderBy('created_at', 'desc');
                 // Admin
@@ -132,10 +111,6 @@ class DashboardController extends Controller
             }
 
             return view('pages.dashboard.dashboard', ['rolePengumuman' => $rolePengumuman] + $datas)->with('title', 'Dashboard');
-=======
-
-            return view('pages.dashboard.dashboard', $datas)->with('title', 'Dashboard');
->>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
         }
     }
 }
