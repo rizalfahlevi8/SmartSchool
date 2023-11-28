@@ -26,6 +26,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\PengumumanController;
 use App\Models\Absensi;
 use App\Models\Akademik;
+use App\Http\Controllers\UserMoodleController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -37,7 +39,10 @@ use App\Models\Akademik;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::get('/userguru/export', [GuruController::class, 'export']);
+Route::get('/usersiswa/export', [SiswaController::class, 'export']);
+Route::get('/user/export', [UserController::class, 'export']);
+Route::get('/administrasi/users/moodle', [UserMoodleController::class, 'index']);
 Route::post('/api/request-dd', function (Request $request) {
     $request->validate([
         'alamat.jalan' => 'required'

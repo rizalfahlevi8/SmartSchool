@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\UsersExportGuru;
 use App\Models\Guru;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 
 class GuruController extends Controller
 {
@@ -193,5 +195,9 @@ class GuruController extends Controller
         User::find($guru->user->id)->delete();
 
         return redirect('/administrasi/guru')->with('toast_success', 'Data Guru Berhasil di Hapus');
+    }
+    public function export()
+    {
+        return Excel::download(new UsersExportGuru, 'usersGuru.xlsx');
     }
 }

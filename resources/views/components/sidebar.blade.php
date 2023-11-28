@@ -44,6 +44,10 @@
                                 style="width: 100%" href="/administrasi/siswa"><i
                                     class="material-icons opacity-10 mx-2">groups</i> Data
                                 Siswa</a></li>
+                                <li><a class="link-light rounded mb-1  'bg-gradient-primary ' : '' }}"
+                                style="width: 100%" href="/administrasi/users/moodle"><i
+                                    class="material-icons opacity-10 mx-2">groups</i> Data User Moodle</a>
+                                    </li>
                         <li><a class="link-light rounded mb-1 {{ Request::is('akademik/mapel*') ? 'bg-gradient-primary ' : '' }}"
                                 style="width: 100%" href="/akademik/mapel"><i
                                     class="material-icons opacity-10 mx-2">task</i> Data Mata
@@ -59,7 +63,6 @@
                         <li><a class="link-light rounded mb-1 {{ Request::is('sarana/barang*') ? 'bg-gradient-primary ' : '' }}"
                                 style="width: 100%" href="/sarana/barang"><i
                                     class="material-icons opacity-10 mx-2">task</i> Data Barang</a>
-                        </li>
                     </ul>
                 </div>
             </li>

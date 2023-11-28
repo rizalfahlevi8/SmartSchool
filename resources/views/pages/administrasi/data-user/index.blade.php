@@ -16,6 +16,11 @@
                             Tambah
                         </button> --}}
                         <!-- Button trigger modal -->
+
+                        <a href="/user/export" type="export" id="btnexport"
+                            class="btn btn-success font-weight-bold text-xs">
+                            Export Data user
+                        </a>
                 
                         <table id="example" class="table align-items-center mb-0">
                             <thead>

@@ -1,8 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\Data_angkatan;
+use App\Exports\UsersExportSiswa;
 use App\Models\Detail_siswa;
 use App\Models\Siswa;
 use App\Models\Kelas;
@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Schema;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SiswaController extends Controller
 {
@@ -44,19 +45,19 @@ class SiswaController extends Controller
             'nik' => 'required|unique:siswas',
             'nis' => 'required|unique:siswas',
             'nisn' => 'required|unique:siswas',
-            // "no_pendaftaran" => 'required|unique:siswas',
+            "no_pendaftar" => 'required',
             "tempat_lahir" => 'required',
             "tanggal_lahir" => 'required',
             "jenis_kelamin" => 'required',
             "agama" => 'required',
-            // "nama_ayah" => 'required',
-            // "nama_ibu" => 'required',
-            // "nama_wali" => 'required',
+            "nama_ayah" => 'required',
+            "nama_ibu" => 'required',
+            "nama_wali" => 'required',
             "kelas" => 'required',
-            "no_telp" => 'required|unique:siswas',
+            "no_telp" => 'required',
             "status" => 'required',
             "alamat" => 'required',
-            // "foto" => 'required',
+            "foto" => 'required',
         ];
 
         if ($request->status == 'pindahan') {
@@ -88,18 +89,18 @@ class SiswaController extends Controller
         ])->id;
 
         $siswa_new = Siswa::create([
-            // 'no_pendaftaran' => $request->no_pendaftaran,
             'nis'         => $request->nis,
             'nisn'        => $request->nisn,
             'nik'         => $request->nik,
-            'nama'         => $request->nama,
+            'no_pendaftar' => $request->no_pendaftar,
+            'nama'    => $request->nama,
             'nama_ayah'    => $request->nama_ayah,
             'nama_ibu'    => $request->nama_ibu,
             'nama_wali'    => $request->nama_wali,
             'jenis_kelamin'          => $request->jenis_kelamin,
             'agama'       => $request->agama,
             'no_telp'      => $request->no_telp,
-            'status'      => $request->status /*== 'pindahan' ? 'mutasi' : 'belum_lulus'*/,
+            'status'      => $request->status == 'pindahan' ? 'mutasi' : 'belum_lulus',
             'tempat_lahir' => $request->tempat_lahir,
             'tanggal_lahir'    => $request->tanggal_lahir,
             'foto'        => $filegambar,
@@ -235,5 +236,9 @@ class SiswaController extends Controller
         $siswa->delete();
 
         return redirect()->route('siswa_out')->with('toast_success', 'Data Siswa Berhasil di Hapus');
+    }
+    public function export()
+    {
+        return Excel::download(new UsersExportSiswa, 'usersSiswa.xlsx');
     }
 }
