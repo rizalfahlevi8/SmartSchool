@@ -24,7 +24,6 @@ return new class extends Migration
             $table->string('tujuan_mitra');
             $table->timestamps();
             $table->string('file')->nullabel();
-            $table->string('signature');
         });
     }
 

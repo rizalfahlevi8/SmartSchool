@@ -21,7 +21,7 @@
               </div>
           </div>
           <div class="card-body px-0 pb-2">
-            <main class="form-Tamu">
+            <main class="form-tambah-tamu">
               <form action="/tamu" method="post">
                 @csrf
                 <div class="mb-3 col-md-6" style="padding-left: 20px; padding-right: 20px;">
@@ -87,8 +87,21 @@
                     </div>
                   </div>
                   <div class="card-footer d-flex justify-content-end" style="gap: 10px">
+                    {{-- <a href="/data-tamu" type="button" class="btn btn-danger text-sm rounded-3"
+                                >
+                                <i class="fa fa-arrow-left"></i> Kembali
+                            </a>
                     <Input type='submit' onclick="return confirm('apakah anda yakin data sudah benar ?')"
-                    value="Kirim" class="btn btn-primary" >
+                    value="Kirim" class="btn btn-primary" > --}}
+                    <a href="/data-tamu" type="button" class="btn btn-danger text-sm rounded-3"
+                        style="margin-bottom: 0;">
+                        <i class="fa fa-arrow-left"></i> Kembali
+                    </a>
+                    <button type="submit"
+                        onclick="return insertInputTamu()"
+                        class="btn btn-primary text-sm rounded-3 mr-2" style="margin-bottom: 0;">
+                      <i class="fa fa-save"></i> Simpan
+                    </button>
                   </div>
               </form>
             </main>
@@ -96,6 +109,19 @@
       </div>
   </div>
 </div>
+<script>
+  function insertInputTamu(){
+    console.log("fungsi di jalankan");
+    // Tampilkan dialog konfirmasi
+    var isConfirmed = confirm('Apakah anda yakin data sudah benar?');
+    // Jika pengguna mengklik "OK", arahkan ke "/data-tamu"
+    if (isConfirmed) {
+      window.location.href = "/data-tamu";
+    }
+    // Kembalikan nilai sesuai hasil konfirmasi
+    return isConfirmed;
+  }
+</script>
 <script>
   const opsi_lanjutan_dropdown = document.getElementById('opsi_lanjutan');
   const opsi_tujuan_dropdown = document.getElementById('opsi_tujuan');

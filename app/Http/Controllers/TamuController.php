@@ -55,7 +55,8 @@ class TamuController extends Controller
         $tamu->Keterangan = $request->keteranganTamu;
         $tamu->save();
         
-        return view('pages.humas.tamu',[
+        return view('pages.humas.data-tamu',[
+            'tamus' => Tamu::get(),
             'title'=>"tamu",
             'userRoles' => User::select('role')->distinct()->get(),
             'namaUserGuru' => User::select('username')->where('role', 'guru')->get(),

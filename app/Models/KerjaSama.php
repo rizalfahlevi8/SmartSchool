@@ -24,6 +24,7 @@ class KerjaSama extends Model
       'tujuan_mitra',
       'created_at',
       'updated_at'
+      
   ];
 
 }

@@ -95,32 +95,6 @@
                                 {{ $errors->has('tanggal_lahir') ? 'autofocus="true"' : '' }}>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <label for="signature-pad" class="form-label">Signature</label>
-                        <div id="signature-pad" class="signature-pad" style="height:70%;">
-                            <canvas width="100%" style="width: 100%; height: 100%; border: 1px solid black"
-                                height="30%" style="border: 1px solid #000;">
-                            </canvas>
-                            <input type="hidden" name="signature" id="signature-input" value="">
-                            <button type="button" class="btn btn-clear btn-danger" data-action="clear"
-                                style="margin: 0px">
-                                Clear
-                            </button>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        {{-- Untuk meletakkan input diposisi di sebelah kanan --}}
-                    </div>
-                    <div class=" col-md-4">
-                        <label class="form-label" for="nama">Nama Yang Bertanda Tangan</label>
-                        <div class="input-group" style="margin: 0%; padding: 0%;">
-                            <input 
-                            type="text" name="nama_YTandaTangan" class="form-control rounded-3" 
-                            {{-- id="nama" required
-                                value="{{ old('nama') }}" {{ $errors->has('tempatlahir') ? 'autofocus="true"' : '' }} --}}
-                                >
-                        </div>
-                    </div>
                     <div class="card-footer d-flex justify-content-end" style="gap: 10px">
                         <a href="/mou" type="button" class="btn btn-danger text-sm rounded-3"
                             style="margin-bottom: 0;">
