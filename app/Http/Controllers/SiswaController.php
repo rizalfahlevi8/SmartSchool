@@ -135,6 +135,7 @@ class SiswaController extends Controller
     }
     public function edit(Siswa $siswa)
     {
+
         $kelas = Kelas::all();
         return view('pages.administrasi.data-siswa.edit', [
             'siswa'      => $siswa,
@@ -160,6 +161,7 @@ class SiswaController extends Controller
             "nama_ayah" => 'required',
             "nama_ibu" => 'required',
             "nama_wali" => 'required',
+            "status" => 'required',
             "kelas" => 'required',
             "no_telp" => 'required',
             "alamat" => 'required',
@@ -186,7 +188,7 @@ class SiswaController extends Controller
             'jenis_kelamin'          => $request->jenis_kelamin,
             'agama'       => $request->agama,
             'no_telp'      => $request->no_telp,
-            'status'      => $request->status,
+            'status'      => $request->status ?? $siswa->status,
             'sekolah'      => $request->asal_sekolah,
             'tempat_lahir' => $request->tempat_lahir,
             'tanggal_lahir'    => $request->tanggal_lahir,
