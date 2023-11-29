@@ -161,7 +161,6 @@ class SiswaController extends Controller
             "nama_ayah" => 'required',
             "nama_ibu" => 'required',
             "nama_wali" => 'required',
-            "status" => 'required',
             "kelas" => 'required',
             "no_telp" => 'required',
             "alamat" => 'required',
