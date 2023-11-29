@@ -19,27 +19,28 @@
                 </div>
                 <div class="card-body px-0 pb-2">
                     <div class="table-responsive pb-2 px-3">
+                        <a href="/sarana/barang-tambah" type="submit" id="btntambah"
+                            class="btn btn-primary font-weight-bold text-xs">
+                            <i class="material-icons opacity-10">add</i>
+                            Tambah
+                        </a>
                         <table id="example" class="table align-items-center mb-0">
                             <thead>
                                 <tr>
-                                    <th
-                                        class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
+                                    <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
                                         No</th>
-                                    <th
-                                        class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
+                                    <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
                                         Nama Barang</th>
-                                    <th
-                                        class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
+                                    <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
                                         Tahun Pengadaan</th>
-                                    <th
-                                        class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
+                                    <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
                                         Jenis</th>
-                                    <th
-                                        class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
-                                        Jumlah Seluruh</th>
-                                    {{-- <th
-                                        class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
-                                        Ruang</th> --}}
+                                    <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
+                                        Gambar</th>
+                                    <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
+                                        Jumlah </th>
+                                    <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
+                                        Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -49,8 +50,14 @@
                                         <td class="text-center">{{ $barang->nama_barang }}</td>
                                         <td class="text-center">{{ $barang->tahun_pengadaan }}</td>
                                         <td class="text-center">{{ $barang->jenis }}</td>
+                                        <td><img src="{{ asset('storage/public/' . $barang->image) }}" height="100px" width="120px"></td>
                                         <td class="text-center">{{ $barang->jumlah_seluruh_barang }}</td>
-                                        {{-- <td class="text-center">{{ $barang->ruang->nama_ruang }}</td> --}}
+                                        <td class="text-center">
+                                            <a href="{{ route('update-barang', $barang->id) }}" class="btn btn-primary">Edit</a>
+                                            <a href="{{ route('hapus-barang', $barang->id) }}"
+                                            onclick="return confirm('Anda yakin akan menghapus data ini?')"
+                                            class="btn btn-danger ">Hapus</a>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
