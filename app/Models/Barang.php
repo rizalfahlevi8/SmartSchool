@@ -16,7 +16,8 @@ class Barang extends Model
         'tahun_pengadaan',
         'jenis',
         'jumlah_seluruh_barang',
-        'id_ruang'
+        'id_ruang',
+        'image'
     ];
 
     // Jika ada kolom tanggal 'created_at' dan 'updated_at', tambahkan kode berikut

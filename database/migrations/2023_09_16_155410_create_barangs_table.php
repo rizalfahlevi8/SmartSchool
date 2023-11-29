@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('nama_barang');
             $table->date('tahun_pengadaan');
             $table->string('jenis');
+            $table->string('image')->nullable();
             $table->integer('jumlah_seluruh_barang');
             $table->timestamps();
             $table->unsignedBigInteger('id_ruang')->nullable();
