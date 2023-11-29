@@ -278,13 +278,12 @@ class JadwalController extends Controller
         }
         $kelasId = $id;
         // $detail_jadwal = Detail_jadwal::todaySchedule($guruId);
-        $jadwal = Detail_jadwal::with('jadwal', 'mapel', 'ruang')
-            ->whereHas('jadwal', function ($query) use ($kelasId) {
-                $query->where('id_kelas', $kelasId)->whereHas('akademik', function ($query) {
-                    $query->where('selected', 1);
-                });
-            })
-            ->get();
+        $jadwal = Jadwal::with('detail_jadwal')->whereHas('akademik', function ($query) {
+            $query->where('selected', 1);
+        })->where('id_kelas', $kelasId)->whereHas('detail_jadwal', function ($query) {
+            $query->with('mapel', 'ruang');
+        })->get();
+
         $kelas = Kelas::find($id);
         $hari_list = array(
             'Minggu',
