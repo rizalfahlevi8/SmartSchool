@@ -15,6 +15,19 @@ use Illuminate\Support\Facades\Schema;
 
 class SiswaController extends Controller
 {
+    public function getSiswaKelasAbsensi(Request $request)
+    {
+        // Ambil kelas dari request
+        $kelas = $request->query('kelas');
+
+        // Dapatkan data siswa berdasarkan kelas
+        $siswa = Siswa::whereHas('kelas', function ($query) use ($kelas) {
+            $query->where('nama_kelas', $kelas);
+        })->get();
+
+        // Kembalikan data dalam format JSON
+        return response()->json($siswa);
+    }
     public function index()
     {
         $siswa = Siswa::with('kelas')->where('status', 'bukan pindahan')->orWhere('status', 'pindahan')->filter(request(['status', 'kelas']))->get();;

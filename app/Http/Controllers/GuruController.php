@@ -11,6 +11,15 @@ use Illuminate\Support\Facades\Storage;
 
 class GuruController extends Controller
 {
+
+    public function getGuru()
+    {
+        // Dapatkan data guru dari tabel "gurus"
+        $guru = Guru::all();
+
+        // Kembalikan data dalam format JSON
+        return response()->json($guru);
+    }
     public function index()
     {
         $guru = Guru::where('deleted', 0)->get();

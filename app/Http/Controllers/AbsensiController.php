@@ -14,7 +14,7 @@ class AbsensiController extends Controller
             'absensis'=>Absensi::all()
         ])->with('title', 'testAbsensi');
     }
-    
+
     public function index()
     {
         return view('pages.akademik.absensi.absensi', [

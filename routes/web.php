@@ -226,7 +226,11 @@ Route::middleware(['userRole:admin'])->group(function () {
     Route::post('/akademik/absensi/{akademik}/{kelas}', [AbsensiController::class, 'showKelasAbsensi']);
     Route::post('/api/akademik/absensi-update/{absensi}', [AbsensiController::class, 'apiUpdateAbsensi'])->name('api.update-absensi');
 
+    // Kims-Absensi
     Route::get('/akademik/absensi/test', [AbsensiController::class,'showTest']);
+    Route::get('/get_kelas', [KelasController::class, 'getKelas']);
+    Route::get('/get_siswa', [SiswaController::class, 'getSiswaKelasAbsensi']);
+    Route::get('/get_guru', [GuruController::class, 'getGuru']);
 
     // ==============[ D a t a - P e m i n j a m a n ]===============
     Route::get('/data-peminjaman', [PeminjamanController::class, 'index']);

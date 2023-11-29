@@ -17,21 +17,33 @@ class AbsensisSeeder extends Seeder
     {
         $startDate = now()->setYear(2023)->setMonth(10)->setDay(1);
         $currentDate = now();
-
+        
         while ($startDate <= $currentDate) {
-            for ($i = 0; $i < 20; $i++) {
-                $kelas = fake('id_ID')->randomElement(['siswa', 'guru']);
-                $idSiswa = ($kelas == 'siswa') ? random_int(22, 25) : random_int(2, 21);
-
+        
+            $usedRandomValues = [];
+        
+            for ($i = 0; $i < 10; $i++) {
+                // Menghasilkan nilai random unik
+                $role = fake('id_ID')->randomElement(['siswa', 'guru']);
+                
+                do {
+                    $randomValue = ($role == 'siswa') ? random_int(22, 621) : random_int(2, 21);
+                } while (in_array($randomValue, $usedRandomValues));
+        
+                $usedRandomValues[] = $randomValue;
+        
+                $idUser = $randomValue;
+        
                 DB::table('absensis')->insert([
                     'status_absen' => fake('id_ID')->randomElement(['masuk', 'sakit', 'tidak masuk']),
-                    'kelas' => $kelas,
-                    'id_siswa' => $idSiswa,
+                    'role' => $role,
+                    'id_user' => $idUser,
                     'created_at' => $startDate,
                 ]);
             }
-
+        
             $startDate->addDay();
         }
+        
 }
 }

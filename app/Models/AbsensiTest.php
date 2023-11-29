@@ -11,18 +11,18 @@ class AbsensiTest extends Model
 
     protected $fillable = [
         'status_absen',
-        'kelas',
-        'id_siswa',
+        'role',
+        'id_user',
         'created_at'
     ];
 
     public function guru()
     {
-        return $this->belongsTo(Guru::class, 'id_siswa');
+        return $this->belongsTo(Guru::class, 'id_user', 'id');
     }
 
     public function siswa()
     {
-        return $this->belongsTo(Siswa::class, 'id_siswa');
+        return $this->belongsTo(Siswa::class, 'id_user', 'id');
     }
 }
