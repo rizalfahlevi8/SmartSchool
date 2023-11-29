@@ -40,7 +40,7 @@ class SiswaController extends Controller
             'unique' => 'data ini sudah digunakan'
         ];
         $validate_data = [
-            'nama' => 'regex:/^[a-zA-Z\s]+$/',
+            'nama' => 'regex:/^[a-zA-Z\s.]+$/',
             'nik' => 'required|unique:siswas',
             'nis' => 'required|unique:siswas',
             'nisn' => 'required|unique:siswas',
@@ -49,14 +49,14 @@ class SiswaController extends Controller
             "tanggal_lahir" => 'required',
             "jenis_kelamin" => 'required',
             "agama" => 'required',
-            // "nama_ayah" => 'required',
-            // "nama_ibu" => 'required',
-            // "nama_wali" => 'required',
+            "nama_ayah" => 'required',
+            "nama_ibu" => 'required',
+            "nama_wali" => 'required',
             "kelas" => 'required',
             "no_telp" => 'required|unique:siswas',
             "status" => 'required',
             "alamat" => 'required',
-            // "foto" => 'required',
+            "foto" => 'required',
         ];
 
         if ($request->status == 'pindahan') {
@@ -87,7 +87,8 @@ class SiswaController extends Controller
             'role' => 'siswa',
         ])->id;
 
-        $siswa_new = Siswa::create([
+
+        $data_to_store = [
             // 'no_pendaftaran' => $request->no_pendaftaran,
             'nis'         => $request->nis,
             'nisn'        => $request->nisn,
@@ -107,7 +108,13 @@ class SiswaController extends Controller
             'id_kelas'       => $request->kelas,
             'id_angkatan'       => Data_angkatan::firstWhere('tahun_masuk', now()->year)->id,
             'id_user'       => $user_new,
-        ])->id;
+        ];
+
+        if ($request->status == 'pindahan') {
+            $data_to_store['asal_sekolah'] = $request->asal_sekolah;
+        }
+
+        $siswa_new = Siswa::create($data_to_store)->id;
 
         if ($request->status == 'pindahan') {
 
@@ -220,7 +227,7 @@ class SiswaController extends Controller
         $siswa->update([
             'status' => $request->status,
             'tanggal_keluar' => $request->tanggal_keluar,
-            'id_kelas' => null 
+            'id_kelas' => null
         ]);
         return redirect()->route('siswa_out')->with('toast_success', 'Data Siswa Berhasil di Ubah');
     }
