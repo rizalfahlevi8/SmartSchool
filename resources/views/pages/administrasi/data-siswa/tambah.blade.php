@@ -249,7 +249,7 @@
                                 <i class="fa fa-right"></i>
                                 Simpan
                             </button>
-                            <a href="data-siswa" type="button" class="btn btn-danger text-sm rounded-3"
+                            <a href="siswa" type="button" class="btn btn-danger text-sm rounded-3"
                                 style="float: right;margin-right:10px"><i class="fa fa-arrow-left"></i>
                                 Kembali
                             </a>
