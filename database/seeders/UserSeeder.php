@@ -69,6 +69,7 @@ class UserSeeder extends Seeder
                         'nama_ibu' => fake('id_ID')->name('female'),
                         'nama_wali' => $ayah,
                         'status' => fake('id_ID')->randomElement(['bukan pindahan', 'pindahan', 'lulus', 'mutasi']),
+                        'tanggal_keluar' => fake('id_ID')->dateTimeBetween('2022-01-01', '2023-12-31'),
                         'tanggal_lahir' => fake('id_ID')->date(),
                         'tempat_lahir' => fake('id_ID')->citySuffix(),
                         'alamat' => fake('id_ID')->city(),
