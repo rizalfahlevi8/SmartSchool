@@ -120,7 +120,7 @@
                                                 title="Edit">
                                                 <i class="fa fa-edit"></i>
                                             </a>
-                                            <a href="mou-delete/{{ $m->id }}"
+                                            <a href="delete-mou/{{ $m->id }}"
                                                 onclick="return confirm('Anda yakin akan menghapus data ini?')"
                                                 class=" btn btn-danger font-weight-bold text-sm rounded-circle"
                                                 data-bs-toggle="tooltip" data-bs-placement="bottom" style="margin: 5px 0;"

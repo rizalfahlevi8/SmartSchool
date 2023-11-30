@@ -23,8 +23,15 @@ class KerjaSama extends Model
       'PT_Mitra',
       'tujuan_mitra',
       'created_at',
-      'updated_at'
-      
+      'updated_at',
+      'file'
   ];
+
+  public static function rules()
+    {
+        return [
+            'file' => 'nullable|mimes:doc,docx,pdf',
+        ];
+    }
 
 }

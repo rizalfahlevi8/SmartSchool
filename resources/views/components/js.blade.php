@@ -4,16 +4,8 @@
 <script src="{{ asset('assets/js/plugins/smooth-scrollbar.min.js') }}"></script>
 
 {{-- datatable --}}
-<<<<<<< HEAD
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
-=======
-<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
-{{-- <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script> --}}
-{{-- <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script> --}}
->>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
 <script src="https://cdn.datatables.net/select/1.4.0/js/dataTables.select.min.js"></script>
 
 <script>

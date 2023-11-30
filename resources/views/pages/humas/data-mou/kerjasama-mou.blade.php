@@ -21,7 +21,7 @@
             </div>
             <div class="card-body px-0 pb-2">
               <main class="form-Kerjasama">
-                <form action="/add-mou" method="post" class="row g-3 py-1 px-4">
+                <form action="/add-mou" method="post" enctype="multipart/form-data" class="row g-3 py-1 px-4">
                   @csrf
                     <div class="col-md-6">
                         <label class="form-label" for="nama">Nama Mitra</label>
@@ -72,15 +72,12 @@
                     </div>
                     <div class="col-md-6">
                         <label for="formFile" class="form-label">File</label>
-                        <input class="form-control rounded-3 text-sm" name="deskripsi_mitra" type="file"
-                            id="file-input-poster" onchange="showPreviewposter(event);"
+                        <input class="form-control rounded-3 text-sm" name="file_mitra" type="file"
+                            id="file-input" 
                             value="{{ old('file') }}" {{ $errors->has('file') ? 'autofocus="true"' : '' }}>
-                        {{-- <img src=" {{ asset('assets') }}/img/thumbnail.png" id="file-preview-poster" alt="..."
-                            class="img-thumbnail mt-2" width="50%"> --}}
-                        {{-- <p style="font-size: 13px">Ukuran direkomendasikan 1920x1080 pixel</p> --}}
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label" for="tanggal_lahir">Tanggal Mulai Kerjasama</label>
+                        <label class="form-label" for="tanggal_mulai">Tanggal Mulai Kerjasama</label>
                         <div class="input-group">
                             <input type="date" name="tgl_mulai_kerjasama" class="form-control rounded-3" 
                                 required value="{{ old('tanggal_lahir') }}"
@@ -88,7 +85,7 @@
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label" for="tanggal_lahir">Tanggal Berakhir Kerjasama</label>
+                        <label class="form-label" for="tanggal_berakhir">Tanggal Berakhir Kerjasama</label>
                         <div class="input-group">
                             <input type="date" name="tgl_berakhir_kerjasama" class="form-control rounded-3"
                                 required value="{{ old('tanggal_lahir') }}"
@@ -112,121 +109,125 @@
         </div>
     </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/signature_pad/1.5.3/signature_pad.min.js"></script>
+{{-- <script src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/signature_pad/1.5.3/signature_pad.min.js"></script> --}}
 <script>
-    var wrapper = document.getElementById("signature-pad");
-    var clearButton = wrapper.querySelector("[data-action=clear]");
-    var changeColorButton = wrapper.querySelector("[data-action=change-color]");
-    var savePNGButton = wrapper.querySelector("[data-action=save-png]");
-    var saveJPGButton = wrapper.querySelector("[data-action=save-jpg]");
-    var saveSVGButton = wrapper.querySelector("[data-action=save-svg]");
-    var canvas = wrapper.querySelector("canvas");
-    var signaturePad = new SignaturePad(canvas, {
-        backgroundColor: 'rgb(255, 255, 255)'
-    });
-    document.querySelector("[data-action=clear]").addEventListener("click", function() {
-        signaturePad.clear();
-    });
+    // var wrapper = document.getElementById("signature-pad");
+    // var clearButton = wrapper.querySelector("[data-action=clear]");
+    // var changeColorButton = wrapper.querySelector("[data-action=change-color]");
+    // var savePNGButton = wrapper.querySelector("[data-action=save-png]");
+    // var saveJPGButton = wrapper.querySelector("[data-action=save-jpg]");
+    // var saveSVGButton = wrapper.querySelector("[data-action=save-svg]");
+    // var canvas = wrapper.querySelector("canvas");
+    // var signaturePad = new SignaturePad(canvas, {
+    //     backgroundColor: 'rgb(255, 255, 255)'
+    // });
+    // document.querySelector("[data-action=clear]").addEventListener("click", function() {
+    //     signaturePad.clear();
+    // });
 
-    function getSignatureImage() {
-        if (!signaturePad.isEmpty()) {
-            return signaturePad.toDataURL();
-        } else {
-            return null;
-        }
-    }
+    // function getSignatureImage() {
+    //     if (!signaturePad.isEmpty()) {
+    //         return signaturePad.toDataURL();
+    //     } else {
+    //         return null;
+    //     }
+    // }
 
-    document.querySelector("form").addEventListener("submit", function() {
+    // document.querySelector("form").addEventListener("submit", function() {
 
-        var signatureDataUrl = getSignatureImage();
+    //     var signatureDataUrl = getSignatureImage();
 
 
-        document.querySelector("#signature-input").value = signatureDataUrl;
-    });
+    //     document.querySelector("#signature-input").value = signatureDataUrl;
+    // });
 
-    function resizeCanvas() {
+    // function resizeCanvas() {
 
-        var ratio = Math.max(window.devicePixelRatio || 1, 1);
+    //     var ratio = Math.max(window.devicePixelRatio || 1, 1);
 
-        canvas.width = canvas.offsetWidth * ratio;
-        canvas.height = canvas.offsetHeight * ratio;
-        canvas.getContext("2d").scale(ratio, ratio);
-        signaturePad.clear();
-    }
+    //     canvas.width = canvas.offsetWidth * ratio;
+    //     canvas.height = canvas.offsetHeight * ratio;
+    //     canvas.getContext("2d").scale(ratio, ratio);
+    //     signaturePad.clear();
+    // }
 
-    window.onresize = resizeCanvas;
-    resizeCanvas();
+    // window.onresize = resizeCanvas;
+    // resizeCanvas();
 
-    function download(dataURL, filename) {
-        var blob = dataURLToBlob(dataURL);
-        var url = window.URL.createObjectURL(blob);
-        var a = document.createElement("a");
-        a.style = "display: none";
-        a.href = url;
-        a.download = filename;
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-    }
+    ///
 
-    function dataURLToBlob(dataURL) {
-        var parts = dataURL.split(';base64,');
-        var contentType = parts[0].split(":")[1];
-        var raw = window.atob(parts[1]);
-        var rawLength = raw.length;
-        var uInt8Array = new Uint8Array(rawLength);
-        for (var i = 0; i < rawLength; ++i) {
-            uInt8Array[i] = raw.charCodeAt(i);
-        }
-        return new Blob([uInt8Array], {
-            type: contentType
-        });
-    }
-    clearButton.addEventListener("click", function(event) {
-        signaturePad.clear();
-    });
-    changeColorButton.addEventListener("click", function(event) {
-        var r = Math.round(Math.random() * 255);
-        var g = Math.round(Math.random() * 255);
-        var b = Math.round(Math.random() * 255);
-        var color = "rgb(" + r + "," + g + "," + b + ")";
-        signaturePad.penColor = color;
-    });
-    savePNGButton.addEventListener("click", function(event) {
-        if (signaturePad.isEmpty()) {
-            alert("Please provide a signature first.");
-        } else {
-            var dataURL = signaturePad.toDataURL();
-            download(dataURL, "signature.png");
-        }
-    });
+    // function download(dataURL, filename) {
+    //     var blob = dataURLToBlob(dataURL);
+    //     var url = window.URL.createObjectURL(blob);
+    //     var a = document.createElement("a");
+    //     a.style = "display: none";
+    //     a.href = url;
+    //     a.download = filename;
+    //     document.body.appendChild(a);
+    //     a.click();
+    //     window.URL.revokeObjectURL(url);
+    // }
 
-    function hanyaAngka(evt) {
-        var charCode = (evt.which) ? evt.which : event.keyCode
-        if (charCode > 31 && (charCode < 48 || charCode > 57))
+    // function dataURLToBlob(dataURL) {
+    //     var parts = dataURL.split(';base64,');
+    //     var contentType = parts[0].split(":")[1];
+    //     var raw = window.atob(parts[1]);
+    //     var rawLength = raw.length;
+    //     var uInt8Array = new Uint8Array(rawLength);
+    //     for (var i = 0; i < rawLength; ++i) {
+    //         uInt8Array[i] = raw.charCodeAt(i);
+    //     }
+    //     return new Blob([uInt8Array], {
+    //         type: contentType
+    //     });
+    // }
+    // clearButton.addEventListener("click", function(event) {
+    //     signaturePad.clear();
+    // });
+    // changeColorButton.addEventListener("click", function(event) {
+    //     var r = Math.round(Math.random() * 255);
+    //     var g = Math.round(Math.random() * 255);
+    //     var b = Math.round(Math.random() * 255);
+    //     var color = "rgb(" + r + "," + g + "," + b + ")";
+    //     signaturePad.penColor = color;
+    // });
+    // savePNGButton.addEventListener("click", function(event) {
+    //     if (signaturePad.isEmpty()) {
+    //         alert("Please provide a signature first.");
+    //     } else {
+    //         var dataURL = signaturePad.toDataURL();
+    //         download(dataURL, "signature.png");
+    //     }
+    // });
 
-            return false;
-        return true;
-    }
+    ///
 
-    function showPreviewposter(event) {
-        if (event.target.files.length > 0) {
-            var src = URL.createObjectURL(event.target.files[0]);
-            var preview = document.getElementById("file-preview-poster");
-            preview.src = src;
-            preview.style.display = "block";
-        }
-    }
+    // function hanyaAngka(evt) {
+    //     var charCode = (evt.which) ? evt.which : event.keyCode
+    //     if (charCode > 31 && (charCode < 48 || charCode > 57))
 
-    function showPreviewSignature(event) {
-        if (event.target.files.length > 0) {
-            var src = URL.createObjectURL(event.target.files[0]);
-            var preview = document.getElementById("signature-preview");
-            preview.src = src;
-            preview.style.display = "block";
-        }
-    }
+    //         return false;
+    //     return true;
+    // }
+
+    // function showPreviewposter(event) {
+    //     if (event.target.files.length > 0) {
+    //         var src = URL.createObjectURL(event.target.files[0]);
+    //         var preview = document.getElementById("file-preview-poster");
+    //         preview.src = src;
+    //         preview.style.display = "block";
+    //     }
+    // }
+
+    // function showPreviewSignature(event) {
+    //     if (event.target.files.length > 0) {
+    //         var src = URL.createObjectURL(event.target.files[0]);
+    //         var preview = document.getElementById("signature-preview");
+    //         preview.src = src;
+    //         preview.style.display = "block";
+    //     }
+    // }
 </script>
 
 @endsection

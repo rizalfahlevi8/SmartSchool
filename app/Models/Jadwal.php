@@ -2,16 +2,11 @@
 
 namespace App\Models;
 
-<<<<<<< HEAD
 use App\Models\Kelas;
 use App\Models\Akademik;
 use App\Models\Detail_jadwal;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-=======
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
->>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
 
 class Jadwal extends Model
 {

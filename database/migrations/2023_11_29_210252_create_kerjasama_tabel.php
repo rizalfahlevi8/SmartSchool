@@ -25,15 +25,20 @@ return new class extends Migration
             $table->timestamps();
             $table->string('file')->nullabel();
         });
-    }
+
+        // Setelah membuat tabel, tambahkan validasi untuk kolom 'file'
+        Schema::table('mou_tabel', function (Blueprint $table) {
+            $table->string('file')->nullable()->default(null)->change(); // Make sure the column is nullable
+        });
 
     /**
      * Reverse the migrations.
      *
      * @return void
      */
+    }
     public function down()
     {
-        //
+        Schema::dropIfExists('mou_tabel');
     }
 };

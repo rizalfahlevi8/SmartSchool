@@ -1,3 +1,12 @@
+<head>
+  <!-- Styles -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
+    <!-- Or for RTL support -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.rtl.min.css" />
+</head>  
+
 @extends('components.main')
 @section('title-content')
     Data Tamu
@@ -45,21 +54,18 @@
                       <div class="row g-3 py-1 px-4">
                         <div class="col-md-3">
                           <select onchange="handleTujuan(this)" id="opsi_tujuan" name="Opsi" class="form-select " aria-label="Default select example">
-                            {{-- <option value="kepala sekolah">Kepala Sekolah</option>
-                            <option value="wakil kepala sekolah">Wakil Kepala Sekolah</option>
-                            <option value="guru">Guru</option>
-                            <option value="siswa">Siswa</option> --}}
-                            <option value="">Pilih Tujuan</option>
+                            <option value="" selected disabled>Pilih Tujuan</option>
                             @foreach ($userRoles as $r)
-                                <option value="{{ $r->role }}">{{ $r->role }}</option>  
+                              @php
+                                $formattedRole = ucwords($r->role);
+                              @endphp
+                              <option value="{{ $r->role }}">{{ $formattedRole }}</option>
                             @endforeach
                           </select>
                         </div>
                         <div class="col-md-3">
-                          <input type="text" id="searchInput" placeholder="Cari Username" class="form-control rounded-3" aria-label="Default select example" >
-                        </div>
-                        <div class="col-md-3">
                           <select id="opsi_lanjutan" name="Opsi_Lanjutan" class="form-select col-md-3" aria-label="Default select example">
+                            <option value="">Cari Username</option>
                             {{-- <optgroup label="wakil_kepala_sekolah">
                               <option value=""></option>
                             </optgroup>
@@ -109,20 +115,74 @@
       </div>
   </div>
 </div>
-<script>
-  function insertInputTamu(){
-    console.log("fungsi di jalankan");
-    // Tampilkan dialog konfirmasi
-    var isConfirmed = confirm('Apakah anda yakin data sudah benar?');
-    // Jika pengguna mengklik "OK", arahkan ke "/data-tamu"
-    if (isConfirmed) {
-      window.location.href = "/data-tamu";
-    }
-    // Kembalikan nilai sesuai hasil konfirmasi
-    return isConfirmed;
-  }
-</script>
-<script>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.0/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+{{-- <script>
+  $( '#basic-usage' ).select2( {
+    theme: "bootstrap-5",
+    width: $( this ).data( 'width' ) ? $( this ).data( 'width' ) : $( this ).hasClass( 'w-100' ) ? '100%' : 'style',
+    placeholder: $( this ).data( 'placeholder' ),
+} );
+</script> --}}
+
+{{-- <script>
+  $() --}}
+
+
+  <script>
+    $(document).ready(function() {
+      const opsi_lanjutan_dropdown = $('#opsi_lanjutan');
+      const opsi_tujuan_dropdown = $('#opsi_tujuan');
+  
+      opsi_tujuan_dropdown.select2({
+        theme: 'bootstrap-5',
+        width: opsi_tujuan_dropdown.data('width') ? opsi_tujuan_dropdown.data('width') : opsi_tujuan_dropdown.hasClass('w-100') ? '100%' : 'style',
+        placeholder: opsi_tujuan_dropdown.data('placeholder'),
+      });
+  
+      opsi_lanjutan_dropdown.select2({
+        theme: 'bootstrap-5',
+        width: opsi_lanjutan_dropdown.data('width') ? opsi_lanjutan_dropdown.data('width') : opsi_lanjutan_dropdown.hasClass('w-100') ? '100%' : 'style',
+        placeholder: opsi_lanjutan_dropdown.data('placeholder'),
+      });
+  
+      const handleTujuan = async (role) => {
+        try {
+          const res = await fetch(`/get-username-by-role/${role}`);
+          const result = await res.json();
+          console.log(result);
+  
+          let options = result.map(username => `<option value="${username}">${username}</option>`);
+  
+          opsi_lanjutan_dropdown.empty().append(options).trigger('change');
+          console.log(opsi_lanjutan_dropdown.html());
+        } catch (error) {
+          console.error('Error fetching or processing data:', error);
+        }
+      };
+      console.log('Change event triggered!');
+  
+      opsi_tujuan_dropdown.on('change', function() {
+        const selectedRole = $(this).val();
+        handleTujuan(selectedRole);
+      });
+  
+      opsi_lanjutan_dropdown.on('select2:opening', function(e) {
+        const selectedRole = opsi_tujuan_dropdown.val();
+        if (!selectedRole) {
+          e.preventDefault();
+          alert('Pilih terlebih dahulu tujuan untuk memfilter nama yang ingin di tuju');
+        }
+      });
+    });
+  </script>
+  
+
+{{-- <script>
   const opsi_lanjutan_dropdown = document.getElementById('opsi_lanjutan');
   const opsi_tujuan_dropdown = document.getElementById('opsi_tujuan');
 
@@ -173,262 +233,6 @@
         opsi_lanjutan_dropdown.appendChild(optionElement);
       });
   });
-</script> 
-{{-- awal bikin script --}}
-{{-- <script>
-
-  const opsi_lanjutan = document.getElementById('opsi_lanjutan')
-
-  const handleTujuan = async (e) => {
-    if(e.value == 'guru'){
-      try {
-      const res = await fetch(`/get-username-by-role/${e.value}`);
-      const result = await res.json();
-      console.log(result);
-
-      let kontenHtml = '';
-
-      result.forEach((username) => {
-        kontenHtml += `<option value="${username}">${username}</option>`;
-      });
-
-      opsi_lanjutan.innerHTML = kontenHtml;
-    } catch (error) {
-      console.error('Error fetching or processing data:', error);
-    }
-    }
-    if(e.value == 'siswa'){
-      try {
-      const res = await fetch(`/get-username-by-role/${e.value}`);
-      const result = await res.json();
-      console.log(result);
-
-      let kontenHtml = '';
-
-      result.forEach((username) => {
-        kontenHtml += `<option value="${username}">${username}</option>`;
-      });
-
-      opsi_lanjutan.innerHTML = kontenHtml;
-    } catch (error) {
-      console.error('Error fetching or processing data:', error);
-    }
-    } 
-    // else if(e.value == 'siswa'){
-    //   const res = await fetch(`/get-username-by-role/${e.value}`)
-    //   const result = await res.json()
-    //   console.log(result);
-
-    //   let kontenHtml = ''
-
-    //   result.forEach((element, index) => {
-    //     kontenHtml += `<option value="${result[index]}">${result[index]}</option>`
-    //   });
-
-    //   opsi_lanjutan.innerHTML = kontenHtml
-    // }
-  }
-
-  // document.getElementById('opsi_tujuan').addEventListener('change',function async () {
-  //   let opsi_tujuan = this.value;
-  //   let opsi_lanjutan_dropdown = document.getElementById('opsi_lanjutan');
-
-    // //hapus opsi lanjutan yang ada sebelumnya
-    // // opsi_lanjutan_dropdown.innerHTML = '';
-
-    // // Kosongkan dropdown subcategories
-    // document.getElementById('opsi_lajutan').innerHTML = '<option value="">Pilih Username</option>';
-
-    // //Menentukan pilihan opsi lanjutan berdasarkan opsi tujuan yang di pilih
-    // // if (opsi_tujuan === 'wakil kepala sekolah') {
-    // //   addOptionsToDropdown(opsi_lanjutan_dropdown, ['Wakases', 'Seketaris', 'Wakases Pembelajaran']);
-    // // } 
-    // // else 
-  
-    
-  //   // Ambil data dari server menggunakan AJAX
-  //   const res = await fetch(`/get-username-by-role/${opsi_tujuan}`);
-  //   console.log(res);
-
-  //   }
-
-    // fetch(`/get-username-by-role/${opsi_tujuan}`) // Sesuaikan dengan rute yang sesuai di aplikasi Laravel Anda
-    //     .then(response => response.json())
-    //     .then(data => {
-    //       // console.log('Role yang dipilih:', opsi_tujuan);
-    //       console.log('Data dari server:', data)
-    //       // Tambahkan opsi ke dropdown
-    //       data.forEach(username => {
-    //         addOptionsToDropdown(opsi_lanjutan_dropdown, [username]);
-    //       });
-
-    //       var subcategoriesDropdown = document.getElementById('opsi_lajutan');
-    //             for (var username in role) {
-    //                 subcategoriesDropdown.options[subcategoriesDropdown.options.length] = new Option(role[username],
-
-    //     })
-    //     .catch(error => console.error('Error:', error));
-   
-  // });
-
-  //fungsi untuk menambahkan opsi ke dropdown opsi lanjutan 
-  // function addOptionsToDropdown(dropdown, options) {
-  //   options.forEach(function(option) {
-  //     let optionElement = document.createElement('option');
-  //     optionElement.value = option.toLowerCase().replace(' ', ''); //set nilai tanpa spasi
-  //     optionElement.text = option;
-  //     dropdown.appendChild(optionElement);
-  //   });
-  // }
-
-  // Fungsi untuk menangani pencarian berdasarkan opsi yang dipilih
-  document.getElementById('cari').addEventListener('click', function() {
-    let selectedOption = document.getElementById('opsi_lanjutan').value;
-    // Lakukan aksi yang sesuai dengan nilai yang dipilih
-    // Contoh: Bisa redirect atau menampilkan informasi terkait username yang dipilih.
-    // Di sini, saya hanya menampilkan alert sebagai contoh:
-    alert('Anda memilih: ' + selectedOption);
-  });
-</script>
-<script>
-
-  //   const searchByUsername = async () => {
-  //   const searchInput = document.getElementById('searchInput').value;
-    
-  //   // Lakukan validasi input jika diperlukan
-
-  //   const res = await fetch(`/search-by-username/${searchInput}`);
-  //   const result = await res.json();
-
-  //   // Manipulasi atau tampilkan hasil sesuai kebutuhan
-  //   displaySearchResults(result);
-  // };
-
-  // const displaySearchResults = (results) => {
-  //   const resultsContainer = document.getElementById('opsi_lajutan');
-  //   // Manipulasi elemen HTML untuk menampilkan hasil pencarian
-  //   // Misalnya, bisa menggunakan loop untuk menampilkan hasil dalam bentuk daftar atau tabel
-  // };
-
-
-
-    document.getElementById('searchInput').addEventListener('input', function() {
-      let searchString = this.value.toLowerCase();
-      let opsi_tujuan = document.getElementById('opsi_tujuan').value;
-      let opsi_lanjutan_dropdown = document.getElementById('opsi_lanjutan');
-      let options = [];
-
-      // Menentukan pilihan opsi lanjutan berdasarkan opsi tujuan yang dipilih
-                                            // if (opsi_tujuan === 'wakil kepala sekolah') {
-                                            //   options = ['Wakases', 'Seketaris', 'Wakases Pembelajaran'];
-                                            // } 
-                                            // else 
-      // Menentukan pilihan opsi lanjutan berdasarkan opsi tujuan yang dipilih
-      // if (opsi_tujuan === 'guru') {
-      //   @foreach($namaUserGuru as $userGuru)
-      //     options.push('{{ $userGuru->username }}');
-      //   @endforeach
-      // } 
-      // else if (opsi_tujuan === 'siswa') {
-      //   @foreach($namaUserSiswa as $userSiswa)
-      //     options.push('{{ $userSiswa->username }}');
-      //   @endforeach
-      // }
-
-      // // Menentukan pilihan opsi lanjutan berdasarkan opsi tujuan yang dipilih
-      @if ($namaUserGuru)
-        @foreach($namaUserGuru as $nuserGuru)
-          options.push('{{ $nuserGuru->username }}');
-        @endforeach
-      @endif
-      @if ($namaUserSiswa)
-        @foreach($namaUserSiswa as $nuserSiswa)
-          options.push('{{ $nuserSiswa->username }}');
-        @endforeach
-      @endif
-
-      // Menghapus opsi lanjutan yang ada sebelumnya
-      opsi_lanjutan_dropdown.innerHTML = '';
-
-      // Menampilkan opsi sesuai dengan teks pencarian
-      // options.forEach(function(option) {
-      //   if (option.toLowerCase().includes(searchString)) {
-      //     let optionElement = document.createElement('option');
-      //     optionElement.value = option.toLowerCase().replace(' ', ''); // Set nilai tanpa spasi
-      //     optionElement.text = option;
-      //     opsi_lanjutan_dropdown.appendChild(optionElement);
-      //   }
-      // });
-      // Menampilkan opsi sesuai dengan teks pencarian
-      options.forEach(function (option) {
-        if (option.toLowerCase().includes(searchString)) {
-          let optionElement = document.createElement('option');
-          optionElement.value = option.toLowerCase().replace(' ', ''); // Set nilai tanpa spasi
-          optionElement.text = option;
-          opsi_lanjutan_dropdown.appendChild(optionElement);
-        }
-      });
-    });
-</script> --}}
-{{-- script modif dari temen (jangan di hapus) --}}
-{{-- <script>
-      const opsi_lanjutan_dropdown = document.getElementById('opsi_lanjutan');
-
-      const handleTujuan = async (e) => {
-        try {
-          const res = await fetch(`/get-username-by-role/${e.value}`);
-          const result = await res.json();
-          console.log(result);
-
-          let kontenHtml = '';
-
-          result.forEach((username) => {
-            kontenHtml += `<option value="${username}">${username}</option>`;
-          });
-
-          opsi_lanjutan_dropdown.innerHTML = kontenHtml;
-        } catch (error) {
-          console.error('Error fetching or processing data:', error);
-        }
-      }
-
-    document.getElementById('searchInput').addEventListener('input', function() {
-      console.log('input terpanggil');
-      let searchString = this.value.toLowerCase();
-      let options = [];
-
-      @if ($namaUserGuru)
-        @foreach($namaUserGuru as $nuserGuru)
-          options.push('{{ $nuserGuru->username }}');
-        @endforeach
-      @endif
-
-      @if ($namaUserSiswa)
-        @foreach($namaUserSiswa as $nuserSiswa)
-          options.push('{{ $nuserSiswa->username }}');
-        @endforeach
-      @endif
-
-      opsi_lanjutan_dropdown.innerHTML = '';
-
-      // options.forEach(function (option) {
-      //   if (option.toLowerCase().includes(searchString)) {
-      //     let optionElement = document.createElement('option');
-      //     optionElement.value = option; // Set nilai sesuai dengan apa yang ingin Anda gunakan
-      //     optionElement.text = option;
-      //     opsi_lanjutan_dropdown.appendChild(optionElement);
-      //   }
-      // });
-      options
-          .filter(option => option.toLowerCase().includes(searchString))
-          .forEach(function (option) {
-            let optionElement = document.createElement('option');
-            optionElement.value = option; // Set nilai sesuai dengan apa yang ingin Anda gunakan
-            optionElement.text = option;
-            opsi_lanjutan_dropdown.appendChild(optionElement);
-          });
-    });
-</script> --}}
-
+</script>  --}}
 
 @endsection

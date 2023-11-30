@@ -1,7 +1,7 @@
 @extends('components.main')
 @section('breadcrumbs')
     <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
-        <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="/humas/tamu">Kerjasama</a>
+        <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="/mou">Kerjasama</a>
         </li>
         <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Edit</li>
     </ol>
@@ -135,12 +135,6 @@
                                 <span class="text-danger">{{ $errors->first('tujuan_mitra') }}</span>
                             @endif
                         </div>
-
-
-                        <div col="col-md-3">
-                            <label class="form-label" for="signature">Tanda Tangan Mitra</label>
-                        </div>
-
                         <div class="card-footer d-flex justify-content-end" style="gap: 10px">
                             <a href="/mou" type="button" class="btn btn-danger text-sm rounded-3"
                                 style="margin-bottom: 0;">
