@@ -227,7 +227,7 @@ Route::middleware(['userRole:admin'])->group(function () {
     Route::post('/api/akademik/absensi-update/{absensi}', [AbsensiController::class, 'apiUpdateAbsensi'])->name('api.update-absensi');
 
     // Kims-Absensi
-    Route::get('/akademik/absensi/test', [AbsensiController::class,'showTest']);
+    Route::get('/akademik/absensi/admin', [AbsensiController::class,'showAbsensiAdmin']);
     Route::get('/get_kelas', [KelasController::class, 'getKelas']);
     Route::get('/get_siswa', [SiswaController::class, 'getSiswaKelasAbsensi']);
     Route::get('/get_guru', [GuruController::class, 'getGuru']);
@@ -243,7 +243,15 @@ Route::middleware(['userRole:admin'])->group(function () {
 Route::middleware(['userRole:guru'])->group(function () {
 });
 
+Route::middleware(['userRole:siswa'])->group(function () {
+
+    Route::get('/akademik/absensi/siswa', [AbsensiController::class, 'showAbsensiSiswa']);
+    Route::post('/akademik/absensi/siswaPostAbsensi', [AbsensiController::class, 'store'])->name('absensi.store');
+});
+
 Route::middleware(['userRole:siswa,admin'])->group(function () {
     //jadwal pelajaran
     Route::get('/akademik/jadwal-siswa/{id}', [JadwalController::class, 'jadwalsiswa']);
+
+
 });

@@ -5,15 +5,58 @@ namespace App\Http\Controllers;
 use App\Models\Absensi;
 use App\Models\Akademik;
 use App\Models\Kelas;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class AbsensiController extends Controller
 {
-    public function showTest(){
+    public function showAbsensiAdmin(){
         return view('pages.akademik.absensi.absensi-admin', [
             'absensis'=>Absensi::all()
-        ])->with('title', 'testAbsensi');
+        ])->with('title', 'Absensi Admin');
     }
+    public function showAbsensiSiswa()
+    {
+        $absensis = Absensi::all();
+
+        return view('pages.akademik.absensi.absensi-siswa', compact('absensis'))->with('title', 'Absensi Admin');
+    }
+
+    public function store(Request $request)
+{
+    // Log data request
+    Log::info('Absensi store request data:', $request->all());
+    Log::info('Before creating Absensi:', [
+        'status_absen' => $request->input('status_absen'),
+        'role' => $request->input('role'),
+        'id_user' => $request->input('id_user'),
+    ]);
+
+    // Validasi request
+    $request->validate([
+        'status_absen' => 'required|in:masuk,sakit,izin',
+        'role' => 'required',
+        'id_user' => 'required',
+    ]);
+
+    // Buat data absensi dengan mengisi semua kolom yang diperlukan
+    $absensi = new Absensi([
+        'status_absen' => $request->input('status_absen'),
+        'role' => $request->input('role'), // Set the role from the request
+        'id_user' => $request->input('id_user'), // Set the user ID from the request
+        'created_at' => now(),
+    ]);
+
+    Log::info('After creating Absensi:', $absensi->toArray());
+
+    // Simpan data absensi ke database
+    $absensi->save();
+
+    return response()->json(['message' => 'Data absensi berhasil disimpan'], 201);
+}
+
 
     public function index()
     {

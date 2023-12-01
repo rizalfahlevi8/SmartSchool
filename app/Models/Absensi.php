@@ -10,21 +10,21 @@ class Absensi extends Model
     use HasFactory;
     protected $table = 'absensis';
 
-    protected $fillable = [
-        'status_absen',
-        'keterangan',
-        'kelas',
-        'id_siswa',
-        'id_akademik',
-    ];
+    protected $fillable = ['status_absen', 'role', 'id_user', 'created_at'];
+
+    public function guru()
+    {
+        return $this->belongsTo(Guru::class, 'id_user', 'id');
+    }
 
     public function siswa()
     {
-        return $this->belongsTo(Siswa::class, 'id_siswa', 'id');
+        return $this->belongsTo(Siswa::class, 'id_user', 'id');
     }
 
-    public function akademik()
-    {
-        return $this->belongsTo(Akademik::class, 'id_akademik', 'id');
-    }
+    public function user()
+{
+    return $this->belongsTo(User::class, 'id_user', 'id');
+}
+
 }

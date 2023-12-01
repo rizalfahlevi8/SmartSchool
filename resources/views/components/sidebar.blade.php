@@ -70,7 +70,8 @@
                 </div>
             </li>
             
-{{-- Presensi --}}
+            {{-- Presensi --}}
+
             <li class="mb-1" style="width: 100%">
                 <button class="btn align-items-center rounded collapsed text-white font-weight-bold"
                     style="text-transform: none; width: 100%;display: flex; align-items: center; column-gap:10px;"
@@ -91,7 +92,7 @@
                         </li>
                         <li>
                             <a class="link-light rounded mb-1 {{ Request::is('akademik/absensi*') ? 'bg-gradient-primary ' : '' }}"
-                                href="/akademik/absensi/test">
+                                href="/akademik/absensi/admin">
                                 <i class="material-icons opacity-10 mx-2">receipt_long</i>
                                 Presensi Admin
                             </a>
@@ -139,6 +140,21 @@
                     </ul>
                 </div>
             </li>
+        
+        @else
+        
+        <li class="mb-1" style="width: 100%">
+            <a class="btn align-items-center rounded text-white font-weight-bold"
+                style="text-transform: none; width: 100%; display: flex; align-items: center; column-gap:10px;"
+                href="/akademik/absensi/siswa">
+                <span class="material-symbols-outlined">
+                    school
+                </span>
+                Presensi
+            </a>
+        </li>
+        
+
         @endif
     </ul>
 </div>

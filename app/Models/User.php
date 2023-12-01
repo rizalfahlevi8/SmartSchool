@@ -63,5 +63,8 @@ class User extends Authenticatable
         return in_array($this->current_role, $roles);
     }
 
-    // public function
+    public function absensis()
+{
+    return $this->hasMany(Absensi::class, 'id_user', 'id');
+}
 }

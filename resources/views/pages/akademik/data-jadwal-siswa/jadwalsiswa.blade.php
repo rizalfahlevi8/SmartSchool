@@ -16,8 +16,6 @@
                 <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
                     <h6 class="text-white text-capitalize ps-3">Jadwal :
                         {{ $kelas->nama_kelas }}
-                        {{-- {{ $guru->nama ?? '' }} ({{ $guru->NIP ?? '' }}) --}}
-                        {{-- {{ $j->mapel->namamapel ?? '' }} --}}
                     </h6>
                 </div>
             </div>
