@@ -48,6 +48,10 @@
                                         Tujuan
                                     </th>
                                     <th
+                                        class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
+                                        Nama Yang Di Tuju
+                                    </th>
+                                    <th
                                         class="
                                             text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
                                         Keterangan
@@ -76,6 +80,9 @@
                                             {{ $t->Opsi_Tujuan }}
                                         </td>
                                         <td class="text-center">
+                                            {{ $t->nama_tujuan }}
+                                        </td>
+                                        <td class="text-center">
                                             {{ $t->Keterangan }}
                                         </td>
                                         <td class="text-center">
@@ -84,7 +91,7 @@
                                                 btn-info font-weight-bold btn--edit text-sm rounded-circle"
                                                 style="margin: 5px 0;" data-bs-toggle="tooltip" data-bs-placement="bottom"
                                                 title="Detail"  id="{{ $t->id }}"nama="{{ $t->nama }}" 
-                                                alamat="{{ $t->alamat }}" Opsi_Tujuan="{{ $t->Opsi_Tujuan }}" Keterangan="{{ $t->Keterangan }}"
+                                                alamat="{{ $t->alamat }}" Opsi_Tujuan="{{ $t->Opsi_Tujuan }}" Opsi_lanjutan="{{ $t->nama_tujuan }}" Keterangan="{{ $t->Keterangan }}"
                                                 onclick="showModalDialog(this)"> 
                                                 <i class="fa fa-eye"></i>
                                             </button>
@@ -161,6 +168,17 @@
                                     <li class="list-group-item">
                                         <div class="row">
                                             <div class="col-md-5">
+                                                <span class="float-start fw-bold">Nama Tujuan</span>
+                                                <div class="float-end">:</div>
+                                            </div>
+                                            <div class="col-md-7" style="text-transform: capitalize" id="Opsi_lanjutan">
+
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <div class="row">
+                                            <div class="col-md-5">
                                                 <span class="float-start fw-bold">Keterangan</span>
                                                 <div class="float-end">:</div>
                                             </div>
@@ -193,11 +211,13 @@
             const nama = updateModalDialog.querySelector('#nama');
             const asal = updateModalDialog.querySelector('#alamat');
             const tujuan = updateModalDialog.querySelector('#Opsi_Tujuan');
+            const b = updateModalDialog.querySelector('#Opsi_lanjutan');
             const keterangan = updateModalDialog.querySelector('#Keterangan');
 
             nama.innerText = element.getAttribute('nama');
             asal.innerText = element.getAttribute('alamat');
             tujuan.innerText = element.getAttribute('Opsi_Tujuan');
+            b.innerText = element.getAttribute('Opsi_lanjutan');
             keterangan.innerText = element.getAttribute('Keterangan');
         }
     </script>

@@ -140,7 +140,7 @@
                     </span>
                     Humas <i class="material-icons opacity-10 ms-auto">expand_more</i>
                 </button>
-                <div class="collapse" id="humas-collapse">
+                <div class="collapse {{ Request::is('data-tamu*') || Request::is('mou*') ? 'show' : '' }}" id="humas-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                         {{-- <li><a class="link-light rounded mb-1{{ Request::is('data-tamu')}}" style="width: 100%" href="/data-tamu"> <i
                                     class="material-icons opacity-10 mx-2">groups</i>

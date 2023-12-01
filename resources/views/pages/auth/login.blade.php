@@ -101,7 +101,7 @@
                                                 font-family: 'italic', Times, serif;
                                             }
                                         </style>
-                                        <a href="{{ route('humas.daftar-tamu') }}" class="teks-style" style="text-decoration-line: initial;" >
+                                        <a href="{{ route('daftar-tamu') }}" class="teks-style" style="text-decoration-line: initial;" >
                                             Silahkan klik untuk Tamu
                                         </a>
                                     </div>

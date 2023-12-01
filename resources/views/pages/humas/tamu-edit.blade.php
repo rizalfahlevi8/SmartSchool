@@ -1,3 +1,11 @@
+<head>
+    <!-- Select2 -->
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" />
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
+      <!-- Or for RTL support -->
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.rtl.min.css" />
+</head> 
 @extends('components.main')
 @section('breadcrumbs')
     <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
@@ -17,16 +25,17 @@
                     </div>
                 </div>
                 @php
-                    $opsi_tujuan_array = explode(',', $tamu->Opsi_Tujuan);
-                    while (count($opsi_tujuan_array) < 4) {
-                        $opsi_tujuan_array[] = '';
-                    }
+                    // $opsi_tujuan_array = explode(',', $tamu->Opsi_Tujuan);
+                    // while (count($opsi_tujuan_array) < 4) {
+                    //     $opsi_tujuan_array[] = '';
+                    // }
                     $form_input = [
                         'id' => $tamu->id,
                         'nama' => $tamu->nama,
                         'alamat' => $tamu->alamat,
                         'Opsi_Tujuan' => $tamu->Opsi_Tujuan,
                         'Keterangan' => $tamu->Keterangan,
+                        'Opsi_lanjutan' => $tamu->Opsi_lanjutan,
                        
                     ];
                     foreach ($form_input as $key => $input_value) {
@@ -40,19 +49,6 @@
                         enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
-                        <div class="col-md-6">
-                            <label for="nip" class="form-label">id</label>
-                            <div class="input-group">
-                                <input id="id" type="text" onkeypress="return hanyaAngka(event)" id="id"
-                                    class="form-control rounded-3" pattern="[0-9]{16}" maxlength="16" required
-                                    required value="{{ $tamu->id }}" {{ $errors->has('id') ? 'autofocus="true"' : '' }}
-                                    readonly disabled>
-                            </div>
-                            @if ($errors->has('id'))
-                                <span class="text-danger">{{ $errors->first('id') }}</span>
-                            @endif
-                        </div>
-
                         <div class="col-md-6">
                             <label class="form-label" for="nama">Nama Lengkap</label>
                             <div class="input-group">
@@ -69,44 +65,43 @@
                                     {{ $errors->has('alamat') ? 'autofocus="true"' : '' }}>
                             </div>
                         </div>
-
                         <div class="col-md-6">
-                            <label class="form-label" for="tujuan">Tujuan</label>
-                            <div class="input-group">
-                                <div class="input-group">
-                                    <select class="form-select rounded-3 form-control-lg text-sm"
-                                        aria-label="Default select example" name="Opsi" id="Opsi_Tujuan">
-                                        <option selected> Pilih Tujuan </option>
-                                        @foreach ($userRoles as $r)
-                                            <option value="{{ $r->role }}">{{ $r->role }}</option>  
-                                        @endforeach
-                                        {{-- @foreach ($tujuans as $tujuan)
-
-                                            <option value="{{ $tujuan }}"
-                                                @if ($form_input['Opsi_Tujuan'] == $tujuan) {{ 'selected' }} @endif>
-                                                {{ ucfirst($tujuan) }}
-                                            </option>
-                                        @endforeach --}}
-
-                                            {{-- <option value="kepala sekolah" {{ $tamu->Opsi_Tujuan == 'kepala sekolah' ? 'Selected' : '' }}>Kepala Sekolah
-                                            </option>
-                                            <option value="wakil kepala sekolah" {{ $tamu->Opsi_Tujuan == 'wakil kepala sekolah' ? 'Selected' : '' }}>Wakil Kepala Sekolah
-                                            </option>
-                                            <option value="guru" {{ $tamu->Opsi_Tujuan == 'guru' ? 'Selected' : '' }}>Guru
-                                            </option>
-                                            <option value="siswa" {{ $tamu->Opsi_Tujuan == 'siswa' ? 'Selected' : '' }}>Siswa
-                                            </option> --}}
-                                    </select>
-                                </div>
-                            </div>
+                            <label class="form-label" for="asal">Pilih Tujuan</label>
+                            <select onchange="handleTujuan(this)" id="opsi_tujuan" name="Opsi" class="form-select" aria-label="Default select example">
+                                <option value="" disabled selected></option>
+                                @foreach ($userRoles as $r)
+                                    @php
+                                        $formattedRole = ucwords($r->role);
+                                    @endphp
+                                    <option value="{{ $r->role }}" {{ $r->role == $form_input['Opsi_Tujuan'] ? 'selected' : '' }}>
+                                        {{ $formattedRole }}
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
-
-                        <div class="col-md-3">
+                        
+                        <div class="col-md-6">
+                            <label class="form-label" for="asal">Pilih nama yang ingin dituju</label>
+                            <select id="opsi_lanjutan" name="Opsi_Lanjutan" class="form-select col-md-3" aria-label="Default select example">
+                                <option value="" {{ $form_input['Opsi_lanjutan'] == '' ? 'selected' : '' }}></option>
+                                <!-- Tambahan opsi yang dihasilkan dari data sebelumnya -->
+                            </select>
+                        </div>
+                        
+                        {{-- <div class="col-md-3">
                             <label class="form-label" for="keterangan">Keterangan</label>
                             <div class="input-group">
                                 <input type="text" name="keteranganTamu" class="form-control rounded-3" id="Keterangan"
                                     required value="{{ $form_input['Keterangan'] }}"
                                     {{ $errors->has('Keterangan') ? 'autofocus="true"' : '' }}>
+                            </div>
+                        </div> --}}
+                        <div class="mb-3" style="padding-left: 20px; padding-right: 20px;">
+                            <label for="exampleFormControlTextarea1" class="form-label fs-6">Keterangan</label>
+                            <div class="form-floating mb-3">
+                                <textarea class="form-control" name="keteranganTamu" id="floatingTextarea" style="height: 100px" required {{ $errors->has('Keterangan') ? 'autofocus="true"' : '' }}>
+                                    {{ $form_input['Keterangan'] }}
+                                </textarea>
                             </div>
                         </div>
 
@@ -125,15 +120,60 @@
             </div>
         </div>
     </div>
-
+<!-- Select2 -->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.0/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
-        function hanyaAngka(evt) {
-            var charCode = (evt.which) ? evt.which : event.keyCode
-            if (charCode > 31 && (charCode < 48 || charCode > 57))
+        $(document).ready(function() {
+    const opsi_lanjutan_dropdown = $('#opsi_lanjutan');
+    const opsi_tujuan_dropdown = $('#opsi_tujuan');
 
-                return false;
-            return true;
+    opsi_tujuan_dropdown.select2({
+        theme: 'bootstrap-5',
+        width: opsi_tujuan_dropdown.data('width') ? opsi_tujuan_dropdown.data('width') : opsi_tujuan_dropdown.hasClass('w-100') ? '100%' : 'style',
+        placeholder: opsi_tujuan_dropdown.data('placeholder'),
+    });
+
+    opsi_lanjutan_dropdown.select2({
+        theme: 'bootstrap-5',
+        width: opsi_lanjutan_dropdown.data('width') ? opsi_lanjutan_dropdown.data('width') : opsi_lanjutan_dropdown.hasClass('w-100') ? '100%' : 'style',
+        placeholder: opsi_lanjutan_dropdown.data('placeholder'),
+    });
+
+    const handleTujuan = async (role) => {
+        try {
+            const res = await fetch(`/get-username-by-role/${role}`);
+            const result = await res.json();
+            console.log(result);
+
+            let options = result.map(user => `<option value="${user.username}">${user.nama}</option>`);
+
+            opsi_lanjutan_dropdown.empty().append(options);
+        } catch (error) {
+            console.error('Error fetching or processing data:', error);
         }
-    </script>
+    };
+
+    // Synchronize initial values
+    const selectedRole = opsi_tujuan_dropdown.val();
+        if (selectedRole) {
+            handleTujuan(selectedRole);
+        }
+
+        opsi_tujuan_dropdown.on('change', function() {
+            const selectedRole = $(this).val();
+            handleTujuan(selectedRole);
+        });
+
+        opsi_lanjutan_dropdown.on('select2:opening', function(e) {
+            const selectedRole = opsi_tujuan_dropdown.val();
+            if (!selectedRole) {
+                e.preventDefault();
+                alert('Pilih terlebih dahulu tujuan untuk memfilter nama yang ingin di tuju');
+            }
+        });
+    });
+      </script>
 @endsection
 {{-- footer --}}

@@ -21,15 +21,7 @@ class TamuRolesSeeder extends Seeder
         DB::table('tamu_tabel')->truncate();  //menghapus semua data yang ada di tamu_tabel
 
         foreach ($rolesArray as $role) {
-            // DB::table('tamu_tabel')->insert([
-            //     'Opsi_Tujuan' => $role,
-            // ]);
-            // if ($role->role === 'admin') {
-            //     DB::table('tamu_tabel')->insert([
-            //         'Opsi_Tujuan' => 'Kepala Sekolah',
-            //         'Keterangan' => 'Role: Admin, Username: ' . $role->username,
-            //     ]);
-            // } else 
+            
             if ($role->role === 'guru') {
                 DB::table('tamu_tabel')->insert([
                     'Opsi_Tujuan' => 'Guru',

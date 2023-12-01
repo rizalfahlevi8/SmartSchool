@@ -63,5 +63,11 @@ class User extends Authenticatable
         return in_array($this->current_role, $roles);
     }
 
+    // untuk tampil data pengumuan tamu 
+    public function tamu_penguman()
+    {
+        return hasMany(Tamu::class, 'Opsi_lanjutan', 'username');
+    }
+
     // public function
 }

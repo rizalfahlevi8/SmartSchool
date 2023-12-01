@@ -17,9 +17,12 @@ return new class extends Migration
             $table->id();
             $table->string('nama',20);
             $table->string('alamat');
-            $table->enum('Opsi_Tujuan',['Kepala Sekolah','Wakil Kepala Sekolah','Guru','Siswa']);
+            $table->string('Opsi_Tujuan');
             $table->string('Keterangan');
             $table->timestamps();
+            $table->string('Opsi_lanjutan')->references('username')->on('users');
+            $table->unsignedBigInteger('user_id')->nullable(); // Tambahkan kolom user_id
+            $table->foreign('user_id')->references('id')->on('users')->nullOnDelete();
         });
     }
 

@@ -17,6 +17,13 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
     <!-- CSS Files -->
     <link id="pagestyle" href="{{ asset('assets/css/material-dashboard.css?v=3.0.5') }}" rel="stylesheet" />
+    <!-- Select2 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
+    <!-- Or for RTL support -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.rtl.min.css" />
+    
     <style>
         .field-icon {
             right: 10px;
@@ -27,28 +34,25 @@
             cursor: pointer;
         }
     </style>
-    <!-- Nepcha Analytics (nepcha.com) -->
-    <!-- Nepcha is a easy-to-use web analytics. No cookies and fully compliant with GDPR, CCPA and PECR. -->
-    
+
     <style>
             body {
               background-color: #f5f5f5;
-              display: flex;
               justify-content: center;
               align-items: center;
-              height: 110vh;
-              margin: 0;
+              /* height: 10vh; */
+              margin: 3%;  
           }
 
           form {
               background-color: #ffffff;
               padding: 20px;
               border-radius: 10px;
-              box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+              box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);   
           }
 
           h2 {
-              margin-bottom: 20px;
+              margin-bottom: 10px;
           }
 
           label {
@@ -57,33 +61,23 @@
           }
 
           input, select, textarea {
-              width: 100%;
+              width: 50%;
               padding: 5px;
-              margin-bottom: 20px;
+              /* margin-bottom: 10px; */
               border: 1px solid #cccccc;
               border-radius: 5px;
               outline: none;
           }
 
-          /* button {
-              width: 100%;
-              padding: 10px;
-              background-color: #007bff;
-              color: #ffffff;
-              border: none;
-              border-radius: 5px;
-              cursor: pointer;
-          } */
-
           button:hover {
               background-color: #0056b3;
           }
           </style>
-          {{-- <script defer data-site="YOUR_DOMAIN_HERE" src="https://api.nepcha.com/js/nepcha-analytics.js"></script> --}}
 </head>
 <body>
 <div class="form-container">
   {{-- @yield('content') --}}
+        <main class="container">
             <div class="row">
               <div class="col-12">
                   <div class="card my-4">
@@ -94,7 +88,7 @@
                       </div>
                       <div class="card-body">
                         <main class="form-Tamu">
-                          <form action="{{ route('humas.kirim-tamu') }}" method="post">
+                          <form action="{{ route('kirim-tamu') }}" method="post">
                             @csrf
                             <div class="mb-3 col-md-8" style="padding-left: 20px; padding-right: 20px;">
                               <label for="inputNamaTamu" class="form-label"> Nama Tamu </label>
@@ -116,33 +110,21 @@
                               
                             <div class="mb-3" style="padding-left: 20px; padding-right: 20px;">
                                   <label class="col-form-label"> Bertujuan Bertemu Dengan Siapa </label>
-                                  <div class="row g-3 py-1">
-                                    <div class="col-md-4">
+                                  <div class="row g-3 py-1 px-4">
+                                    <div class="col-md-3">
                                       <select onchange="handleTujuan(this)" id="opsi_tujuan" name="Opsi" class="form-select " aria-label="Default select example">
-                                        {{-- <option value="kepala sekolah">Kepala Sekolah</option>
-                                        <option value="wakil kepala sekolah">Wakil Kepala Sekolah</option>
-                                        <option value="guru">Guru</option>
-                                        <option value="siswa">Siswa</option> --}}
-                                        <option value="">Pilih Tujuan</option>
+                                        <option value="" selected disabled>Pilih Tujuan</option>
                                         @foreach ($userRoles as $r)
-                                            <option value="{{ $r->role }}">{{ $r->role }}</option>  
+                                          @php
+                                            $formattedRole = ucwords($r->role);
+                                          @endphp
+                                          <option value="{{ $r->role }}">{{ $formattedRole }}</option>
                                         @endforeach
                                       </select>
                                     </div>
-                                    <div class="col-md-4">
-                                      <div class="input-group input-group-outline">
-                                        <input type="text" id="searchInput" placeholder="Cari Username" class="form-control rounded-3" aria-label="Default select example" >
-                                      </div>
-                                    </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-3">
                                       <select id="opsi_lanjutan" name="Opsi_Lanjutan" class="form-select col-md-3" aria-label="Default select example">
-                                        {{-- <optgroup label="wakil_kepala_sekolah">
-                                          <option value=""></option>
-                                        </optgroup>
-                                        <optgroup label="guru">
-                                          <option value="mipa">MIPA</option>
-                                          <option value="ips">IPS</option>
-                                        </optgroup> --}}
+                                        <option value="">Cari Username</option>
                                       </select>
                                     </div>
                                   </div>
@@ -183,60 +165,61 @@
                   </div>
               </div>
             </div>
+        </main>
 </div>
 </body>
 </html>
+<!-- Select2 -->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.0/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
-  const opsi_lanjutan_dropdown = document.getElementById('opsi_lanjutan');
-  const opsi_tujuan_dropdown = document.getElementById('opsi_tujuan');
+  $(document).ready(function() {
+    const opsi_lanjutan_dropdown = $('#opsi_lanjutan');
+    const opsi_tujuan_dropdown = $('#opsi_tujuan');
 
-  const handleTujuan = async (e) => {
-    try {
-      const res = await fetch(`/get-username-by-role/${e.value}`);
-      const result = await res.json();
-      console.log(result);
+    opsi_tujuan_dropdown.select2({
+      theme: 'bootstrap-5',
+      width: opsi_tujuan_dropdown.data('width') ? opsi_tujuan_dropdown.data('width') : opsi_tujuan_dropdown.hasClass('w-100') ? '100%' : 'style',
+      placeholder: opsi_tujuan_dropdown.data('placeholder'),
+    });
 
-      let kontenHtml = '';
+    opsi_lanjutan_dropdown.select2({
+      theme: 'bootstrap-5',
+      width: opsi_lanjutan_dropdown.data('width') ? opsi_lanjutan_dropdown.data('width') : opsi_lanjutan_dropdown.hasClass('w-100') ? '100%' : 'style',
+      placeholder: opsi_lanjutan_dropdown.data('placeholder'),
+    });
 
-      result.forEach((username) => {
-        kontenHtml += `<option value="${username}">${username}</option>`;
-      });
+    const handleTujuan = async (role) => {
+      try {
+        const res = await fetch(`/get-username-by-role/${role}`);
+        const result = await res.json();
+        console.log(result);
 
-      opsi_lanjutan_dropdown.innerHTML = kontenHtml;
-    } catch (error) {
-      console.error('Error fetching or processing data:', error);
-    }
-  }
+        // let options = result.map(username => `<option value="${username}">${username}</option>`);
+        let options = result.map(user => `<option value="${user.username}">${user.nama}</option>`);
 
-  document.getElementById('searchInput').addEventListener('input', function() {
-    console.log('Input terpanggil');
-    let searchString = this.value.toLowerCase();
-    let selectedRole = opsi_tujuan_dropdown.value;
-    let options = [];
+        opsi_lanjutan_dropdown.empty().append(options).trigger('change');
+        // console.log(opsi_lanjutan_dropdown.html());
+      } catch (error) {
+        console.error('Error fetching or processing data:', error);
+      }
+    };
+    console.log('Change event triggered!');
 
-    @if ($namaUserGuru)
-      @foreach($namaUserGuru as $nuserGuru)
-        options.push({ role: 'guru', username: '{{ $nuserGuru->username }}' });
-      @endforeach
-    @endif
+    opsi_tujuan_dropdown.on('change', function() {
+      const selectedRole = $(this).val();
+      handleTujuan(selectedRole);
+    });
 
-    @if ($namaUserSiswa)
-      @foreach($namaUserSiswa as $nuserSiswa)
-        options.push({ role: 'siswa', username: '{{ $nuserSiswa->username }}' });
-      @endforeach
-    @endif
-
-    opsi_lanjutan_dropdown.innerHTML = '';
-
-    options
-      .filter(option => option.role === selectedRole && option.username.toLowerCase().includes(searchString))
-      .forEach(function (option) {
-        let optionElement = document.createElement('option');
-        optionElement.value = option.username; // Set nilai sesuai dengan apa yang ingin Anda gunakan
-        optionElement.text = option.username;
-        opsi_lanjutan_dropdown.appendChild(optionElement);
-      });
+    opsi_lanjutan_dropdown.on('select2:opening', function(e) {
+      const selectedRole = opsi_tujuan_dropdown.val();
+      if (!selectedRole) {
+        e.preventDefault();
+        alert('Pilih terlebih dahulu tujuan untuk memfilter nama yang ingin di tuju');
+      }
+    });
   });
-</script> 
+</script>
 
 {{-- @endsection --}}

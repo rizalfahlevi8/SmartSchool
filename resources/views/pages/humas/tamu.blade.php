@@ -1,5 +1,5 @@
 <head>
-  <!-- Styles -->
+  <!-- Select2 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
@@ -65,14 +65,7 @@
                         </div>
                         <div class="col-md-3">
                           <select id="opsi_lanjutan" name="Opsi_Lanjutan" class="form-select col-md-3" aria-label="Default select example">
-                            <option value="">Cari Username</option>
-                            {{-- <optgroup label="wakil_kepala_sekolah">
-                              <option value=""></option>
-                            </optgroup>
-                            <optgroup label="guru">
-                              <option value="mipa">MIPA</option>
-                              <option value="ips">IPS</option>
-                            </optgroup> --}}
+                            <option value="">Silahkan cari nama</option>
                           </select>
                         </div>
                       </div>
@@ -85,7 +78,7 @@
                     </div>
                 </div>
 
-                  <div lass="mb-3" style="padding-left: 20px; padding-right: 20px;">
+                  <div class="mb-3" style="padding-left: 20px; padding-right: 20px;">
                     <label for="exampleFormControlTextarea1" class="form-label fs-6">Keterangan</label>
                     <div class="form-floating mb-3" > 
                         <textarea class="form-control" name="keteranganTamu" placeholder="Leave a comment here" id="floatingTextarea" style="height: 100px"  ></textarea>
@@ -116,7 +109,7 @@
   </div>
 </div>
 
-<!-- Scripts -->
+<!-- Select2 -->
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.0/dist/jquery.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
@@ -129,9 +122,20 @@
 } );
 </script> --}}
 
-{{-- <script>
-  $() --}}
+  {{-- <script>
+    const opsi_lanjutan_dropdown = $('opsi_lanjutan');
+    const username_dipilih = 'username_terpilih';
 
+    opsi_lanjutan_dropdown.on('change', function() {
+        const username_pilihan = $(this).val();
+        if (username_pilihan === username_terpilih) {
+            pesan_tamu.text(`Anda memiliki tamu yang akan menemu Anda: ${username_terpilih}`);
+        } else {
+            pesan_tamu.text('');
+        }
+    });
+    console.log(username_pilihan.html());
+  </script> --}}
 
   <script>
     $(document).ready(function() {
@@ -156,10 +160,11 @@
           const result = await res.json();
           console.log(result);
   
-          let options = result.map(username => `<option value="${username}">${username}</option>`);
+          // let options = result.map(username => `<option value="${username}">${username}</option>`);
+          let options = result.map(user => `<option value="${user.username}">${user.nama}</option>`);
   
           opsi_lanjutan_dropdown.empty().append(options).trigger('change');
-          console.log(opsi_lanjutan_dropdown.html());
+          // console.log(opsi_lanjutan_dropdown.html());
         } catch (error) {
           console.error('Error fetching or processing data:', error);
         }

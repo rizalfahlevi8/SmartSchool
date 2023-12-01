@@ -7,13 +7,6 @@ use Illuminate\Http\Request;
 
 class KerjaSamaController extends Controller
 {
-    public function lihat(){
-
-        return view('pages.humas.data-mou.data-kerjasama', [
-            'title' => 'data-kerjasama',
-            'mou'=> KerjaSama::get(),
-        ]);
-    }
 
     public function create(){
         return view('pages.humas.data-mou.kerjasama-mou',[
@@ -25,9 +18,8 @@ class KerjaSamaController extends Controller
     public function store(Request $request){
 
         // dd($request->all());
-
         // Validasi input
-        $errors = $this->validate($request, [
+        $erros = $this->validate($request, [
             'nama_mitra' => 'required|string|max:255',
             'asal_mitra' => 'required|string|max:255',
             'deskripsi_singkat_mitra' => 'required|string',
@@ -37,8 +29,8 @@ class KerjaSamaController extends Controller
             'tujuan_mitra' => 'required|string',
             'file_mitra' => 'nullable|mimes:doc,docx,pdf|max:2048', // Max file size 2048 KB (2 MB)
         ]);
-        // dd($errors);
-
+        // dd($erros);
+        // dd($request->all());
         try {
             // Simpan file
             $file = $request->file('file_mitra');
@@ -97,6 +89,14 @@ class KerjaSamaController extends Controller
         //     'mou'=> KerjaSama::get(),
         // ]);
 
+    }
+
+    public function lihat(){
+
+        return view('pages.humas.data-mou.data-kerjasama', [
+            'title' => 'data-kerjasama',
+            'mou'=> KerjaSama::get(),
+        ]);
     }
     
     public function edit($id) {

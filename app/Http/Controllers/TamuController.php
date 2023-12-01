@@ -18,27 +18,52 @@ class TamuController extends Controller
     // Untuk Role
     public function getUsernamesByRole($role){
     
-    $usernames = User::where('role', $role)->pluck('username')->toArray();
-    return response()->json($usernames);
+    // $usernames = User::where('role', $role)->pluck('username')->toArray();
+    // return response()->json($usernames);
+
+    $users = User::where('role', $role)->with(['guru', 'siswa'])->get();
     
+    // Menggabungkan data dari model Guru dan Siswa
+    $formattedUsers = $users->map(function ($user) {
+        $nama = '';
+
+        // Cek jika user memiliki relasi dengan model Guru atau Siswa
+        if ($user->guru) {
+            $nama = $user->guru->nama;
+        } elseif ($user->siswa) {
+            $nama = $user->siswa->nama;
+        }
+
+        return [
+            'nama' => $nama,
+            'username' => $user->username,
+        ];
+    });
+
+    return response()->json($formattedUsers);
+
     }
 
     public function create(){
-        // return view('pages.humas.tamu')->with('title', 'tamu');
-        // dd(Tamu::get());
+        // // Di dalam controller
+        // $selectedUsernames = Tamu::select('Opsi_lanjutan')->distinct()->get();
 
-        // dd($userRoles);
+        // // Membuat array kosong untuk menyimpan nama pengguna
+        // $usernamesWithNames = [];
 
-        // $namaUserGuru = User::select('username')->where('role','guru')->get();
-        // $namaUserSiswa = User::select('username')->where('role','siswa')->get();
-        // // $filterRoles = $allRoles->reject(function ($role){
-        // //     return $role->role == 'admin';
-        // // });
+        // // Loop melalui setiap opsi_lanjutan dan dapatkan nama pengguna
+        // foreach ($selectedUsernames as $selectedUsername) {
+        //     $user = User::where('username', $selectedUsername->Opsi_lanjutan)->first();
+            
+        //     // Tambahkan ke array jika nama pengguna ditemukan
+        //     if ($user) {
+        //         $usernamesWithNames[] = [
+        //             'username' => $selectedUsername->Opsi_lanjutan,
+        //             'name' => $user->nama,
+        //         ];
+        //     }
+        // }
 
-        //  // Ambil semua role kecuali "admin"
-        // $userRoles = User::where('role')->pluck('role')->toArray();
-
-        // disesuaikan dengan role pada AdminSeeder
         $userRoles = User::select('role')->distinct()->where('role', '!=', 'root,admin')->get();
 
         // dd($userRoles);
@@ -47,9 +72,7 @@ class TamuController extends Controller
             'title' =>  "tamu",
             'tamu'=> Tamu::get(),
             'userRoles' => $userRoles,
-            
-            // 'namaUserGuru' => $namaUserGuru,
-            // 'namaUserSiswa' => $namaUserSiswa,
+            // 'usernamesWithNames' => $usernamesWithNames,
             
         ]);
     }
@@ -58,45 +81,68 @@ class TamuController extends Controller
 
         $tamu = new Tamu();
 
+        // Dapatkan ID pengguna berdasarkan Opsi_lanjutan yang dipilih
+        $selectedUsername = $request->Opsi_Lanjutan;
+        $user = User::where('username', $selectedUsername)->first();
+
+        if ($user) {
+            $tamu->user_id = $user->id;
+        }
+
         $tamu->nama = $request->namaTamu;
         $tamu->alamat = $request->alamatTamu;
         $tamu->Opsi_Tujuan = $request->Opsi;
         $tamu->Keterangan = $request->keteranganTamu;
+        $tamu->Opsi_lanjutan = $request->Opsi_Lanjutan;
         $tamu->save();
+
+        // dd($tamu);
 
         // disesuaikan dengan role pada AdminSeeder
         $userRoles = User::select('role')->distinct()->where('role', '!=', 'root,admin')->get();
+        // dd($userRoles);
+
+        $filteredTamus = Tamu::whereIn('Opsi_Tujuan', $userRoles)->get();
+        // dd($filteredTamus);
         
         return view('pages.humas.data-tamu',[
-            'tamus' => Tamu::get(),
+            // 'tamus' => Tamu::get(),
+            'tamus' => $filteredTamus,
             'title'=>"tamu",
             'userRoles' => $userRoles,
 
-            // 'namaUserGuru' => User::select('username')->where('role', 'guru')->get(),
-            // 'namaUserSiswa' => User::select('username')->where('role','siswa')->get(),
         ]);
-
-    //     // Ambil opsi yang dipilih
-    //     $selectedOption = Option::findOrFail($request->role);
-
-    //     // Pastikan opsi yang dipilih bukan "admin"
-    //     if ($selectedOption->name === 'admin') {
-    //      return response()->json(['error' => 'Anda tidak dapat memilih opsi "admin"'], 422);
-    // }
 
     }
 
     // ==============[ Data - tamu ]===============
 
-    public function index() {
+    public function index(Request $request) {
 
-        // dd(Tamu::get());
+        // $userId = auth()->user()->id;
+        // $selectedUsername = $request->input('Opsi_Lanjutan');
+
+        // dd($selectedUsername);
+    
+        // if ($selectedUsername) {
+        //     $tamu_tujuan = Tamu::with('user.guru', 'user.siswa')
+        //         ->where('Opsi_lanjutan', $selectedUsername)
+        //         ->orderByDesc('created_at')
+        //         ->get();
+        // } else {
+        //     $tamu_tujuan = collect();
+        // }
+
+        // dd($tamu_tujuan);
 
         return view('pages.humas.data-tamu', [
     //        'data-tamu' => Tamu::orderBy('created_at')->get(),
     //    ])->with('title', 'data-tamu'); 
         'title' => 'data-tamu',
-        'tamus' => Tamu::get()
+        'tamus' => Tamu::get(),
+        // 'tamu_tujuan' => $tamu_tujuan,
+        // 'tamus' => $filteredTamus,
+        // 'availableOptions' => $availableOptions,
         ]);
      }
   
@@ -108,28 +154,46 @@ class TamuController extends Controller
         $tamu = Tamu::find($id);
 
         return view('pages.humas.tamu-edit', [
+
             'tamu' => $tamu,
-            // 'tujuans' => ['Kepala Sekolah','Wakil Kepala Sekolah','Guru','Siswa'],
-            'userRoles' => User::select('role')->distinct()->where('role', '!=', 'admin')->get(),
-            // 'title' => 'tamu-edit'
+            // --- userRoles Sesuaikan dengan role pada AdminSeeder untuk menghilangkan admin
+            'userRoles' => User::select('role')->distinct()->where('role', '!=', 'root,admin')->get(),
+
         ])->with('title', 'Update Data Tamu');
      }
      public function update(Request $request, $id){
 
         $tamu = Tamu::find($id);
 
+        $selectedUsername = $request->Opsi_Lanjutan;
+        $user = User::where('username', $selectedUsername)->first();
+
+        if ($user) {
+            $tamu->user_id = $user->id;
+        }
+
         $tamu->nama = $request->namaTamu;
         $tamu->alamat = $request->alamatTamu;
         $tamu->Opsi_Tujuan = $request->Opsi;
         $tamu->Keterangan = $request->keteranganTamu;
+        $tamu->Opsi_lanjutan = $request->Opsi_Lanjutan;
         $tamu->save();
+
+        // dd($tamu);
+
+        // disesuaikan dengan role pada AdminSeeder
+        $userRoles = User::select('role')->distinct()->where('role', '!=', 'root,admin')->get();
+
+        $filteredTamus = Tamu::whereIn('Opsi_Tujuan', $userRoles)->get();
+        // dd($filteredTamus);
         
 
         return view('pages.humas.data-tamu',[
 
-            'tamus' => Tamu::get(),
-            'userRoles' => User::select('role')->distinct()->get(),
-            'userRoles' => User::select('role')->distinct()->where('role', '!=', 'admin')->get(),
+            'tamus' => $filteredTamus,
+            'title'=>"tamu",
+            'userRoles' => $userRoles,
+            
         ])->with('title', 'update sukses');
         
         // return view('pages.humas.tamu-edit', [
@@ -161,35 +225,48 @@ class TamuController extends Controller
    
      public function daftar(){
 
-        $userRoles = User::select('role')->distinct()->get();
-        $userRoles = User::select('role')->distinct()->where('role','!=','admin')->get();
-        $namaUserGuru = User::select('username')->where('role','guru')->get();
-        $namaUserSiswa = User::select('username')->where('role','siswa')->get();
+        $userRoles = User::select('role')->distinct()->where('role', '!=', 'root,admin')->get();
 
         return view( 'pages.humas.daftar-tamu' ,[
             'userRoles' => $userRoles,
-            'namaUserGuru' => $namaUserGuru,
-            'namaUserSiswa' => $namaUserSiswa,
             'tamu'=> Tamu::get(),
             
         ]);
     }
     public function store(Request $request){
 
-        $daftar_tamu = new Tamu();
+        $tamu = new Tamu();
 
-        $daftar_tamu->nama = $request->namaTamu;
-        $daftar_tamu->alamat = $request->alamatTamu;
-        $daftar_tamu->Opsi_Tujuan = $request->Opsi;
-        $daftar_tamu->Keterangan = $request->keteranganTamu;
-        $daftar_tamu->save();
+        // Dapatkan ID pengguna berdasarkan Opsi_lanjutan yang dipilih
+        $selectedUsername = $request->Opsi_Lanjutan;
+        $user = User::where('username', $selectedUsername)->first();
+
+        if ($user) {
+            $tamu->user_id = $user->id;
+        }
+
+        $tamu->nama = $request->namaTamu;
+        $tamu->alamat = $request->alamatTamu;
+        $tamu->Opsi_Tujuan = $request->Opsi;
+        $tamu->Keterangan = $request->keteranganTamu;
+        $tamu->Opsi_lanjutan = $request->Opsi_Lanjutan;
+        $tamu->save();
+
+        // disesuaikan dengan role pada AdminSeeder
+        $userRoles = User::select('role')->distinct()->where('role', '!=', 'root,admin')->get();
+        // dd($userRoles);
+
+        $filteredTamus = Tamu::whereIn('Opsi_Tujuan', $userRoles)->get();
+        // dd($filteredTamus);
         
-        return view('pages/humas/daftar-tamu',[
-            'userRoles' => User::select('role')->distinct()->get(),
-            'namaUserGuru' => User::select('username')->where('role', 'guru')->get(),
-            'namaUserSiswa' => User::select('username')->where('role','siswa')->get(),
-            'userRoles' => User::select('role')->distinct()->where('role','!=','admin')->get(),
+        return view('pages.auth.login',[
+
+            'tamus' => $filteredTamus,
+            'title'=>"tamu",
+            'userRoles' => $userRoles,
+
         ]);
+
     }
 
 
