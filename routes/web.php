@@ -273,6 +273,8 @@ Route::middleware(['userRole:admin'])->group(function () {
      Route::get('/edit-mou/{id}', [KerjaSamaController::class, 'edit']);
      Route::put('/edit-mou/{id}', [KerjaSamaController::class, 'update']);
      Route::get('/delete-mou/{kerjasama}', [KerjaSamaController::class, 'destroy']);
+     // file
+    //  Route::get('/storage/kerjasama/file/{file}', [KerjaSamaController::class, 'viewfile'])->name('viewfile');  
 });
 //======================== G U R U =========================================================
 Route::middleware(['userRole:guru'])->group(function () {

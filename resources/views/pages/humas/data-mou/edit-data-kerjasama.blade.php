@@ -30,6 +30,7 @@
                         'tanggal_berakhir_kerjasama'=>$mou->tanggal_berakhir_kerjasama,
                         'PT_Mitra'=>$mou->PT_Mitra,
                         'tujuan_mitra' => $mou->tujuan_mitra,
+                        'file_mitra' => $mou->file
                        
                     ];
                     foreach ($form_input as $key => $input_value) {
@@ -43,24 +44,13 @@
                         enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
-                        {{-- <div class="col-md-6">
-                            <label for="nip" class="form-label">id</label>
-                            <div class="input-group">
-                                <input id="id" type="text" onkeypress="return hanyaAngka(event)" id="id"
-                                    class="form-control rounded-3" pattern="[0-9]{16}" maxlength="16" required
-                                    value="{{ $mou->id }}" {{ $errors->has('id') ? 'autofocus="true"' : '' }}
-                                    readonly disabled>
-                            </div>
-                            @if ($errors->has('id'))
-                                <span class="text-danger">{{ $errors->first('id') }}</span>
-                            @endif
-                        </div> --}}
 
                         <div class="col-md-6">
                             <label class="form-label" for="nama">Nama Mitra</label>
                             <div class="input-group">
-                                <input type="text" name="nama_mitra" class="form-control" id="nama_mitra" value="{{ $mou->nama_mitra }}" required>
-                                    {{ $errors->has('nama_mitra') ? 'autofocus="true"' : '' }}
+                                <input type="text" name="nama_mitra" class="form-control" id="nama_mitra" required 
+                                value="{{ $mou->nama_mitra }}" {{ $errors->has('nama_mitra') ? 'autofocus="true"' : '' }} 
+                                readonly>
                             </div>
                         </div>
 
@@ -82,7 +72,8 @@
                             <div class="input-group">
                                 <input type="text" name="deskripsi_singkat_mitra" class="form-control rounded-3" id="deskripsi_singkat_mitra" required
                                     value="{{ $mou->Deskripsi_singkat_mitra }}"
-                                    {{ $errors->has('Deskripsi_singkat_mitra') ? 'autofocus="true"' : '' }}>
+                                    {{ $errors->has('Deskripsi_singkat_mitra') ? 'autofocus="true"' : '' }}
+                                    readonly>
                             </div>
                             @if ($errors->has('Deskripsi_singkat_mitra'))
                                 <span class="text-danger">{{ $errors->first('Deskripsi_singkat_mitra') }}</span>
@@ -92,7 +83,7 @@
                         <div class="col-md-6">
                             <label class="form-label" for="tanggal_mulai_kerjasama">Tanggal Mulai Kerjasama</label>
                             <div class="input-group">
-                                <input type="text" name="tgl_mulai_kerjasama" class="form-control rounded-3" id="tgl_mulai" required
+                                <input type="date" name="tgl_mulai_kerjasama" class="form-control rounded-3" id="tgl_mulai" required
                                     value="{{ $mou->tanggal_mulai_kerjasama }}"
                                     {{ $errors->has('tanggal_mulai_kerjasama') ? 'autofocus="true"' : '' }}
                                     readonly>
@@ -105,11 +96,14 @@
                         <div class="col-md-6">
                             <label class="form-label" for="tanggal-berakhir_kerjasama">Tanggal Berakhir Kerjasama</label>
                             <div class="input-group">
-                                <input type="text" name="tgl-berakhir_kerjasama" class="form-control rounded-3" id="tgl_berakhir" required
+                                <input type="date" name="tgl_berakhir_kerjasama" class="form-control rounded-3" id="tgl_berakhir" required
                                     value="{{ $mou->tanggal_berakhir_kerjasama }}"
                                     {{ $errors->has('tanggal-berakhir_kerjasama') ? 'autofocus="true"' : '' }}
-                                    readonly>
+                                    >
                             </div>
+                            @if ($errors->has('tanggal_mulai_kerjasama'))
+                                <span class="text-danger">{{ $errors->first('tanggal_mulai_kerjasama') }}</span>
+                            @endif
                         </div>
 
                         <div class="col-md-6">
@@ -117,14 +111,30 @@
                             <div class="input-group">
                                 <input type="text" name="pt_mitra" class="form-control rounded-3" id="pt_mitra" required
                                     value="{{ $mou->PT_Mitra }}"
-                                    {{ $errors->has('PT_Mitra') ? 'autofocus="true"' : '' }}>
+                                    {{ $errors->has('PT_Mitra') ? 'autofocus="true"' : '' }}
+                                    readonly>
                             </div>
                             @if ($errors->has('pt_mitra'))
                                 <span class="text-danger">{{ $errors->first('pt_mitra') }}</span>
                             @endif
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-6">
+                            <div class="row">
+                                <label for="formFile" class="form-label">File</label>
+                                <label class="form-label"> Keterangan  </label>
+                                <label class="form-label"> - Jika terdapat perubahan pada file sebelumnya silahkan upload ulang file  </label>
+                                <label class="form-label"> - Silahkan upload file dalam bentuk doc, docx atau pdf </label>
+                            </div>
+                                <input class="form-control rounded-3 text-sm" name="file_mitra" type="file"
+                                id="file-input" 
+                                required value="{{ old('file_mitra') }}" {{ $errors->has('file_mitra') ? 'autofocus="true"' : '' }}>
+                            {{-- @if ($errors->has('file_mitra'))
+                                <span class="text-danger">{{ $errors->first('file_mitra') }}</span>
+                            @endif --}}
+                        </div>
+
+                        <div class="col-md-6">
                             <label class="form-label" for="tujuan_mitra">Tujuan Mitra</label>
                             <div class="input-group">
                                 <input type="text" name="tujuan_mitra" class="form-control rounded-3" id="tujuan_mitra"
@@ -151,7 +161,7 @@
         </div>
     </div>
 
-    <script>
+    {{-- <script>
         function hanyaAngka(evt) {
             var charCode = (evt.which) ? evt.which : event.keyCode
             if (charCode > 31 && (charCode < 48 || charCode > 57))
@@ -159,6 +169,42 @@
                 return false;
             return true;
         }
-    </script>
+    </script> --}}
+    <script>
+        // Dapatkan elemen input tanggal
+        var tglMulaiInput = document.getElementById('tgl_mulai');
+        var tglBerakhirInput = document.getElementById('tgl_berakhir');
+
+        // Simpan nilai tanggal terakhir
+        var lastValidTglMulai = tglMulaiInput.value;
+        var lastValidTglBerakhir = tglBerakhirInput.value;
+
+        // Tambahkan event listener untuk memeriksa tanggal
+        tglMulaiInput.addEventListener('change', function () {
+            validateDates();
+        });
+
+        tglBerakhirInput.addEventListener('change', function () {
+            validateDates();
+        });
+
+        function validateDates() {
+            // Dapatkan tanggal yang dipilih
+            var tglMulai = new Date(tglMulaiInput.value);
+            var tglBerakhir = new Date(tglBerakhirInput.value);
+
+            // Periksa apakah Tanggal Mulai setelah atau sama dengan Tanggal Berakhir
+            if (tglMulai >= tglBerakhir) {
+                alert('Tanggal Mulai Kerjasama harus sebelum Tanggal Berakhir Kerjasama.');
+
+                // Kembalikan nilai Tanggal Berakhir ke nilai awal
+                tglBerakhirInput.value = lastValidTglBerakhir;
+            } else {
+                // Jika tanggal valid, simpan nilai sebagai tanggal terakhir yang valid
+                lastValidTglMulai = tglMulaiInput.value;
+                lastValidTglBerakhir = tglBerakhirInput.value;
+            }
+        }
+     </script>
 @endsection
 {{-- footer --}}

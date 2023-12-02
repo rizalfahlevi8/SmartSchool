@@ -28,8 +28,8 @@
                         <div class="input-group">
                             <input 
                             type="text" name="nama_mitra" class="form-control rounded-3" 
-                            {{-- id="nama" required
-                                value="{{ old('nama') }}" {{ $errors->has('tempatlahir') ? 'autofocus="true"' : '' }} --}}
+                            id="nama_mitra" required
+                                value="{{ old('nama_mitra') }}" {{ $errors->has('nama_mitra') ? 'autofocus="true"' : '' }}
                                 >
                         </div>
                     </div>
@@ -38,8 +38,8 @@
                         <div class="input-group">
                             <input 
                             type="text" name="pt_mitra" class="form-control rounded-3" 
-                            {{-- id="nama" required
-                                value="{{ old('nama') }}" {{ $errors->has('tempatlahir') ? 'autofocus="true"' : '' }} --}}
+                            id="pt_mitra" required
+                                value="{{ old('pt_mitra') }}" {{ $errors->has('pt_mitra') ? 'autofocus="true"' : '' }}
                                 >
                         </div>
                     </div>
@@ -48,8 +48,8 @@
                         <div class="input-group">
                             <input 
                             type="text" name="asal_mitra" class="form-control rounded-3" 
-                            {{-- id="nama" required
-                                value="{{ old('nama') }}" {{ $errors->has('tempatlahir') ? 'autofocus="true"' : '' }} --}}
+                            id="asal_mitra" required
+                                value="{{ old('asal_mitra') }}" {{ $errors->has('asal_mitra') ? 'autofocus="true"' : '' }}
                                 >
                         </div>
                     </div>
@@ -58,38 +58,45 @@
                         <div class="input-group">
                             <input 
                             type="text" name="tujuan_mitra" class="form-control rounded-3" 
-                            {{-- id="nama" required
-                                value="{{ old('nama') }}" {{ $errors->has('tempatlahir') ? 'autofocus="true"' : '' }} --}}
+                            id="tujuan_mitra" required
+                                value="{{ old('tujuan_mitra') }}" {{ $errors->has('tujuan_mitra') ? 'autofocus="true"' : '' }}
                                 >
                         </div>
                     </div>
                     <div class="col-md-6">
                         <label for="nama" class="form-label">Deskripsi Singkat Mitra</label>
                         <div class="form-floating mb-3" > 
-                            <textarea class="form-control" name="deskripsi_singkat_mitra" placeholder="Leave a comment here" id="floatingTextarea" style="height: 120px"  ></textarea>
+                            <textarea class="form-control" name="deskripsi_singkat_mitra" placeholder="Leave a comment here" id="floatingTextarea" style="height: 120px"
+                            id="deskripsi_singkat_mitra" required
+                                value="{{ old('deskripsi_singkat_mitra') }}" {{ $errors->has('deskripsi_singkat_mitra') ? 'autofocus="true"' : '' }}></textarea>
                             <label for="floatingTextarea" style="color:darkgrey" > Jelaskan deskripsi singkat terkait kerja sama</label>
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <label for="formFile" class="form-label">File</label>
-                        <input class="form-control rounded-3 text-sm" name="file_mitra" type="file"
+                        <div class="row">
+                            <label for="formFile" class="form-label">File</label>
+                            <label class="form-label"> Keterangan : Silahkan upload file dalam bentuk doc, docx atau pdf </label>
+                        </div>
+                            <input class="form-control rounded-3 text-sm" name="file_mitra" type="file"
                             id="file-input" 
-                            value="{{ old('file') }}" {{ $errors->has('file') ? 'autofocus="true"' : '' }}>
+                            required value="{{ old('file_mitra') }}" {{ $errors->has('file_mitra') ? 'autofocus="true"' : '' }}>
                     </div>
                     <div class="col-md-3">
                         <label class="form-label" for="tanggal_mulai">Tanggal Mulai Kerjasama</label>
                         <div class="input-group">
-                            <input type="date" name="tgl_mulai_kerjasama" class="form-control rounded-3" 
-                                required value="{{ old('tanggal_lahir') }}"
-                                {{ $errors->has('tanggal_lahir') ? 'autofocus="true"' : '' }}>
+                            <input type="date" name="tgl_mulai_kerjasama" class="form-control rounded-3"
+                            id='tgl_mulai_kerjasama' 
+                                required value="{{ old('tgl_mulai_kerjasama') }}"
+                                {{ $errors->has('tgl_mulai_kerjasama') ? 'autofocus="true"' : '' }}>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <label class="form-label" for="tanggal_berakhir">Tanggal Berakhir Kerjasama</label>
                         <div class="input-group">
                             <input type="date" name="tgl_berakhir_kerjasama" class="form-control rounded-3"
-                                required value="{{ old('tanggal_lahir') }}"
-                                {{ $errors->has('tanggal_lahir') ? 'autofocus="true"' : '' }}>
+                            id='tgl_berakhir_kerjasama' 
+                                required value="{{ old('tgl_berakhir_kerjasama') }}"
+                                {{ $errors->has('tgl_berakhir_kerjasama') ? 'autofocus="true"' : '' }}>
                         </div>
                     </div>
                     <div class="card-footer d-flex justify-content-end" style="gap: 10px">
@@ -109,125 +116,35 @@
         </div>
     </div>
 </div>
-{{-- <script src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/signature_pad/1.5.3/signature_pad.min.js"></script> --}}
+
 <script>
-    // var wrapper = document.getElementById("signature-pad");
-    // var clearButton = wrapper.querySelector("[data-action=clear]");
-    // var changeColorButton = wrapper.querySelector("[data-action=change-color]");
-    // var savePNGButton = wrapper.querySelector("[data-action=save-png]");
-    // var saveJPGButton = wrapper.querySelector("[data-action=save-jpg]");
-    // var saveSVGButton = wrapper.querySelector("[data-action=save-svg]");
-    // var canvas = wrapper.querySelector("canvas");
-    // var signaturePad = new SignaturePad(canvas, {
-    //     backgroundColor: 'rgb(255, 255, 255)'
-    // });
-    // document.querySelector("[data-action=clear]").addEventListener("click", function() {
-    //     signaturePad.clear();
-    // });
+    // Dapatkan elemen input tanggal
+    var tglMulaiInput = document.getElementById('tgl_mulai_kerjasama');
+    var tglBerakhirInput = document.getElementById('tgl_berakhir_kerjasama');
 
-    // function getSignatureImage() {
-    //     if (!signaturePad.isEmpty()) {
-    //         return signaturePad.toDataURL();
-    //     } else {
-    //         return null;
-    //     }
-    // }
+    // Tambahkan event listener untuk memeriksa tanggal
+    tglMulaiInput.addEventListener('change', function () {
+        validateDates();
+    });
 
-    // document.querySelector("form").addEventListener("submit", function() {
+    tglBerakhirInput.addEventListener('change', function () {
+        validateDates();
+    });
 
-    //     var signatureDataUrl = getSignatureImage();
+    function validateDates() {
+        // Dapatkan tanggal yang dipilih
+        var tglMulai = new Date(tglMulaiInput.value);
+        var tglBerakhir = new Date(tglBerakhirInput.value);
 
+        // Periksa apakah Tanggal Mulai setelah atau sama dengan Tanggal Berakhir
+        if (tglMulai >= tglBerakhir) {
+            alert('Tanggal Mulai Kerjasama harus setelah Tanggal Berakhir Kerjasama.');
+            // Anda juga dapat mereset input tanggal atau menampilkan pesan kesalahan ke pengguna.
 
-    //     document.querySelector("#signature-input").value = signatureDataUrl;
-    // });
-
-    // function resizeCanvas() {
-
-    //     var ratio = Math.max(window.devicePixelRatio || 1, 1);
-
-    //     canvas.width = canvas.offsetWidth * ratio;
-    //     canvas.height = canvas.offsetHeight * ratio;
-    //     canvas.getContext("2d").scale(ratio, ratio);
-    //     signaturePad.clear();
-    // }
-
-    // window.onresize = resizeCanvas;
-    // resizeCanvas();
-
-    ///
-
-    // function download(dataURL, filename) {
-    //     var blob = dataURLToBlob(dataURL);
-    //     var url = window.URL.createObjectURL(blob);
-    //     var a = document.createElement("a");
-    //     a.style = "display: none";
-    //     a.href = url;
-    //     a.download = filename;
-    //     document.body.appendChild(a);
-    //     a.click();
-    //     window.URL.revokeObjectURL(url);
-    // }
-
-    // function dataURLToBlob(dataURL) {
-    //     var parts = dataURL.split(';base64,');
-    //     var contentType = parts[0].split(":")[1];
-    //     var raw = window.atob(parts[1]);
-    //     var rawLength = raw.length;
-    //     var uInt8Array = new Uint8Array(rawLength);
-    //     for (var i = 0; i < rawLength; ++i) {
-    //         uInt8Array[i] = raw.charCodeAt(i);
-    //     }
-    //     return new Blob([uInt8Array], {
-    //         type: contentType
-    //     });
-    // }
-    // clearButton.addEventListener("click", function(event) {
-    //     signaturePad.clear();
-    // });
-    // changeColorButton.addEventListener("click", function(event) {
-    //     var r = Math.round(Math.random() * 255);
-    //     var g = Math.round(Math.random() * 255);
-    //     var b = Math.round(Math.random() * 255);
-    //     var color = "rgb(" + r + "," + g + "," + b + ")";
-    //     signaturePad.penColor = color;
-    // });
-    // savePNGButton.addEventListener("click", function(event) {
-    //     if (signaturePad.isEmpty()) {
-    //         alert("Please provide a signature first.");
-    //     } else {
-    //         var dataURL = signaturePad.toDataURL();
-    //         download(dataURL, "signature.png");
-    //     }
-    // });
-
-    ///
-
-    // function hanyaAngka(evt) {
-    //     var charCode = (evt.which) ? evt.which : event.keyCode
-    //     if (charCode > 31 && (charCode < 48 || charCode > 57))
-
-    //         return false;
-    //     return true;
-    // }
-
-    // function showPreviewposter(event) {
-    //     if (event.target.files.length > 0) {
-    //         var src = URL.createObjectURL(event.target.files[0]);
-    //         var preview = document.getElementById("file-preview-poster");
-    //         preview.src = src;
-    //         preview.style.display = "block";
-    //     }
-    // }
-
-    // function showPreviewSignature(event) {
-    //     if (event.target.files.length > 0) {
-    //         var src = URL.createObjectURL(event.target.files[0]);
-    //         var preview = document.getElementById("signature-preview");
-    //         preview.src = src;
-    //         preview.style.display = "block";
-    //     }
-    // }
+            // reset tanggal
+            tglBerakhirInput.value='';
+        }
+    }
 </script>
 
 @endsection

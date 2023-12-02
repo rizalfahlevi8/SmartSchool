@@ -70,6 +70,11 @@
                                     <th
                                         class="
                                             text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
+                                        File
+                                    </th>
+                                    <th
+                                        class="
+                                            text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
                                         Aksi
                                     </th>
                                 </tr>
@@ -102,6 +107,21 @@
                                         <td class="align-middle text-center">
                                             {{ $m->tujuan_mitra }}
                                         </td>
+                                        <td class="align-middle text-center">
+                                            {{-- @php
+                                            $timestampedFileName = time() . '_' . $m->file;
+                                            $escapedFileName = str_replace(' ', '%20', $timestampedFileName);
+                                            @endphp --}}
+                                            {{-- @php
+                                            $originalFileName = pathinfo($m->file, PATHINFO_FILENAME);
+                                            @endphp --}}
+                                            <a 
+                                            href="{{ asset('storage/kerjasama/file/' . str_replace(' ', '%20', $m->file)) }}" 
+                                            {{-- href="{{ asset('storage/kerjasama/file/' . $escapedFileName) }}"  --}}
+                                            {{-- href="{{ route('viewfile', ['file'=>$m]) }}" --}}
+                                            {{-- target="_blank" --}}
+                                                >Lihat file </a>
+                                        </td>
                                         <td class="text-center">
                                             <button type="button"data-bs-toggle="modal" data-bs-target="#detail-modal"
                                                 class="btn
@@ -109,8 +129,10 @@
                                                 style="margin: 5px 0;" data-bs-toggle="tooltip" data-bs-placement="bottom"
                                                 title="Detail"  id="{{ $m->id }}" nama_mitra="{{ $m->nama_mitra }}" 
                                                 asal_mitra="{{ $m->asal_mitra }}" Deskripsi_singkat_mitra="{{ $m->Deskripsi_singkat_mitra }}" 
-                                                tanggal_mulai_kerjasama="{{ $m->tanggal_mulai_kerjasama }}" tanggal_berakhir_kerjasama="{{ $m->tanggal_berakhir_kerjasama }}"
-                                                PT_Mitra="{{ $m->PT_Mitra }}" tujuan_mitra="{{ $m->tujuan_mitra }}"
+                                                tanggal_mulai_kerjasama="{{ \Carbon\Carbon::parse($m->tanggal_mulai_kerjasama)->format('d/m/Y') }}" 
+                                                tanggal_berakhir_kerjasama="{{ \Carbon\Carbon::parse($m->tanggal_berakhir_kerjasama)->format('d/m/Y') }}"
+                                                PT_Mitra="{{ $m->PT_Mitra }}" tujuan_mitra="{{ $m->tujuan_mitra }}" 
+                                                {{-- file="{{ asset('storage/kerjasama/file/' . urlencode($m->file)) }}" --}}
                                                 onclick="showModalDialog(this)"> 
                                                 <i class="fa fa-eye"></i>
                                             </button>
@@ -213,7 +235,6 @@
                                                 <div class="float-end">:</div>
                                             </div>
                                             <div class="col-md-7" style="text-transform: capitalize" id="PT_Mitra">
-
                                             </div>
                                         </div>
                                     </li>
@@ -224,7 +245,16 @@
                                                 <div class="float-end">:</div>
                                             </div>
                                             <div class="col-md-7" style="text-transform: capitalize" id="tujuan_mitra">
-
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <div class="row">
+                                            <div class="col-md-5">
+                                                <span class="float-start fw-bold">File</span>
+                                                <div class="float-end">:</div>
+                                            </div>
+                                            <div class="col-md-7" style="text-transform: capitalize" id="file_mitra">
                                             </div>
                                         </div>
                                     </li>
@@ -255,6 +285,7 @@
             const tanggal_berakhir_kerjasama = updateModalDialog.querySelector('#tanggal_berakhir_kerjasama');
             const PT_Mitra = updateModalDialog.querySelector('#PT_Mitra');
             const tujuan_mitra = updateModalDialog.querySelector('#tujuan_mitra');
+            // const file = updateModalDialog.querySelector('#file_mitra');
 
             nama_mitra.innerText = element.getAttribute('nama_mitra');
             asal_mitra.innerText = element.getAttribute('asal_mitra');
@@ -263,6 +294,7 @@
             tanggal_berakhir_kerjasama.innerText = element.getAttribute('tanggal_berakhir_kerjasama');
             PT_Mitra.innerText = element.getAttribute('PT_Mitra');
             tujuan_mitra.innerText = element.getAttribute('tujuan_mitra');
+            // file.innerText = element.getAttribute('file');
         }
     </script>
 @endsection

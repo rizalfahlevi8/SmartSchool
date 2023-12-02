@@ -45,24 +45,6 @@ class TamuController extends Controller
     }
 
     public function create(){
-        // // Di dalam controller
-        // $selectedUsernames = Tamu::select('Opsi_lanjutan')->distinct()->get();
-
-        // // Membuat array kosong untuk menyimpan nama pengguna
-        // $usernamesWithNames = [];
-
-        // // Loop melalui setiap opsi_lanjutan dan dapatkan nama pengguna
-        // foreach ($selectedUsernames as $selectedUsername) {
-        //     $user = User::where('username', $selectedUsername->Opsi_lanjutan)->first();
-            
-        //     // Tambahkan ke array jika nama pengguna ditemukan
-        //     if ($user) {
-        //         $usernamesWithNames[] = [
-        //             'username' => $selectedUsername->Opsi_lanjutan,
-        //             'name' => $user->nama,
-        //         ];
-        //     }
-        // }
 
         $userRoles = User::select('role')->distinct()->where('role', '!=', 'root,admin')->get();
 
@@ -262,7 +244,7 @@ class TamuController extends Controller
         return view('pages.auth.login',[
 
             'tamus' => $filteredTamus,
-            'title'=>"tamu",
+            // 'title'=>"tamu",
             'userRoles' => $userRoles,
 
         ]);
