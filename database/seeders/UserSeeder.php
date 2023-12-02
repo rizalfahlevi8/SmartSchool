@@ -115,7 +115,7 @@ class UserSeeder extends Seeder
         ]);
 
         $siswa_solo = User::create([
-            'username' => fake('id_ID')->unique()->userName(),
+            'username' => 'siswa',
             'email' => fake('id_ID')->unique()->email(),
             'password' => bcrypt('siswa'),
             'role' => 'siswa',
