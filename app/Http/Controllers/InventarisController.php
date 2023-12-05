@@ -115,4 +115,10 @@ class InventarisController extends Controller
             return response()->json(['error' => 'Barang tidak ditemukan'], 404);
         }
     }
+    public function getAllBarang()
+    {
+        $barangs = Barang::all();
+
+        return response()->json($barangs);
+    }
 }

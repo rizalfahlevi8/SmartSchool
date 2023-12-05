@@ -14,6 +14,11 @@
 @endsection
 
 @section('content')
+<style> 
+        .select2-selection__rendered {
+            display: none !important;
+        }
+    </style>
     <div class="row">
         <div class="col-12">
             <div class="card my-4">
@@ -84,8 +89,11 @@
                     <form id="formBarang" action="{{ route('store-inventaris', $ruangs->id) }}" method="POST">
                         @csrf
                         <div class="mb-3">
-                            <label for="nama_barang_cari" class="form-label">Cari Nama Barang</label>
+                            <label for="nama_barang_cari" class="form-label">Cari Nama Barang:</label>
                             <input type="text" class="form-control" id="nama_barang_cari" name="nama_barang_cari">
+                        </div>
+                        <div class="mb-3">
+                            <label for="nama_barang_cari" class="form-label">Pilih Barang:</label>
                             <select id="nama_barang_dropdown" class="form-select mt-2"></select>
                         </div>
                         <!-- Input untuk Jumlah Barang -->
@@ -101,51 +109,62 @@
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('#nama_barang_cari').keyup(function () {
-                var query = $(this).val();
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
-                if (query.length > 2) {
-                    $.ajax({
-                        url: '{{ route("search-barang") }}',
-                        method: 'GET',
-                        data: { searchTerm: query },
-                        success: function (response) {
-                            var dropdown = $('#nama_barang_dropdown');
-                            dropdown.empty();
+<script>
+    $(document).ready(function () {
+    $('#nama_barang_dropdown').select2();
 
-                            if (response.length > 0) {
-                                response.forEach(function (barang) {
-                                    dropdown.append($('<option></option>').attr('value', barang.nama_barang).text(barang.nama_barang));
-                                });
-                            } else {
-                                dropdown.append($('<option></option>').text('No matches found'));
-                            }
-                        }
-                    });
+    $('#nama_barang_cari').on('input', function () {
+        var query = $(this).val();
+
+        if (query === '') {
+            $.ajax({
+                url: '{{ route("get-all-barang") }}',
+                method: 'GET',
+                success: function (response) {
+                    var dropdown = $('#nama_barang_dropdown');
+                    dropdown.empty();
+
+                    if (Array.isArray(response) && response.length > 0) {
+                        response.forEach(function (barang) {
+                            dropdown.append($('<option></option>').attr('value', barang.nama_barang).text(barang.nama_barang));
+                        });
+                    } else {
+                        dropdown.append($('<option></option>').text('Tidak ada data ditemukan'));
+                    }
+
+                    dropdown.trigger('change'); // Pemicu pembaruan untuk Select2
+                },
+                error: function (xhr, status, error) {
+                    console.error('Kesalahan mengambil data:', error);
                 }
             });
+        }
+    });
 
-            $('#nama_barang_dropdown').change(function () {
-                var selectedBarang = $(this).val();
+    $('#nama_barang_dropdown').change(function () {
+        var selectedBarang = $(this).val();
 
-                $.ajax({
-                    url: '{{ route("get-barang-detail-by-name") }}',
-                    method: 'GET',
-                    data: { selectedBarang: selectedBarang },
-                    success: function (response) {
-                        $('#barang_id').val(response.barang_id);
-                        $('#nama_barang').val(response.nama_barang);
-                        $('#tahun_pengadaan').val(response.tahun_pengadaan);
-                        $('#jenis').val(response.jenis);
-                    },
-                    error: function () {
-                        console.error('Gagal mendapatkan detail barang.');
-                    }
-                });
-            });
+        $.ajax({
+            url: '{{ route("get-barang-detail-by-name") }}',
+            method: 'GET',
+            data: { selectedBarang: selectedBarang },
+            success: function (response) {
+                $('#barang_id').val(response.barang_id);
+                $('#nama_barang').val(response.nama_barang);
+                $('#tahun_pengadaan').val(response.tahun_pengadaan);
+                $('#jenis').val(response.jenis);
+            },
+            error: function (xhr, status, error) {
+                console.error('Gagal mendapatkan detail barang:', error);
+            }
         });
-    </script>
+    });
+});
+
+
+</script>
 @endsection
