@@ -126,34 +126,68 @@
                                         <td class="text-center">
                                             {{ $p->tanggal_pengembalian }}
                                         </td>
-                                        <td class="text-center">
-                                            <button type="button" data-bs-toggle="modal" data-bs-target="#update-modal"
-                                                id-peminjaman="{{ $p->id }}" id-ruang="{{ $p->ruang_id }}"
-                                                nama-peminjam="{{ $p->nama_peminjam }}" tgl-peminjaman="{{ $p->tanggal_peminjaman }}"
-                                                tgl-pengembalian="{{ $p->tanggal_pengembalian }}" class="btn btn-warning font-weight-bold btn--edit text-sm rounded-circle"
-                                                data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit"
-                                                onclick="showUpdateModalDialog(this)">
-                                            <i class="fa fa-edit"></i>
-                                            </button>
-                                            <a href="/peminjaman-hapus/{{ $p->id }}"
-                                                onclick="return confirm('Anda yakin akan menghapus data ini?')"
-                                                class=" btn btn-danger font-weight-bold text-sm rounded-circle"
-                                                data-bs-toggle="tooltip" data-bs-placement="bottom" title="Hapus">
-                                                <i class="fa fa-trash"></i>
-                                            </a> 
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                            @else
-                            <tbody>
-                                <tr>
-                                    <td colspan="5" class="text-center">No found.</td>
-                                </tr>
-                            </tbody>
-                            @endif
-                        </table>
+<td class="text-center">
+    <button type="button" data-bs-toggle="modal" data-bs-target="#update-modal"
+        id-peminjaman="{{ $p->id }}" id-ruang="{{ $p->ruang_id }}"
+        nama-peminjam="{{ $p->nama_peminjam }}" tgl-peminjaman="{{ $p->tanggal_peminjaman }}"
+        tgl-pengembalian="{{ $p->tanggal_pengembalian }}" class="btn btn-warning font-weight-bold btn--edit text-sm rounded-circle"
+        data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit"
+        onclick="showUpdateModalDialog(this)">
+        <i class="fa fa-edit"></i>
+    </button>
+</td>
 
+<td class="text-center">
+    <button type="button" data-bs-toggle="modal" data-bs-target="#detail-modal"
+        class="btn btn-info font-weight-bold btn--edit text-sm rounded-circle"
+        style="margin: 5px 0;" data-bs-toggle="tooltip" data-bs-placement="bottom"
+        title="Detail" id-peminjaman="{{ $p->id }}" nama_peminjam="{{ $p->nama_peminjam }}"
+        ruang="{{ $p->ruang_id }}"
+        onclick="showModalDialog(this)">
+        <i class="fa fa-eye"></i>
+    </button>
+</td>
+
+<td class="text-center">
+    <a href="/peminjaman-hapus/{{ $p->id }}"
+        onclick="return confirm('Anda yakin akan menghapus data ini?')"
+        class="btn btn-danger font-weight-bold text-sm rounded-circle"
+        data-bs-toggle="tooltip" data-bs-placement="bottom" title="Hapus">
+        <i class="fa fa-trash"></i>
+    </a>
+</td>
+
+</tr>
+
+<div class="modal fade" id="detail-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-warning">
+                <h5 class="modal-title text-white" id="exampleModalLabel">Detail Peminjaman</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <span class="float-start fw-bold">Nama Peminjam</span>
+                                <div class="float-end">:</div>
+                            </div>
+                            <div class="col-md-7" >{{ $p->nama_peminjam }}</div>
+                        </div>
+                    </li>
+                    <!-- Tambahkan elemen list-group-item lain sesuai kebutuhan -->
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+                        
+                        
                         <div class="modal fade" id="update-modal" tabindex="-1" aria-labelledby="exampleModalLabel"
                             aria-hidden="true">
                             <div class="modal-dialog  modal-lg">
@@ -340,4 +374,4 @@
         }
     </script>
 @endsection
-{{-- footer --}}
+

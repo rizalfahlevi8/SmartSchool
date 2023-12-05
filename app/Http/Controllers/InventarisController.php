@@ -31,70 +31,94 @@ class InventarisController extends Controller
 
     public function store(Request $request, $id)
     {
-        // Validasi request
         $request->validate([
-            'barang_id' => 'required|integer|min:0',
-            'nama_barang' => 'required|string|max:255',
-            'tahun_pengadaan' => 'required|date',
-            'jenis' => 'required|string|max:255',
             'jumlah_barang' => 'required|integer|min:0',
-            'jumlah_baik' => 'required|integer|min:0',
-            'jumlah_rusak' => 'required|integer|min:0',
         ]);
 
         try {
-            // Mulai transaksi
             DB::beginTransaction();
 
-            // Simpan data ke tabel barangs
-            $barang = Barang::create([
-                'barang_id' => $request->barang_id,
-                'nama_barang' => $request->nama_barang,
-                'tahun_pengadaan' => $request->tahun_pengadaan,
-                'jenis' => $request->jenis,
-                'jumlah_seluruh_barang' => $request->jumlah_barang,
-                'id_ruang' => $id,  
-            ]);
+            $barang = null;
+            if ($request->has('nama_barang_cari')) {
+                $namaBarang = $request->input('nama_barang_cari');
+                $barang = Barang::where('nama_barang', 'LIKE', '%' . $namaBarang . '%')->first();
 
-            // Simpan data ke tabel inventaris
+                if (!$barang) {
+                    return redirect()->back()->with('error', 'Barang tidak ditemukan');
+                }
+                
+                if ($barang && $request->has('jumlah_barang')) {
+                    $barang->jumlah_seluruh_barang -= $request->jumlah_barang;
+                    $barang->save();
+                }
+            }
+
             $inventaris = Inventaris::create([
-                'ruang_id' => $id,
-                'barang_id' => $barang->id, 
-                'nama_barang' => $request->nama_barang,
-                'tahun_pengadaan' => $request->tahun_pengadaan,
-                'jenis' => $request->jenis,
-                'jumlah_barang' => $request->jumlah_barang,
-                'jumlah_baik' => $request->jumlah_baik,
-                'jumlah_rusak' => $request->jumlah_rusak,
+                'ruang_id' => $id, 
+                'barang_id' => $barang ? $barang->id : $request->barang_id ?? null,
+                'nama_barang' => $barang ? $barang->nama_barang : $request->nama_barang ?? null,
+                'tahun_pengadaan' => $barang ? $barang->tahun_pengadaan : $request->tahun_pengadaan ?? null,
+                'jenis' => $barang ? $barang->jenis : $request->jenis ?? null,
+                'jumlah_barang' => $request->jumlah_barang, 
             ]);
 
-            // Commit transaksi
             DB::commit();
 
-            return redirect()->route('atur-barang')->with('toast_success', 'Data inventaris Berhasil di Tambahkan');
+            return redirect()->route('atur-barang', $id)->with('toast_success', 'Data inventaris berhasil ditambahkan');
         } catch (\Exception $e) {
-            // Rollback transaksi jika terjadi exception
             DB::rollBack();
 
             return redirect()->back()->with('error', 'Gagal menyimpan data: ' . $e->getMessage());
         }
     }
-
-
-
+   
     public function destroy($id)
     {
         try {
-            // Temukan inventaris berdasarkan ID
             $inventaris = Inventaris::findOrFail($id);
+            $jumlahBarangDihapus = $inventaris->jumlah_barang;
 
-            // Hapus inventaris
             $inventaris->delete();
+
+            $barang = Barang::findOrFail($inventaris->barang_id);
+            $barang->jumlah_seluruh_barang += $jumlahBarangDihapus;
+            $barang->save();
 
             return redirect()->back()->with('success', 'Inventaris berhasil dihapus.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Gagal menghapus inventaris: ' . $e->getMessage());
         }
     }
+    public function search(Request $request)
+    {
+        $searchTerm = $request->get('searchTerm');
 
+        $barangs = Barang::where('nama_barang', 'like', '%' . $searchTerm . '%')->get();
+
+        return response()->json($barangs);
+    }
+    public function getDetailByName(Request $request)
+    {
+        $selectedBarang = $request->input('selectedBarang');
+        
+        $barang = Barang::where('nama_barang', $selectedBarang)->first();
+
+        if ($barang) {
+            return response()->json([
+                'barang_id' => $barang->id,
+                'nama_barang' => $barang->nama_barang,
+                'tahun_pengadaan' => $barang->tahun_pengadaan,
+                'jenis' => $barang->jenis,
+                'image => $barang->image',
+            ]);
+        } else {
+            return response()->json(['error' => 'Barang tidak ditemukan'], 404);
+        }
+    }
+    public function getAllBarang()
+    {
+        $barangs = Barang::all();
+
+        return response()->json($barangs);
+    }
 }
