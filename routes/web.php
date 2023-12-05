@@ -140,6 +140,8 @@ Route::middleware(['userRole:admin'])->group(function () {
     Route::get('atur-barang/{id}', [InventarisController::class, 'aturBarang'])->name('atur-barang');
     Route::post('/store-inventaris/{id}', [InventarisController::class, 'store'])->name('store-inventaris');
     Route::get('/delete-inventaris/{id}', [InventarisController::class, 'destroy'])->name('delete-inventaris');
+    Route::get('/search-barang', [InventarisController::class, 'search'])->name('search-barang');
+    Route::get('/get-barang-detail-by-name', [InventarisController::class, 'getDetailByName'])->name('get-barang-detail-by-name');
 
     Route::get('/administrasi/users', [UserController::class, 'index'])->name('user_management');
     Route::patch('/administrasi/users/{user}', [UserController::class, 'update']);
