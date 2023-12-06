@@ -57,7 +57,7 @@ class KerjaSamaController extends Controller
                 'tanggal_berakhir_kerjasama' => $request->tgl_berakhir_kerjasama,
                 'PT_Mitra' => $request->pt_mitra,
                 'tujuan_mitra' => $request->tujuan_mitra,
-                // 'file' => $file->getClientOriginalName(),
+                'original_name_file' => $file->getClientOriginalName(),
                 'file' => $fileName
             ]);
 
@@ -199,7 +199,7 @@ class KerjaSamaController extends Controller
         $kerjasama->update(['deleted' => 1]);
         KerjaSama::find($kerjasama->id)->delete();
 
-        return redirect('/mou')->with('toast_success', 'Data Kerjasma Berhasil di Hapus');
+        return redirect('/mou')->with('toast_success', 'Data Kerjasama Berhasil di Hapus');
     }
 
 }   

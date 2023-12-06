@@ -37,18 +37,24 @@
                   <label for="inputNamaTamu" class="form-label"> Nama Tamu </label>
                     <div class="col-auto">
                       <input id="nama_tamu" type="text" name="namaTamu" class="form-control rounded-3"
-                        maxlength="20">
+                        maxlength="20"
+                        value="{{ old('namaTamu') }}" {{ $errors->has('namaTamu') ? 'autofocus="true"' : '' }}>
                     </div>
+                    @if ($errors->has('namaTamu'))
+                        <span class="text-danger">{{ $errors->first('namaTamu') }}</span>
+                    @endif
                 </div>
                 <div class="mb-3 col-md-6" style="padding-left: 20px; padding-right: 20px;">
                   <label for="inputAlamat" class="form-label">Alamat Tamu atau Asal Instansi Tamu </label>
                   <div class="input-g">
                     <input id="input_alamat" type="text" name="alamatTamu"  class="form-control"
-                      >
+                    value="{{ old('alamatTamu') }}" {{ $errors->has('alamatTamu') ? 'autofocus="true"' : '' }} >
                   </div>
+                  @if ($errors->has('alamatTamu'))
+                        <span class="text-danger">{{ $errors->first('alamatTamu') }}</span>
+                  @endif
                 </div>
               
-                  
                 <div class="mb-3" style="padding-left: 20px; padding-right: 20px;">
                       <label class="col-form-label"> Bertujuan Bertemu Dengan Siapa </label>
                       <div class="row g-3 py-1 px-4">
@@ -81,8 +87,12 @@
                   <div class="mb-3" style="padding-left: 20px; padding-right: 20px;">
                     <label for="exampleFormControlTextarea1" class="form-label fs-6">Keterangan</label>
                     <div class="form-floating mb-3" > 
-                        <textarea class="form-control" name="keteranganTamu" placeholder="Leave a comment here" id="floatingTextarea" style="height: 100px"  ></textarea>
+                        <textarea class="form-control" name="keteranganTamu" placeholder="Leave a comment here" id="floatingTextarea" style="height: 100px" 
+                        value="{{ old('keteranganTamu') }}" {{ $errors->has('keteranganTamu') ? 'autofocus="true"' : '' }} ></textarea>
                         <label for="floatingTextarea" style="color:darkgrey" > Jelaskan tujuan anda datang </label>
+                        @if ($errors->has('keteraganTamu'))
+                        <span class="text-danger">{{ $errors->first('keteranganTamu') }}</span>
+                        @endif
                     </div>
                   </div>
                   <div class="card-footer d-flex justify-content-end" style="gap: 10px">

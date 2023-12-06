@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('tujuan_mitra');
             $table->timestamps();
             $table->string('file')->nullabel();
+            $table->string('original_name_file');
         });
 
         // Setelah membuat tabel, tambahkan validasi untuk kolom 'file'
