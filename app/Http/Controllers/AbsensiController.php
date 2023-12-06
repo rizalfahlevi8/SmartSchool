@@ -17,14 +17,18 @@ class AbsensiController extends Controller
             'absensis'=>Absensi::all()
         ])->with('title', 'Absensi Admin');
     }
-    public function showAbsensiSiswa()
-    {
-        $absensis = Absensi::all();
+    public function showAbsensiSiswa(Request $request)
+{
+    $absensis = Absensi::all();
 
-        return view('pages.akademik.absensi.absensi-siswa', compact('absensis'))->with('title', 'Absensi Admin');
+    if ($request->ajax()) {
+        return response()->json($absensis);
     }
 
-    public function store(Request $request)
+    return view('pages.akademik.absensi.absensi-siswa', compact('absensis'))->with('title', 'Absensi Siswa');
+}
+
+public function store(Request $request)
 {
     // Log data request
     Log::info('Absensi store request data:', $request->all());
@@ -40,6 +44,18 @@ class AbsensiController extends Controller
         'role' => 'required',
         'id_user' => 'required',
     ]);
+
+    // Cek apakah pengguna telah melakukan presensi pada hari ini
+    $userId = $request->input('id_user');
+    $today = now()->format('Y-m-d');
+    $absensi = Absensi::where('id_user', $userId)
+                      ->whereDate('created_at', $today)
+                      ->first();
+
+    if ($absensi) {
+        // Jika pengguna telah melakukan presensi pada hari ini, tampilkan pesan
+        return response()->json(['message' => 'Anda telah melakukan presensi pada hari ini'], 400);
+    }
 
     // Buat data absensi dengan mengisi semua kolom yang diperlukan
     $absensi = new Absensi([

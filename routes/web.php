@@ -244,8 +244,7 @@ Route::middleware(['userRole:guru'])->group(function () {
 });
 
 Route::middleware(['userRole:siswa'])->group(function () {
-
-    Route::get('/akademik/absensi/siswa', [AbsensiController::class, 'showAbsensiSiswa']);
+    Route::get('/akademik/absensi/siswa', [AbsensiController::class, 'showAbsensiSiswa'])->name('absensi.showAbsensiSiswa');
     Route::post('/akademik/absensi/siswaPostAbsensi', [AbsensiController::class, 'store'])->name('absensi.store');
 });
 

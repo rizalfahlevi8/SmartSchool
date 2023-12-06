@@ -34,6 +34,8 @@
       </div>
     </div>
 
+    <div id="notification" class="notification-container"></div>
+
     <div class="mb-4 d-flex align-items-center justify-content-center">
       <div class="col-lg-10 pr-4 mr-2">
 
@@ -46,7 +48,7 @@
               Data Presensi Siswa
           </h5>
           <div class="table-responsive small col-lg-12" style="flex: 1; overflow: auto;">
-              <table class="table table-striped table-sm">
+              <table id="absensiTable" class="table table-striped table-sm">
                   <thead>
                       <tr>
                           <th scope="col">Tanggal</th>
@@ -76,18 +78,18 @@
       </div>
         
             {{-- Section Setting Absensi --}}
-            <div class="border border-2 rounded p-4 my-4 d-flex flex-column text-md" style="height: auto; max-height: 300px; position: relative;">
-              <h5 class="font-weight-bold mb-3">Presensi Absensi Siswa</h5>
-              <div class="d-flex justify-content-center">
-                <button class="absensi-button" onclick="selectOption('masuk')">Masuk</button>
-                <button class="absensi-button" onclick="selectOption('sakit')">Sakit</button>
-                <button class="absensi-button" onclick="selectOption('izin')">Izin</button>
+            <div class="border border-2 rounded p-4 my-4 d-flex flex-column text-md" style="height: auto; max-height: 300px; position: relative;" id="presensiOptions">
+                <h5 class="font-weight-bold mb-3">Presensi Absensi Siswa</h5>
+                <div class="d-flex justify-content-center">
+                    <button class="absensi-button" onclick="selectOption('masuk')">Masuk</button>
+                    <button class="absensi-button" onclick="selectOption('sakit')">Sakit</button>
+                    <button class="absensi-button" onclick="selectOption('izin')">Izin</button>
+                </div>
+                <div class="d-flex justify-content-end mt-3">
+                    <button class="submit-button" onclick="submitData()" id="submitButton">Submit</button>
+                    <div id="submitIndicator"></div>
+                </div>
             </div>
-            <div class="d-flex justify-content-end mt-3">
-              <button class="submit-button" onclick="submitData()" id="submitButton">Submit</button>
-              <div id="submitIndicator"></div>
-          </div>
-          </div>
 
       </div>
       </div>
@@ -121,70 +123,158 @@
         padding: 10px 20px;
         cursor: pointer;
     }
+
+    .notification-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+}
+
+.notification {
+    background-color: #4CAF50;
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.notification button {
+    background-color: #555;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
 </style>
 
-
 <script>
-  let selectedOption = null;
+    let selectedOption = null;
 
-  function selectOption(option) {
-      selectedOption = option;
-      updateButtonState();
-  }
+    function selectOption(option) {
+        selectedOption = option;
+        updateButtonState();
+    }
 
-  function updateButtonState() {
-      const buttons = document.querySelectorAll('.absensi-button');
-      buttons.forEach(button => {
-          const option = button.textContent.toLowerCase();
-          button.classList.toggle('active', selectedOption === option);
-      });
-  }
+    function updateButtonState() {
+        const buttons = document.querySelectorAll('.absensi-button');
+        buttons.forEach(button => {
+            const option = button.textContent.toLowerCase();
+            button.classList.toggle('active', selectedOption === option);
+        });
+    }
 
-  function submitData() {
+    function submitData() {
     if (!selectedOption) {
         alert('Pilih opsi absensi terlebih dahulu.');
         return;
     }
 
-    // Tampilkan indikator submit (misalnya, spinner)
     const submitButton = document.getElementById('submitButton');
     submitButton.innerHTML = 'Submitting...';
 
-    // Dapatkan CSRF token
     const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
     const userId = @json(Auth::id());
 
-    // Kirim data absensi menggunakan AJAX
     fetch('{{ route('absensi.store') }}', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-            'X-CSRF-Token': csrfToken, // Sertakan CSRF token dalam header
+            'X-CSRF-Token': csrfToken,
         },
         body: JSON.stringify({
             'status_absen': selectedOption,
-            'role': 'siswa', // Ganti dengan nilai yang sesuai
-            'id_user': userId, // Ganti dengan nilai yang sesuai dari Auth::id()
+            'role': 'siswa',
+            'id_user': userId,
         }),
     })
     .then(response => response.json())
     .then(data => {
-        // Sembunyikan indikator submit
-        submitButton.innerHTML = 'Submit';
-        
-        // Tampilkan pesan sukses atau error
-        alert(data.message);
-    })
-    .catch(error => {
-        // Sembunyikan indikator submit
         submitButton.innerHTML = 'Submit';
 
-        // Tampilkan pesan error
-        alert('Terjadi kesalahan saat mengirim data absensi.');
-        console.error('Error:', error);
+        const notificationContainer = document.getElementById('notification');
+        const notification = document.createElement('div');
+        notification.classList.add('notification', 'success');
+        notification.innerHTML = `
+            <p>${data.message}</p>
+            <button onclick="closeNotification()">Tutup</button>
+        `;
+        notificationContainer.appendChild(notification);
+
+        refreshTable();
+        checkPresensiStatus(); // Perbarui status presensi setelah submit
+    })
+    .catch(error => {
+        submitButton.innerHTML = 'Submit';
+
+        // Handle error response from server
+        error.json().then(data => {
+            if (data && data.errors) {
+                // Server validation error
+                alert('Terjadi kesalahan validasi pada server: ' + data.errors.join(', '));
+            } else {
+                // General server error
+                alert('Terjadi kesalahan saat mengirim data absensi.');
+                console.error('Error:', error);
+            }
+        });
     });
 }
+
+
+    function closeNotification() {
+        const notificationContainer = document.getElementById('notification');
+        notificationContainer.innerHTML = ''; // Hapus notifikasi
+
+        // Reload the entire page
+        location.reload();
+    }
+
+    function checkPresensiStatus() {
+    const userId = @json(Auth::id());
+
+    // Kirim permintaan AJAX untuk mendapatkan data absensi terbaru
+    fetch('{{ route('absensi.showAbsensiSiswa') }}')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Periksa apakah sudah ada data presensi hari ini
+            const today = new Date();
+            const formattedDate = today.toISOString().split('T')[0];
+
+            const hasPresensiToday = data.some(absensi => {
+                const absensiDate = absensi.created_at.split(' ')[0];
+                return absensi.id_user === userId && absensiDate === formattedDate;
+            });
+
+            if (hasPresensiToday) {
+                // Jika sudah melakukan presensi, ubah tampilan dan hilangkan button option dan submit
+                disablePresensiOptions();
+            }
+        })
+        .catch(error => {
+            console.error('Error checking presensi status:', error);
+        });
+}
+
+    // Fungsi untuk menonaktifkan button option dan submit
+    function disablePresensiOptions() {
+        const buttonsContainer = document.getElementById('presensiOptions');
+        buttonsContainer.innerHTML = '<p>Anda telah melakukan presensi hari ini</p>';
+    }
+
+    // Panggil fungsi checkPresensiStatus saat halaman dimuat
+    window.addEventListener('load', function() {
+        checkPresensiStatus();
+    });
+
 </script>
 
 @endsection

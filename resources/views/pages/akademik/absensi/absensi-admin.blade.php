@@ -38,7 +38,7 @@
       <div class="col-lg-10 pr-4 mr-2">
 
         {{-- Table Siswa --}}
-        <div class="border border-2 rounded p-4 my-4 d-flex flex-column text-md" style="height: 300px; max-height: 300px; position: relative;">
+        <div class="border border-2 rounded p-4 my-4 d-flex flex-column text-md" style="height: 450px; max-height: 450px; position: relative;">
             <h5 class="position-relative" style="font-weight: bold; position: sticky; top: 0; background-color: white; z-index: 100;">
                 Data Siswa
             </h5>
@@ -99,7 +99,7 @@
         </div>
         
     <!-- Table for Data Guru -->
-    <div class="border border-2 rounded p-4 my-4 d-flex flex-column text-md" style="height: 300px; max-height: 300px; position: relative;">
+    <div class="border border-2 rounded p-4 my-4 d-flex flex-column text-md" style="height: 450px; max-height: 450px; position: relative;">
         <h5 class="position-relative" style="font-weight: bold; position: sticky; top: 0; background-color: white; z-index: 100;">
             Data Guru
         </h5>
@@ -152,18 +152,53 @@
         </div>
     </div>
     
-        <div class="d-flex align-items-center justify-content-center">
-          <div class="col-lg-8 bg-danger mt-4 d-flex align-items-center justify-content-center text-3xl" style="height: 300px;">
-            Setting Absensi section
-          </div>
+    <div class="d-flex align-items-center justify-content-center">
+        <div class="col-lg-8 mt-4 d-flex align-items-center justify-content-center">
+            <div id="fullCalendar"></div>
         </div>
-      </div>
+    </div>
+
+    </div>
     </div>
     {{-- Isi content end --}}
     </div>
     {{-- Template putih end --}}
   </div>
 </div>
+
+<style>
+    #fullCalendar .fc-dayGridMonth-button {
+      background-color: black; /* Ganti warna latar belakang sesuai keinginan Anda */
+      color: white; /* Ganti warna teks sesuai keinginan Anda */
+      border: none;
+      text-decoration: none; /* Menghilangkan underline */
+      cursor: pointer;
+    }
+  
+    #fullCalendar .fc-day-today {
+      background-color: green; /* Ganti warna latar belakang sesuai keinginan Anda */
+      color: white; /* Ganti warna teks sesuai keinginan Anda */
+      border: none;
+      text-decoration: none; /* Menghilangkan underline */
+      cursor: pointer;
+    }
+  
+    #fullCalendar .fc-day {
+      text-decoration: none; /* Menghilangkan underline */
+      cursor: pointer;
+    }
+  </style>
+  
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('fullCalendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth'
+        });
+        calendar.render();
+        });
+</script>
 
 <script>
     var dropdownKelas = document.getElementById("dropdownkelas");
