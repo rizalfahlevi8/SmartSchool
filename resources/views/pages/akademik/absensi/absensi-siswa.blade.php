@@ -44,38 +44,38 @@
           use Illuminate\Support\Facades\Auth;
         @endphp
         <div class="border border-2 rounded p-4 my-4 d-flex flex-column text-md" style="height: 300px; max-height: 300px; position: relative;">
-          <h5 class="position-relative" style="font-weight: bold; position: sticky; top: 0; background-color: white; z-index: 100;">
-              Data Presensi Siswa
-          </h5>
-          <div class="table-responsive small col-lg-12" style="flex: 1; overflow: auto;">
-              <table id="absensiTable" class="table table-striped table-sm">
-                  <thead>
-                      <tr>
-                          <th scope="col">Tanggal</th>
-                          <th scope="col">Hari</th>
-                          <th scope="col">Jam Absen</th>
-                          <th scope="col">Status</th>
-                          <th scope="col">Action</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                      @foreach ($absensis as $absensi)
-                          @if ($absensi->id_user === Auth::id())
-                              <tr>
-                                  <td>{{ \Carbon\Carbon::parse($absensi->created_at)->format('d-m-Y') }}</td>
-                                  <td>{{ \Carbon\Carbon::parse($absensi->created_at)->locale('id')->isoFormat('dddd') }}</td>
-                                  <td>{{ \Carbon\Carbon::parse($absensi->created_at)->format('H:i:s') }}</td>
-                                  <td>{{ $absensi->status_absen }}</td>
-                                  <td>
-                                      <a href="#" class="badge bg-warning">2</a>
-                                  </td>
-                              </tr>
-                          @endif
-                      @endforeach
-                  </tbody>
-              </table>
-          </div>
-      </div>
+            <h5 class="position-relative" style="font-weight: bold; position: sticky; top: 0; background-color: white; z-index: 100;">
+                Data Presensi Siswa
+            </h5>
+            <div class="table-responsive small col-lg-12" style="flex: 1; overflow: auto;">
+                <table id="absensiTable" class="table table-striped table-sm">
+                    <thead>
+                        <tr>
+                            <th scope="col">Tanggal</th>
+                            <th scope="col">Hari</th>
+                            <th scope="col">Jam Absen</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($absensis as $absensi)
+                            @if ($absensi->id_user === Auth::id())
+                                <tr>
+                                    <td>{{ \Carbon\Carbon::parse($absensi->created_at)->format('d-m-Y') }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($absensi->created_at)->locale('id')->isoFormat('dddd') }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($absensi->created_at)->format('H:i:s') }}</td>
+                                    <td>{{ $absensi->status_absen }}</td>
+                                    <td>
+                                        <a href="#" class="badge bg-warning">2</a>
+                                    </td>
+                                </tr>
+                            @endif
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
         
             {{-- Section Setting Absensi --}}
             <div class="border border-2 rounded p-4 my-4 d-flex flex-column text-md" style="height: auto; max-height: 300px; position: relative;" id="presensiOptions">
@@ -151,6 +151,10 @@
 </style>
 
 <script>
+    window.addEventListener('load', function() {
+        checkPresensiStatus();
+    });
+
     let selectedOption = null;
 
     function selectOption(option) {
@@ -167,63 +171,63 @@
     }
 
     function submitData() {
-    if (!selectedOption) {
-        alert('Pilih opsi absensi terlebih dahulu.');
-        return;
-    }
+        if (!selectedOption) {
+            alert('Pilih opsi absensi terlebih dahulu.');
+            return;
+        }
 
-    const submitButton = document.getElementById('submitButton');
-    submitButton.innerHTML = 'Submitting...';
+        const submitButton = document.getElementById('submitButton');
+        submitButton.innerHTML = 'Submitting...';
 
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
-    const userId = @json(Auth::id());
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+        const userId = @json(Auth::id());
 
-    fetch('{{ route('absensi.store') }}', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'X-CSRF-Token': csrfToken,
-        },
-        body: JSON.stringify({
-            'status_absen': selectedOption,
-            'role': 'siswa',
-            'id_user': userId,
-        }),
-    })
-    .then(response => response.json())
-    .then(data => {
-        submitButton.innerHTML = 'Submit';
+        fetch('{{ route('absensi.store') }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-CSRF-Token': csrfToken,
+            },
+            body: JSON.stringify({
+                'status_absen': selectedOption,
+                'role': 'siswa',
+                'id_user': userId,
+            }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            submitButton.innerHTML = 'Submit';
 
-        const notificationContainer = document.getElementById('notification');
-        const notification = document.createElement('div');
-        notification.classList.add('notification', 'success');
-        notification.innerHTML = `
-            <p>${data.message}</p>
-            <button onclick="closeNotification()">Tutup</button>
-        `;
-        notificationContainer.appendChild(notification);
+            const notificationContainer = document.getElementById('notification');
+            const notification = document.createElement('div');
+            notification.classList.add('notification', 'success');
+            notification.innerHTML = `
+                <p>${data.message}</p>
+                <button onclick="closeNotification()">Tutup</button>
+            `;
+            notificationContainer.appendChild(notification);
 
-        refreshTable();
-        checkPresensiStatus(); // Perbarui status presensi setelah submit
-    })
-    .catch(error => {
-        submitButton.innerHTML = 'Submit';
+            refreshTable();
+            checkPresensiStatus(); // Perbarui status presensi setelah submit
+            disablePresensiOptions(); // Nonaktifkan opsi jika diperlukan
+        })
+        .catch(error => {
+            submitButton.innerHTML = 'Submit';
 
-        // Handle error response from server
-        error.json().then(data => {
-            if (data && data.errors) {
-                // Server validation error
-                alert('Terjadi kesalahan validasi pada server: ' + data.errors.join(', '));
-            } else {
-                // General server error
-                alert('Terjadi kesalahan saat mengirim data absensi.');
-                console.error('Error:', error);
-            }
+            // Handle error response from server
+            error.json().then(data => {
+                if (data && data.errors) {
+                    // Server validation error
+                    alert('Terjadi kesalahan validasi pada server: ' + data.errors.join(', '));
+                } else {
+                    // General server error
+                    alert('Terjadi kesalahan saat mengirim data absensi.');
+                    console.error('Error:', error);
+                }
+            });
         });
-    });
-}
-
+    }
 
     function closeNotification() {
         const notificationContainer = document.getElementById('notification');
@@ -234,47 +238,71 @@
     }
 
     function checkPresensiStatus() {
-    const userId = @json(Auth::id());
+        const userId = @json(Auth::id());
 
-    // Kirim permintaan AJAX untuk mendapatkan data absensi terbaru
-    fetch('{{ route('absensi.showAbsensiSiswa') }}')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            // Periksa apakah sudah ada data presensi hari ini
-            const today = new Date();
-            const formattedDate = today.toISOString().split('T')[0];
+        // Mengecek apakah tanggal saat ini ada dalam localStorage
+        if (isDateRestricted()) {
+            // Menonaktifkan button option dan submit jika tanggal saat ini terbatas
+            disablePresensiOptions();
+        } else {
+            // Kirim permintaan AJAX untuk mendapatkan data absensi terbaru
+            fetch('{{ route('absensi.showAbsensiSiswa') }}')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Periksa apakah sudah ada data presensi hari ini
+                    const today = new Date();
+                    const formattedDate = today.toISOString().split('T')[0];
 
-            const hasPresensiToday = data.some(absensi => {
-                const absensiDate = absensi.created_at.split(' ')[0];
-                return absensi.id_user === userId && absensiDate === formattedDate;
-            });
+                    const hasPresensiToday = data.some(absensi => {
+                        const absensiDate = absensi.created_at.split(' ')[0];
+                        return absensi.id_user === userId && absensiDate === formattedDate;
+                    });
 
-            if (hasPresensiToday) {
-                // Jika sudah melakukan presensi, ubah tampilan dan hilangkan button option dan submit
-                disablePresensiOptions();
-            }
-        })
-        .catch(error => {
-            console.error('Error checking presensi status:', error);
-        });
-}
-
-    // Fungsi untuk menonaktifkan button option dan submit
-    function disablePresensiOptions() {
-        const buttonsContainer = document.getElementById('presensiOptions');
-        buttonsContainer.innerHTML = '<p>Anda telah melakukan presensi hari ini</p>';
+                    if (hasPresensiToday) {
+                        // Jika sudah melakukan presensi, ubah tampilan dan hilangkan button option dan submit
+                        disablePresensiOptions();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error checking presensi status:', error);
+                });
+        }
     }
 
-    // Panggil fungsi checkPresensiStatus saat halaman dimuat
-    window.addEventListener('load', function() {
-        checkPresensiStatus();
-    });
+    function disablePresensiOptions() {
+    const buttonsContainer = document.getElementById('presensiOptions');
 
+    // Mengecek apakah tanggal saat ini ada dalam localStorage
+    if (isDateRestricted()) {
+        buttonsContainer.innerHTML = '<p>Tidak perlu melakukan absensi pada hari ini</p>';
+    } else {
+        buttonsContainer.innerHTML = '<p>Anda telah melakukan presensi hari ini</p>';
+    }
+}
+
+    function isDateRestricted() {
+        const today = new Date();
+        const formattedDate = today.toISOString().split('T')[0];
+        const localStorageData = localStorage.getItem("events");
+
+        if (localStorageData) {
+            const events = JSON.parse(localStorageData);
+
+            // Mengecek apakah tanggal saat ini ada dalam localStorage
+            const isRestrictedDate = events.some(event => event.day === today.getDate() &&
+                event.month === today.getMonth() + 1 && event.year === today.getFullYear());
+
+            return isRestrictedDate;
+        }
+
+        return false;
+    }
 </script>
+
 
 @endsection

@@ -6,9 +6,13 @@ use App\Models\Absensi;
 use App\Models\Akademik;
 use App\Models\Kelas;
 use App\Models\User;
+use App\Models\Keteranganabsensi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\DB;
 
 class AbsensiController extends Controller
 {
@@ -54,6 +58,7 @@ public function store(Request $request)
 
     if ($absensi) {
         // Jika pengguna telah melakukan presensi pada hari ini, tampilkan pesan
+        Log::info('Presensi hari ini sudah ada untuk user ' . $userId);
         return response()->json(['message' => 'Anda telah melakukan presensi pada hari ini'], 400);
     }
 
@@ -72,6 +77,42 @@ public function store(Request $request)
 
     return response()->json(['message' => 'Data absensi berhasil disimpan'], 201);
 }
+
+
+public function tambahEvent(Request $request)
+{
+    $data = $request->validate([
+        'tanggal' => 'required|date',
+        'status' => 'required|in:weekend,libur',
+        'keterangan' => 'nullable|string',
+    ]);
+
+    Keteranganabsensi::create($data);
+
+    return redirect()->back()->with('success', 'Event berhasil ditambahkan.');
+}
+
+public function getEventsFromDatabase()
+{
+    Log::info('Attempting to fetch events from database...');
+    try {
+        // Mengambil semua data dari database
+        $events = Keteranganabsensi::all();
+
+        // Menyaring data untuk mendapatkan tanggal akhir pekan
+        $weekendDates = $events->filter(function ($event) {
+            return $event->status === 'weekend';
+        })->pluck('tanggal')->toArray();
+
+        Log::info('Filtered weekend dates:', $weekendDates);
+
+        return response()->json($weekendDates);
+    } catch (\Exception $e) {
+        Log::error('Error fetching events from database: ' . $e->getMessage());
+        return response()->json(['error' => 'Failed to fetch events from database'], 500);
+    }
+}
+
 
 
     public function index()

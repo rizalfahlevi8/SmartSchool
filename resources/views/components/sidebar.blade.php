@@ -85,13 +85,6 @@
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                         <li>
                             <a class="link-light rounded mb-1 {{ Request::is('akademik/absensi*') ? 'bg-gradient-primary ' : '' }}"
-                                href="/akademik/absensi">
-                                <i class="material-icons opacity-10 mx-2">receipt_long</i>
-                                Presensi
-                            </a>
-                        </li>
-                        <li>
-                            <a class="link-light rounded mb-1 {{ Request::is('akademik/absensi*') ? 'bg-gradient-primary ' : '' }}"
                                 href="/akademik/absensi/admin">
                                 <i class="material-icons opacity-10 mx-2">receipt_long</i>
                                 Presensi Admin
