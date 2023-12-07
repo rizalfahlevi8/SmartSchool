@@ -16,7 +16,7 @@ class KelasController extends Controller
     {
         $kelas = Kelas::where('deleted', 0)->orderBy('nama_kelas', 'asc')->get();
         $guruTersedia = DB::select('
-        SELECT * FROM gurus WHERE id NOT IN (SELECT id_guru FROM kelas where deleted = false)
+        SELECT * FROM gurus WHERE id NOT IN(SELECT id_guru FROM kelas WHERE deleted = 0 AND id_guru IS NOT NULL)
         ');
 
         return view('pages.sarana.data-kelas.kelas', [
@@ -80,7 +80,7 @@ class KelasController extends Controller
     {
         $kelas->update([
             'deleted' => 1,
-            'id_guru' => null
+            'id_guru' => 0
         ]);
         return redirect()->route('kelas_main')->with('toast_success', 'Data berhasil dihapus !');
     }
