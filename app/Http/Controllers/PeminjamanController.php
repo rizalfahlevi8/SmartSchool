@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Peminjaman;
 use App\Models\Ruang;
+use Illuminate\Console\View\Components\Alert;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -33,13 +34,28 @@ class PeminjamanController extends Controller
             'ruang'        => $ruang
         ])->with('title', 'Data Peminjaman');
     }
+    
+
+    /* public function simpan(Request $request) {
+        $this->validate($request, [
+            'surat' => 'mimes:pdf,docx',
+        ]
+    );
+
+    $surat = $request->file('surat');
+    $nama_surat = 'FT'.date('Ymdhis').'.'.$request->file('surat')->getClientOriginalExtension(); 
+    $surat->move('/dokumen',$nama_surat);
+
+    $data = new Peminjaman();
+    $data->surat = $nama_surat;
+    } */
 
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function  create()
     {
         //
     }
@@ -64,12 +80,15 @@ class PeminjamanController extends Controller
 
     public function store(Request $request)
     {
+
         // Validasi apakah ruang sudah terpinjam pada rentang waktu yang sama
         $validator = Validator::make($request->all(), [
             'ruang' => 'required',
             'nama_peminjam' => 'required',
             'tgl_peminjaman' => 'required|date',
             'tgl_pengembalian' => 'required|date|after_or_equal:tgl_peminjaman',
+            'surat' => 'required',
+
         ]);
 
         if ($validator->fails()) {
@@ -94,12 +113,21 @@ class PeminjamanController extends Controller
             return redirect()->back()->with('toast_error', 'Ruangan sudah terpinjam pada rentang waktu yang sama');
         }
 
-        Peminjaman::create([
+        $data = [
+
             'ruang_id' => $request->ruang,
             'nama_peminjam' => $request->nama_peminjam,
             'tanggal_peminjaman' => $request->tgl_peminjaman,
             'tanggal_pengembalian' => $request->tgl_pengembalian,
-        ]);
+            'surat' => $request->file('surat')->getClientOriginalName(),
+        ];
+
+        $file = $request->file('surat');
+        $fileName = uniqid() . '.' . $file->getClientOriginalName();
+        $file->storeAs('public/surat', $fileName);
+        $data['surat'] = $fileName;
+
+        Peminjaman::create($data);
 
         return redirect('/data-peminjaman')->with('toast_success', 'Data Ruang Berhasil di Tambahkan');
     }
@@ -155,6 +183,8 @@ class PeminjamanController extends Controller
             'nama_peminjam' => 'required',
             'tgl_peminjaman' => 'required|date',
             'tgl_pengembalian' => 'required|date|after_or_equal:tgl_peminjaman',
+            'surat' => 'required',
+
         ]);
 
         if ($validator->fails()) {
@@ -179,13 +209,20 @@ class PeminjamanController extends Controller
         if ($existingPeminjaman) {
             return redirect()->back()->with('toast_error', 'Ruangan sudah terpinjam pada rentang waktu yang sama');
         }
-
         $data = [
+
             'ruang_id' => $request->ruang,
             'nama_peminjam' => $request->nama_peminjam,
             'tanggal_peminjaman' => $request->tgl_peminjaman,
             'tanggal_pengembalian' => $request->tgl_pengembalian,
+            'surat' => $request->file('surat')->getClientOriginalName(),
         ];
+
+        $file = $request->file('surat');
+        $fileName = time() . '.' . $file->getClientOriginalExtension();
+        $file->storeAs('public/surat', $fileName);
+        $data['surat'] = $fileName;
+
 
         $peminjaman->update($data);
         return redirect('/data-peminjaman')->with('toast_success', 'Data Ruang Berhasil di Ubah');
@@ -215,4 +252,24 @@ class PeminjamanController extends Controller
             'peminjaman'   => $peminjaman
         ])->with('title', 'Data Peminjaman');
     }
+
+    public function confirm( $id)
+    {
+        
+        $peminjaman = Peminjaman::find($id);
+
+        if ($peminjaman) {
+            if ($peminjaman->status) {
+                $peminjaman->status = 0;
+            } else {
+                $peminjaman->status = 1;
+            }
+
+            $peminjaman->save();
+        }
+
+        return back();
+    }
+
+
 }
