@@ -247,6 +247,7 @@ Route::middleware(['userRole:admin,wakasek'])->group(function () {
     Route::delete('/data-peminjaman-barang/{id}', [PeminjamanBarangController::class, 'destroy'])->name('peminjamanBarang.destroy');
     Route::get('/data-peminjaman-barang-history', [PeminjamanBarangController::class, 'history']);
     Route::get('/data-peminjaman-barang-confirm/{id}', [PeminjamanBarangController::class, 'confirm']);
+    Route::get('/data-peminjaman-barang-approve/{id}', [PeminjamanController::class, 'confirm']);
 });
 //======================== G U R U =========================================================
 Route::middleware(['userRole:guru'])->group(function () {
