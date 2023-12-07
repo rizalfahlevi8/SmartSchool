@@ -182,7 +182,7 @@
     </div>
     @elseif (auth()->user()->hasRole('wakasek'))
     <div class="row gap-4 justify-content-evenly">
-    <div class="card col-4" style="height: 700px; border-radius: 25px;">
+    <div class="card col-4" style="height: 850px; border-radius: 25px;">
         <div class="card-body d-flex flex-column justify-content-between">
             <div class="text-center mb-3">
                 <img class=" rounded-4" src="{{ asset('assets/img/c.jpg')}}" style="width: 100%; border-radius: 25px;" alt="Deskripsi Gambar">
@@ -193,7 +193,7 @@
             </div>
         </div>
     </div>
-    <div class="card col-4" style="height: 700px; border-radius: 25px;">
+    <div class="card col-4" style="height: 850px; border-radius: 25px;">
         <div class="card-body d-flex flex-column justify-content-between">
             <div class="text-center mb-3">
                 <img class=" rounded-4" src="{{ asset('assets/img/a.jpg')}}" style="width: 100%; border-radius: 25px;" alt="Deskripsi Gambar">
