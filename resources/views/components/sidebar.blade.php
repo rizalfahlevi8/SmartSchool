@@ -118,18 +118,18 @@
                 </span>
                 Sapras <i class="material-icons opacity-10 ms-auto">expand_more</i>
             </button>
-            <div class="collapse {{ Request::is('sarana/inventaris*') || Request::is('sarana/ruang*') || Request::is('sarana/barang*')  || Request::is('data-peminjaman*') || request :: is('data-peminjaman-barang*') ? 'show' : '' }}" id="sarpras-collapse">
+            <div class="collapse {{ Request::is('sarana/inventaris*') || Request::is('data-peminjaman*') 
+                    ||Request::is('data-peminjaman-barang') ? 'show' : '' }}" id="sarpras-collapse">
                 <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                    <li><a class="link-light rounded mb-1 {{ Request::is('sarana/inventaris*') ? 'bg-gradient-primary ' : '' }}" style="width: 100%" href="/sarana/inventaris"> <i class="material-icons opacity-10 mx-2">task</i>
-                            Inventaris</a>
-                    </li>
+                    <li><a class="link-light rounded mb-1 {{ Request::is('sarana/inventaris*') ? 'bg-gradient-primary ' : '' }}" href="/sarana/inventaris"> <i class="material-icons opacity-10 mx-2">task</i>
+                            Inventaris</a></li>
                 </ul>
                 <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                    <li><a class="link-light rounded mb-1 {{ Request::is('data-peminjaman*') ? 'bg-gradient-primary ' : '' }}" style="width: 100%" href="/data-peminjaman"> <i class="material-icons opacity-10 mx-2">task</i>
+                    <li><a class="link-light rounded mb-1 {{ Request::is('data-peminjaman') ? 'bg-gradient-primary ' : '' }}" href="/data-peminjaman"> <i class="material-icons opacity-10 mx-2">task</i>
                             Peminjaman Ruang</a></li>
                 </ul>
                 <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                    <li><a class="link-light rounded mb-1 {{ Request::is('data-peminjaman-barang*') ? 'bg-gradient-primary ' : '' }}" style="width: 100%" href="/data-peminjaman-barang"> <i class="material-icons opacity-10 mx-2">task</i>
+                    <li><a class="link-light rounded mb-1 {{ Request::is('data-peminjaman-barang') ? 'bg-gradient-primary ' : '' }}" href="{{ route('peminjamanBarang.index') }}"> <i class="material-icons opacity-10 mx-2">task</i>
                             Peminjaman Barang</a></li>
                 </ul>
             </div>

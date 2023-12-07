@@ -119,7 +119,7 @@ Route::middleware(['userRole:admin,guru'])->group(function () {
 
 
 //==========================================================================================
-Route::middleware(['userRole:admin'])->group(function () {
+Route::middleware(['userRole:admin,wakasek'])->group(function () {
     // Pengumuman
     Route::get('/dashboard/buat-pengumuman', [PengumumanController::class, 'create'])->name('buat-pengumuman');
     Route::post('/dashboard/buat-pengumuman', [PengumumanController::class, 'store']);
@@ -162,7 +162,7 @@ Route::middleware(['userRole:admin'])->group(function () {
 });
 //==========================================================================================
 
-Route::middleware(['userRole:admin'])->group(function () {
+Route::middleware(['userRole:admin,wakasek'])->group(function () {
     // ==============[ D a t a - G u r u ]===============
     Route::get('/administrasi/guru', [GuruController::class, 'index']);
     Route::get('/administrasi/guru-tambah', [GuruController::class, 'create']);
