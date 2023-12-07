@@ -79,7 +79,8 @@ class KelasController extends Controller
     public function destroy(Kelas $kelas)
     {
         $kelas->update([
-            'deleted' => 1
+            'deleted' => 1,
+            'id_guru' => null
         ]);
         return redirect()->route('kelas_main')->with('toast_success', 'Data berhasil dihapus !');
     }
