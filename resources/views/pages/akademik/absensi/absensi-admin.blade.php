@@ -21,17 +21,11 @@
     {{-- Header absensi end --}}
     {{-- Isi content start --}}
     <div class="row mt-4 mx-0 d-flex align-items-center justify-content-center">
-      <div class="col-lg-5">
-        <div class="bg-success d-flex align-items-center justify-content-center text-3xl" style="height: 300px; max-height: 300px">
-          Pie Section
+        <div class="col-lg-5">
+          <div class="bg-success d-flex align-items-center justify-content-center text-3xl" style="height: 300px; max-height: 300px">
+            Pie Section
+          </div>
         </div>
-      </div>
-
-      <div class="col-lg-5">
-        <div class="bg-danger d-flex align-items-center justify-content-center text-3xl" style="height: 300px; max-height: 300px">
-          Calender Full Section
-        </div>
-      </div>
     </div>
 
     <div class="mb-4 d-flex align-items-center justify-content-center">
@@ -863,12 +857,12 @@
 
     const eventsArr = [];
     const databaseEvents = [];
+    const weekendDates = [];
 
     getEvents();
     console.log(eventsArr);
 
-    getEventsFromDatabase();
-    console.log(databaseEvents);
+    // getEventsFromDatabase();
 
 
     //function to add days in days with class day and prev-date next-date on previous month and next month days and active on today
@@ -1197,8 +1191,8 @@
         });
     }
 
-    console.log(eventsArr);
-    addEventWrapper.classList.remove("active");
+    // console.log(eventsArr);
+    // addEventWrapper.classList.remove("active");
     addEventTitle.value = "";
     addEventFrom.value = "";
     addEventTo.value = "";
@@ -1317,8 +1311,6 @@ function convertDatabaseEventsToEventsArr() {
             });
         }
     });
-
-    updateCalendar();
     saveEvents();
 }
 
