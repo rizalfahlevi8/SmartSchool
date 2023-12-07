@@ -180,6 +180,7 @@
 </div>
     </div>
     </div>
+    
     @elseif (auth()->user()->hasRole('wakasek'))
     <div class="row gap-1 justify-content-evenly">
     <div class="card col-4" style="height: 650px; width: 450px; border-radius: 25px;">
