@@ -238,7 +238,7 @@ Route::middleware(['userRole:admin,wakasek'])->group(function () {
     Route::post('/peminjaman-tambah', [PeminjamanController::class, 'store']);
     Route::put('/peminjaman-update', [PeminjamanController::class, 'update']);
     Route::get('/peminjaman-confirm/{id}', [PeminjamanController::class, 'confirm']);
-    Route::get('/peminjaman-approve/{id}', [PeminjamanController::class, 'confirm']);
+    Route::get('/peminjaman-approve/{id}', [PeminjamanController::class, 'approve']);
 
     // ==============[ D a t a - P e m i n j a m a n B a r a n g]===============
     Route::get('/data-peminjaman-barang', [PeminjamanBarangController::class, 'index'])->name('peminjamanBarang.index');
@@ -247,7 +247,7 @@ Route::middleware(['userRole:admin,wakasek'])->group(function () {
     Route::delete('/data-peminjaman-barang/{id}', [PeminjamanBarangController::class, 'destroy'])->name('peminjamanBarang.destroy');
     Route::get('/data-peminjaman-barang-history', [PeminjamanBarangController::class, 'history']);
     Route::get('/data-peminjaman-barang-confirm/{id}', [PeminjamanBarangController::class, 'confirm']);
-    Route::get('/data-peminjaman-barang-approve/{id}', [PeminjamanController::class, 'confirm']);
+    Route::get('/data-peminjaman-barang-approve/{id}', [PeminjamanController::class, 'approve']);
 });
 //======================== G U R U =========================================================
 Route::middleware(['userRole:guru'])->group(function () {

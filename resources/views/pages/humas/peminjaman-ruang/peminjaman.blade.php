@@ -134,7 +134,7 @@ Data Peminjaman Ruang
                                     </a>
                                 </td>
                                 <td class="text-center">
-                                    {{ $p->status ? 'Disetujui' :  'Menunggu' }}
+                                    {{ $p->status_pengajuan ? 'Disetujui' :  'Menunggu' }}
                                 </td>
                                 @if (auth()->user()->hasRole('admin'))
                                 <td class="text-center" style="display: flex; gap: 10px; justify-content: center">
@@ -150,7 +150,7 @@ Data Peminjaman Ruang
                                     <a href="peminjaman-approve/{{ $p->id }}" class=" btn btn-success font-weight-bold text-sm" title="konfirmasi" onclick="return confirm('Apakah anda yakin menyetujui pengajuan ini?')">
                                         Setuju
                                     </a>
-                                    <a href="peminjaman-confirm/{{ $p->id }}" class=" btn btn-danger font-weight-bold text-sm" title="konfirmasi" onclick="return confirm('Apakah anda yakin menolak pengajuan ini?')">
+                                    <a href="peminjaman-/{{ $p->id }}" class=" btn btn-danger font-weight-bold text-sm" title="konfirmasi" onclick="return confirm('Apakah anda yakin menolak pengajuan ini?')">
                                         Tolak
                                     </a>
                                 </td>
