@@ -145,14 +145,14 @@ Data Peminjaman barang
                                     <a href="{{ asset('storage/surat/' . str_replace(' ', '%20', $value->surat)) }}" target="_blank">Lihat file </a>
                                 </td>
                                 <td class="text-center">
-                                    {{ $value->status ? 'Disetujui' :  'Menunggu' }}
+                                    {{ $value->status_pengajuan ? 'Disetujui' :  'Menunggu' }}
                                 </td>
                                 @if (auth()->user()->hasRole('wakasek'))
                                 <td class="text-center" style="display: flex; gap: 10px; justify-content: center">
                                     <a href="data-peminjaman-barang-approve/{{ $value->id }}" class=" btn btn-success font-weight-bold text-sm" title="konfirmasi" onclick="return confirm('Apakah anda yakin menyetujui pengajuan ini?')">
                                         Setuju
                                     </a>
-                                    <a href="data-peminjaman-barang-approve/{{ $value->id }}" class=" btn btn-danger font-weight-bold text-sm" title="konfirmasi" onclick="return confirm('Apakah anda yakin menolak pengajuan ini?')">
+                                    <a href="data-peminjaman-barang/{{ $value->id }}" class=" btn btn-danger font-weight-bold text-sm" title="konfirmasi" onclick="return confirm('Apakah anda yakin menolak pengajuan ini?')">
                                         Tolak
                                     </a>
                                 </td>
