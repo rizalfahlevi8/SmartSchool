@@ -232,9 +232,7 @@ Route::middleware(['userRole:admin'])->group(function () {
     Route::get('/get_siswa', [SiswaController::class, 'getSiswaKelasAbsensi']);
     Route::get('/get_guru', [GuruController::class, 'getGuru']);
     Route::get('/api/events-from-database', [AbsensiController::class, 'getEventsFromDatabase']);
-
-
-
+    Route::delete('/api/delete-absensi/{id}', [AbsensiController::class, 'deleteAbsensi']);
 
     // ==============[ D a t a - P e m i n j a m a n ]===============
     Route::get('/data-peminjaman', [PeminjamanController::class, 'index']);

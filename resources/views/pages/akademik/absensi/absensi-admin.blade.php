@@ -20,11 +20,11 @@
     </div>
     {{-- Header absensi end --}}
     {{-- Isi content start --}}
-    <div class="row mt-4 mx-0 d-flex align-items-center justify-content-center">
-        <div class="col-lg-5">
-          <div class="bg-success d-flex align-items-center justify-content-center text-3xl" style="height: 300px; max-height: 300px">
-            Pie Section
-          </div>
+    <div class="d-flex align-items-center justify-content-center text-3xl" style="height: 400px">
+        <div class="card">
+            <div class="card-body">
+                <div id="chart-demo-pie" class="chart-lg"></div>
+            </div>
         </div>
     </div>
 
@@ -51,7 +51,7 @@
                 </div>
             </div>
             <div class="table-responsive small col-lg-12" style="flex: 1; overflow: auto;">
-                <table class="table table-striped table-sm">
+                <table id="absensiTableSiswa" class="table table-striped table-sm">
                 <thead>
                     <tr>
                         <th scope="col">Tanggal</th>
@@ -81,7 +81,8 @@
                                 <td>{{ \Carbon\Carbon::parse($absensi->created_at)->format('H:i:s') }}</td>
                                 <td>{{ $absensi->status_absen }}</td>
                                 <td>
-                                    <a href="#" class="badge bg-warning">2</a>
+                                    <button class="btn btn-primary btn-sm">Edit</button>
+                                    <button class="btn btn-danger btn-sm" onclick="deleteAbsensi({{ $absensi->id }})">Delete</button>
                                 </td>
                             </tr>
                         @endif
@@ -107,7 +108,7 @@
             </div>
         </div>
         <div class="table-responsive small col-lg-12" style="flex: 1; overflow: auto;">
-            <table class="table table-striped table-sm">
+            <table id="absensiTableguru" class="table table-striped table-sm">
                 <thead>
                     <tr>
                         <th scope="col">Tanggal</th>
@@ -135,7 +136,8 @@
                                     <td>{{ \Carbon\Carbon::parse($absensi->created_at)->format('H:i:s') }}</td>
                                     <td>{{ $absensi->status_absen }}</td>
                                     <td>
-                                        <a href="#" class="badge bg-warning">2</a>
+                                        <button class="btn btn-primary btn-sm">Edit</button>
+                                        <button class="btn btn-danger btn-sm" onclick="deleteAbsensi({{ $absensi->id }})">Delete</button>
                                     </td>
                                 </tr>
                             @endif
@@ -784,8 +786,109 @@
     }
 </style>
 
-
 <script>
+
+document.addEventListener("DOMContentLoaded", function() {
+    // Fungsi untuk mengambil data dan menghitung jumlah
+    function countStatusAbsen(rows, columnIndex) {
+        let masukCount = 0;
+        let sakitCount = 0;
+        let izinCount = 0;
+        let tidakMasukCount = 0;
+
+        for (let i = 0; i < rows.length; i++) {
+            const statusAbsen = rows[i].querySelector(`td:nth-child(${columnIndex})`).textContent;
+
+            switch (statusAbsen.toLowerCase()) {
+                case 'masuk':
+                    masukCount++;
+                    break;
+                case 'sakit':
+                    sakitCount++;
+                    break;
+                case 'izin':
+                    izinCount++;
+                    break;
+                case 'tidak masuk':
+                    tidakMasukCount++;
+                    break;
+                // Tambahkan case untuk status_absen lain jika diperlukan
+            }
+        }
+
+        return {
+            masuk: masukCount,
+            sakit: sakitCount,
+            izin: izinCount,
+            tidakMasuk: tidakMasukCount
+        };
+    }
+
+    // Ambil data dari tabel siswa
+    const absensiTableSiswa = document.getElementById('tableBodySiswa');
+    const absensiRowsSiswa = absensiTableSiswa.getElementsByTagName('tr');
+    const siswaData = countStatusAbsen(absensiRowsSiswa, 6); // Ganti 6 sesuai dengan indeks kolom status_absen pada tabel siswa
+
+    // Ambil data dari tabel guru
+    const absensiTableGuru = document.getElementById('tableBodyGuru');
+    const absensiRowsGuru = absensiTableGuru.getElementsByTagName('tr');
+    const guruData = countStatusAbsen(absensiRowsGuru, 5); // Ganti 5 sesuai dengan indeks kolom status_absen pada tabel guru
+
+    // Gabungkan data dari kedua tabel
+    const combinedData = {
+        masuk: siswaData.masuk + guruData.masuk,
+        sakit: siswaData.sakit + guruData.sakit,
+        izin: siswaData.izin + guruData.izin,
+        tidakMasuk: siswaData.tidakMasuk + guruData.tidakMasuk
+    };
+
+    // Inisialisasi pie chart dengan data yang dihitung
+    window.ApexCharts && new ApexCharts(document.getElementById('chart-demo-pie'), {
+        chart: {
+            type: "donut",
+            fontFamily: 'inherit',
+            height: 400,
+            sparkline: {
+                enabled: true
+            },
+            animations: {
+                enabled: false
+            },
+        },
+        fill: {
+            opacity: 1,
+        },
+        series: [combinedData.masuk, combinedData.sakit, combinedData.izin, combinedData.tidakMasuk],
+        labels: ["Masuk", "Sakit", "Izin", "Tidak Masuk"],
+        tooltip: {
+            theme: 'dark'
+        },
+        grid: {
+            strokeDashArray: 4,
+        },
+        colors: ['#2845ff', '#Feef50', '#20f000', '#ff1818' ],
+        legend: {
+            show: true,
+            position: 'bottom',
+            offsetY: 12,
+            markers: {
+                width: 10,
+                height: 10,
+                radius: 100,
+            },
+            itemMargin: {
+                horizontal: 8,
+                vertical: 8
+            },
+        },
+        tooltip: {
+            fillSeriesColor: false
+        },
+    }).render();
+});
+
+
+
     function Log(...messages) {
         // Menggabungkan pesan-pesan menjadi satu string
         const logMessage = messages.join(' ');
@@ -1324,9 +1427,7 @@ function convertDatabaseEventsToEventsArr() {
     time = timeHour + ":" + timeMin + " " + timeFormat;
     return time;
     }
-</script>
 
-<script>
     var dropdownKelas = document.getElementById("dropdownkelas");
     var dropdownSiswaContainer = document.getElementById("dropdownsiswacontainer");
     var dropdownSiswa = document.getElementById("dropdownsiswa");
@@ -1511,6 +1612,35 @@ function convertDatabaseEventsToEventsArr() {
         // Perform live search in "Data Siswa" table
         liveSearchSiswa(searchTermSiswa);
     });
+
+    function deleteAbsensi(id) {
+    if (confirm('Apakah Anda yakin ingin menghapus data absensi ini?')) {
+        // Get the CSRF token from the meta tag
+        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+        // Include the CSRF token in the headers
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': csrfToken
+            }
+        });
+
+        // Send the delete request
+        $.ajax({
+            type: 'DELETE',
+            url: '/api/delete-absensi/' + id,
+            success: function () {
+                // Refresh the page after successful deletion
+                location.reload();
+            },
+            error: function (error) {
+                console.error('Error deleting absensi:', error);
+                alert('Terjadi kesalahan saat menghapus data absensi.');
+            }
+        });
+    }
+}
+
 </script>
 
 

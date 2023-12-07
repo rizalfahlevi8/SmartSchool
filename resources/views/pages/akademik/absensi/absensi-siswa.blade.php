@@ -20,12 +20,12 @@
     </div>
     {{-- Header absensi end --}}
     {{-- Isi content start --}}
-    <div class="row mt-4 mx-0 d-flex align-items-center justify-content-center">
-      <div class="col-lg-5">
-        <div class="bg-success d-flex align-items-center justify-content-center text-3xl" style="height: 300px; max-height: 300px">
-          Pie Section
+    <div class="d-flex align-items-center justify-content-center text-3xl" style="height: 400px">
+        <div class="card">
+            <div class="card-body">
+                <div id="chart-demo-pie" class="chart-lg"></div>
+            </div>
         </div>
-      </div>
     </div>
 
     <div id="notification" class="notification-container"></div>
@@ -145,6 +145,79 @@
 </style>
 
 <script>
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const absensiTable = document.getElementById('absensiTable');
+    const absensiRows = absensiTable.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+
+    let masukCount = 0;
+    let sakitCount = 0;
+    let izinCount = 0;
+    let tidakMasukCount = 0;
+
+    for (let i = 0; i < absensiRows.length; i++) {
+        const statusAbsen = absensiRows[i].querySelector('td:nth-child(4)').textContent; // Ubah indeks sesuai dengan posisi kolom status_absen
+
+        switch (statusAbsen.toLowerCase()) {
+            case 'masuk':
+                masukCount++;
+                break;
+            case 'sakit':
+                sakitCount++;
+                break;
+            case 'izin':
+                izinCount++;
+                break;
+            case 'tidak masuk':
+                tidakMasukCount++;
+                break;
+            // Tambahkan case untuk status_absen lain jika diperlukan
+        }
+    }
+
+            window.ApexCharts && new ApexCharts(document.getElementById('chart-demo-pie'), {
+                chart: {
+                    type: "donut",
+                    fontFamily: 'inherit',
+                    height: 400,
+                    sparkline: {
+                        enabled: true
+                    },
+                    animations: {
+                        enabled: false
+                    },
+                },
+                fill: {
+                    opacity: 1,
+                },
+                series: [masukCount, sakitCount, izinCount, tidakMasukCount],
+                labels: ["Masuk", "Sakit", "Izin", "Tidak Masuk"],
+                tooltip: {
+                    theme: 'dark'
+                },
+                grid: {
+                    strokeDashArray: 4,
+                },
+                colors: ['#2845ff', '#Feef50', '#20f000', '#ff1818' ],
+                legend: {
+                    show: true,
+                    position: 'bottom',
+                    offsetY: 12,
+                    markers: {
+                        width: 10,
+                        height: 10,
+                        radius: 100,
+                    },
+                    itemMargin: {
+                        horizontal: 8,
+                        vertical: 8
+                    },
+                },
+                tooltip: {
+                    fillSeriesColor: false
+                },
+            }).render();
+        });
 
     const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
 

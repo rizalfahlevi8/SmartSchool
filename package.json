@@ -17,6 +17,7 @@
     },
     "dependencies": {
         "@fullcalendar/core": "^6.1.10",
-        "@fullcalendar/daygrid": "^6.1.10"
+        "@fullcalendar/daygrid": "^6.1.10",
+        "apexcharts": "^3.44.2"
     }
 }

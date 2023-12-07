@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as Middleware;
 
 class AbsensiController extends Controller
 {
@@ -20,6 +21,18 @@ class AbsensiController extends Controller
         return view('pages.akademik.absensi.absensi-admin', [
             'absensis'=>Absensi::all()
         ])->with('title', 'Absensi Admin');
+    }
+
+    public function deleteAbsensi($id) {
+        try {
+            // Lakukan penghapusan data absensi berdasarkan ID
+            Absensi::findOrFail($id)->delete();
+    
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            // Tangani kesalahan jika terjadi
+            return response()->json(['success' => false, 'error' => $e->getMessage()], 500);
+        }
     }
     public function showAbsensiSiswa(Request $request)
 {
@@ -85,7 +98,7 @@ public function checkAndFillAbsentData()
     $userId = Auth::id();
 
     // Tentukan tanggal awal dan akhir untuk pengecekan
-    $startDate = now()->setYear(2023)->setMonth(11)->setDay(20);
+    $startDate = now()->setYear(2023)->setMonth(12)->setDay(1);
     $endDate = now()->subDay(); // Tanggal kemarin (sehari sebelum hari ini)
 
     $dataInserted = false; // Indikator apakah ada data tambahan yang dimasukkan

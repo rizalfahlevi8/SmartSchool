@@ -15,7 +15,7 @@ class AbsensisSeeder extends Seeder
 {
     public function run(): void
     {
-        $startDate = now()->setYear(2023)->setMonth(11)->setDay(20);
+        $startDate = now()->setYear(2023)->setMonth(12)->setDay(1);
         $endDate = now()->setYear(2023)->setMonth(12)->setDay(5);
 
         $userIds = range(2, 621); // Assuming user IDs are between 2 and 621
@@ -34,7 +34,7 @@ class AbsensisSeeder extends Seeder
                 $startDate->addDay();
             }
 
-            $startDate->setYear(2023)->setMonth(11)->setDay(20); // Reset start date for the next user
+            $startDate->setYear(2023)->setMonth(12)->setDay(1); // Reset start date for the next user
         }
     }
 }
