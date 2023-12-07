@@ -247,7 +247,91 @@ Data Peminjaman barang
                             </div>
                         </div>
                     </div>
+                    <!--Aksi Detail surat waka-->
+                    @if (auth()->user()->hasRole('wakasek'))
+                    <div class="modal fade" id="detail-Surat" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog  modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header bg-primary">
+                                    <h5 class="modal-title text-white" id="exampleModalLabel">Detail Pengajuan Peminjaman
+                                    </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <ul class="list-group">
+                                                <li class="list-group-item">
+                                                    <div class="row">
+                                                        <div class="col-md-5">
+                                                            <span class="float-start fw-bold">Nama Peminjam</span>
+                                                            <div class="float-end">:</div>
+                                                        </div>
+                                                        <div class="col-md-7" style="text-transform: capitalize" id="nama_peminjam">
 
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="list-group-item">
+                                                    <div class="row">
+                                                        <div class="col-md-5">
+                                                            <span class="float-start fw-bold">Jumlah</span>
+                                                            <div class="float-end">:</div>
+                                                        </div>
+                                                        <div class="col-md-7" style="text-transform: capitalize" id="nama_peminjam">
+
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="list-group-item">
+                                                    <div class="row">
+                                                        <div class="col-md-5">
+                                                            <span class="float-start fw-bold">Tanggal Peminjaman</span>
+                                                            <div class="float-end">:</div>
+                                                        </div>
+                                                        <div class="col-md-7" style="text-transform: capitalize" id="tanggal_peminjaman">
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="list-group-item">
+                                                    <div class="row">
+                                                        <div class="col-md-5">
+                                                            <span class="float-start fw-bold">Tanggal Pengembalian</span>
+                                                            <div class="float-end">:</div>
+                                                        </div>
+                                                        <div class="col-md-7" style="text-transform: capitalize" id="tanggal_pengembalian">
+
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="list-group-item">
+                                                    <div class="row">
+                                                        <div class="col-md-5">
+                                                            <span class="float-start fw-bold">Surat Pengajuan
+                                                            </span>
+                                                            <div class="float-end">:</div>
+                                                        </div>
+                                                        <div class="col-md-7" style="text-transform: capitalize" id="surat">
+                                                            <a href="{{ asset('storage/surat/' . str_replace(' ', '%20', $value->surat)) }}" target="_blank">
+                                                                Lihat file
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Tolak</button>
+                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Setuju</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
                     {{-- modal insert --}}
                     <div class="modal fade" id="insert-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog  modal-lg">
