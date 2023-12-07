@@ -2,6 +2,7 @@
 @section('title-content')
 Data Peminjaman Ruang
 @endsection
+@if (auth()->user()->hasRole('admin', 'wakasek'))
 @section('breadcrumbs')
 <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
     <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="/data-peminjaman">Peminjaman</a>
@@ -127,15 +128,12 @@ Data Peminjaman Ruang
                                 <td class="text-center">
                                     {{ $p->tanggal_pengembalian }}
                                 </td>
-                                <!-- <td class="text-center">
-                                    
-                                </td> -->
-                                @if (auth()->user()->hasRole('admin'))
                                 <td class="text-center">
                                     <a href="{{ asset('storage/surat/' . str_replace(' ', '%20', $p->surat)) }}" target="_blank">
                                         Lihat file
                                     </a>
                                 </td>
+                                @if (auth()->user()->hasRole('admin'))
                                 <td class="text-center" style="display: flex; gap: 10px; justify-content: center">
                                     <button type="button" data-bs-toggle="modal" data-bs-target="#update-modal" id-peminjaman="{{ $p->id }}" id-ruang="{{ $p->ruang_id }}" nama-peminjam="{{ $p->nama_peminjam }}" tgl-peminjaman="{{ $p->tanggal_peminjaman }}" tgl-pengembalian="{{ $p->tanggal_pengembalian }}" class="btn btn-warning font-weight-bold btn--edit text-sm rounded-circle" style="margin: 5px 0;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit" onclick="showUpdateModalDialog(this)">
                                         <i class="fa fa-edit"></i>
@@ -432,5 +430,6 @@ Data Peminjaman Ruang
         inputSurat.value = surat;
     }
 </script>
+@endif
 @endsection
 {{-- footer --}}

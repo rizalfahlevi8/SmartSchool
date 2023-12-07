@@ -5,6 +5,7 @@
 @endsection
 
 @section('breadcrumbs')
+@if (auth()->user()->hasRole('admin', 'wakasek'))
 <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
         <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="/dashboard">Dashboard</a></li>
         <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Inventaris</li>
@@ -70,7 +71,7 @@
                                     <td class="text-center">
                                         <a href="{{ route('atur-barang', $ruang->id) }}" class="btn btn-primary">Atur Barang</a>
                                     </td>
-                                    @elseif (auth()->user()->hasRole('waka'))
+                                    @elseif (auth()->user()->hasRole('wakasek'))
                                     <td class="text-center">
                                         <a href="{{ route('atur-barang', $ruang->id) }}" class="btn btn-primary">detail Barang</a>
                                     </td>
@@ -84,3 +85,4 @@
         </div>
     </div>
 @endsection
+@endif
