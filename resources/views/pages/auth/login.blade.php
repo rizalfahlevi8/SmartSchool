@@ -53,8 +53,8 @@
                             <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                                 <div class="bg-gradient-primary shadow-primary border-radius-lg py-3 pe-1">
                                     <h4 class="text-white font-weight-bolder text-center mt-2 mb-0" style=""><img
-                                            src="{{ asset('assets/img/web-icon-login.png') }}" alt="HTML tutorial"
-                                            style="height: 90px;filter:brightness(0%) invert(90%)">
+                                            src="{{ asset('assets/img/smart scholl only icon.png') }}"
+                                            alt="HTML tutorial" style="height: 90px;filter:brightness(0%) invert(90%)">
                                     </h4>
                                     <div class="row mt-2">
                                         {{-- <h4 class="text-white font-weight-bolder text-center mb-0">Smart School</h4> --}}
