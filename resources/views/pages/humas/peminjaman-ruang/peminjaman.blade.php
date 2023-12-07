@@ -65,9 +65,11 @@ Data Peminjaman Ruang
             </div>
             <div class="card-body px-0 pb-2">
                 <div class="table-responsive pb-2 px-3">
+                    @if (auth()->user()->hasRole('admin'))
                     <button type="button" data-bs-toggle="modal" data-bs-target="#insert-modal" class="btn btn-primary font-weight-bold btn--edit text-xs " data-bs-toggle="tooltip" data-bs-placement="bottom" title="Detail">
                         <i class="material-icons opacity-10">add</i>Tambah
                     </button>
+                    @endif
                     <a href="data-peminjaman-history" type="submit" id="btntambah" class="btn btn-danger font-weight-bold text-xs">
                         Riwayat
                     </a>
