@@ -238,7 +238,8 @@ Route::middleware(['userRole:admin,wakasek'])->group(function () {
     Route::post('/peminjaman-tambah', [PeminjamanController::class, 'store']);
     Route::put('/peminjaman-update', [PeminjamanController::class, 'update']);
     Route::get('/peminjaman-confirm/{id}', [PeminjamanController::class, 'confirm']);
-    Route::get('/peminjaman-approve/{id}', [PeminjamanController::class, 'approve']);
+    Route::get('/peminjaman-approve/{peminjaman}', [PeminjamanController::class, 'approve']);
+    Route::get('/peminjaman-decline/{peminjaman}', [PeminjamanController::class, 'decline']);
 
     // ==============[ D a t a - P e m i n j a m a n B a r a n g]===============
     Route::get('/data-peminjaman-barang', [PeminjamanBarangController::class, 'index'])->name('peminjamanBarang.index');

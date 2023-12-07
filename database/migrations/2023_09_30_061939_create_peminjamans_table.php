@@ -21,9 +21,8 @@ return new class extends Migration
             $table->date('tanggal_pengembalian');
             $table->string('surat')->nullable();
             $table->timestamps();
-            $table->integer('status')->default('0'); // 0: belum terkonfirmasi 1: sudah dikonfirmasi
-            $table->integer('status_pengajuan')->default('0'); // 0: menunggu 1: diterima
-
+            $table->integer('status')->default('0  '); // 0: belum terkonfirmasi 1: sudah dikonfirmasi
+            $table->boolean('status_pengajuan')->nullable();
 
             $table->foreign('ruang_id')->references('id')->on('ruangs');
         });

@@ -134,8 +134,9 @@ Data Peminjaman Ruang
                                     </a>
                                 </td>
                                 <td class="text-center">
-                                    {{ $p->status_pengajuan ? 'Disetujui' :  'Menunggu' }}
+                                    {{ is_null($p->status_pengajuan) ? 'Menunggu' : ($p->status_pengajuan ? 'Disetujui' : 'Ditolak') }}
                                 </td>
+                                
                                 @if (auth()->user()->hasRole('admin'))
                                 <td class="text-center" style="display: flex; gap: 10px; justify-content: center">
                                     <button type="button" data-bs-toggle="modal" data-bs-target="#update-modal" id-peminjaman="{{ $p->id }}" id-ruang="{{ $p->ruang_id }}" nama-peminjam="{{ $p->nama_peminjam }}" tgl-peminjaman="{{ $p->tanggal_peminjaman }}" tgl-pengembalian="{{ $p->tanggal_pengembalian }}" class="btn btn-warning font-weight-bold btn--edit text-sm rounded-circle" style="margin: 5px 0;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit" onclick="showUpdateModalDialog(this)">
@@ -150,7 +151,7 @@ Data Peminjaman Ruang
                                     <a href="peminjaman-approve/{{ $p->id }}" class=" btn btn-success font-weight-bold text-sm" title="konfirmasi" onclick="return confirm('Apakah anda yakin menyetujui pengajuan ini?')">
                                         Setuju
                                     </a>
-                                    <a href="peminjaman-/{{ $p->id }}" class=" btn btn-danger font-weight-bold text-sm" title="konfirmasi" onclick="return confirm('Apakah anda yakin menolak pengajuan ini?')">
+                                    <a href="peminjaman-decline/{{ $p->id }}" class=" btn btn-danger font-weight-bold text-sm" title="konfirmasi" onclick="return confirm('Apakah anda yakin menolak pengajuan ini?')">
                                         Tolak
                                     </a>
                                 </td>
