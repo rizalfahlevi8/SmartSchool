@@ -40,20 +40,20 @@ class SiswaController extends Controller
             'unique' => 'data ini sudah digunakan'
         ];
         $validate_data = [
-            'nama' => 'regex:/^[a-zA-Z\s.]+$/',
+            'nama' => 'regex:/^[a-zA-Z\s]+$/',
             'nik' => 'required|unique:siswas',
             'nis' => 'required|unique:siswas',
             'nisn' => 'required|unique:siswas',
-            // "no_pendaftaran" => 'required|unique:siswas',
+            "no_pendaftar" => 'required',
             "tempat_lahir" => 'required',
             "tanggal_lahir" => 'required',
             "jenis_kelamin" => 'required',
             "agama" => 'required',
             "nama_ayah" => 'required',
             "nama_ibu" => 'required',
-            //"nama_wali" => 'required',
+            "nama_wali" => 'required',
             "kelas" => 'required',
-            "no_telp" => 'required|unique:siswas',
+            "no_telp" => 'required',
             "status" => 'required',
             "alamat" => 'required',
             "foto" => 'required',
@@ -87,20 +87,19 @@ class SiswaController extends Controller
             'role' => 'siswa',
         ])->id;
 
-
-        $data_to_store = [
-            // 'no_pendaftaran' => $request->no_pendaftaran,
+        $siswa_new = Siswa::create([
             'nis'         => $request->nis,
             'nisn'        => $request->nisn,
             'nik'         => $request->nik,
-            'nama'         => $request->nama,
+            'no_pendaftar' => $request->no_pendaftar,
+            'nama'    => $request->nama,
             'nama_ayah'    => $request->nama_ayah,
             'nama_ibu'    => $request->nama_ibu,
             'nama_wali'    => $request->nama_wali,
             'jenis_kelamin'          => $request->jenis_kelamin,
             'agama'       => $request->agama,
             'no_telp'      => $request->no_telp,
-            'status'      => $request->status /*== 'pindahan' ? 'mutasi' : 'belum_lulus'*/,
+            'status'      => $request->status == 'pindahan' ? 'mutasi' : 'belum_lulus',
             'tempat_lahir' => $request->tempat_lahir,
             'tanggal_lahir'    => $request->tanggal_lahir,
             'foto'        => $filegambar,
@@ -108,13 +107,7 @@ class SiswaController extends Controller
             'id_kelas'       => $request->kelas,
             'id_angkatan'       => Data_angkatan::firstWhere('tahun_masuk', now()->year)->id,
             'id_user'       => $user_new,
-        ];
-
-        if ($request->status == 'pindahan') {
-            $data_to_store['asal_sekolah'] = $request->asal_sekolah;
-        }
-
-        $siswa_new = Siswa::create($data_to_store)->id;
+        ])->id;
 
         if ($request->status == 'pindahan') {
 
@@ -135,7 +128,6 @@ class SiswaController extends Controller
     }
     public function edit(Siswa $siswa)
     {
-
         $kelas = Kelas::all();
         return view('pages.administrasi.data-siswa.edit', [
             'siswa'      => $siswa,
@@ -160,7 +152,7 @@ class SiswaController extends Controller
             "agama" => 'required',
             "nama_ayah" => 'required',
             "nama_ibu" => 'required',
-            //"nama_wali" => 'required',
+            "nama_wali" => 'required',
             "kelas" => 'required',
             "no_telp" => 'required',
             "alamat" => 'required',
@@ -187,7 +179,7 @@ class SiswaController extends Controller
             'jenis_kelamin'          => $request->jenis_kelamin,
             'agama'       => $request->agama,
             'no_telp'      => $request->no_telp,
-            'status'      => $request->status ?? $siswa->status,
+            'status'      => $request->status,
             'sekolah'      => $request->asal_sekolah,
             'tempat_lahir' => $request->tempat_lahir,
             'tanggal_lahir'    => $request->tanggal_lahir,
@@ -215,7 +207,7 @@ class SiswaController extends Controller
     public function out_page()
     {
         $siswa = Siswa::where(function ($query) {
-            $query->where('status', 'mutasi')
+            $query->where('status', 'keluar')
                 ->orWhere('status', 'lulus');
         })->filter(request(['nama', 'status']))->get();
         return view('pages.administrasi.data-siswa.keluar', [
@@ -225,14 +217,13 @@ class SiswaController extends Controller
 
     public function out(Request $request, Siswa $siswa)
     {
-        $siswa->update([
-            'status' => $request->status,
-            'tanggal_keluar' => $request->tanggal_keluar,
-            'id_kelas' => null
-        ]);
+        $data = [
+            'status'      => $request->status,
+            'kelas'       => ''
+        ];
+        $siswa->update($data);
         return redirect()->route('siswa_out')->with('toast_success', 'Data Siswa Berhasil di Ubah');
     }
-
     public function destroy(Siswa $siswa)
     {
         //delete data

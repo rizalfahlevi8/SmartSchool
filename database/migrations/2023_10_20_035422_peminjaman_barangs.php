@@ -13,19 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('peminjamans', function (Blueprint $table) {
+        Schema::create('peminjaman_barangs', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('ruang_id');
+            $table->foreignId('barang_id')->constrained('barangs');
+            $table->integer('jumlah');
             $table->string('nama_peminjam');
             $table->date('tanggal_peminjaman');
             $table->date('tanggal_pengembalian');
             $table->string('surat')->nullable();
             $table->timestamps();
             $table->integer('status')->default('0'); // 0: belum terkonfirmasi 1: sudah dikonfirmasi
-            $table->integer('status_pengajuan')->default('0'); // 0: menunggu 1: diterima
-
-
-            $table->foreign('ruang_id')->references('id')->on('ruangs');
+            $table->integer('status_pengajuan')->default('0'); // 0: belum terkonfirmasi 1: sudah dikonfirmasi
         });
     }
 
@@ -36,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('peminjamans');
+        Schema::dropIfExists('peminjaman_barangs');
     }
 };
