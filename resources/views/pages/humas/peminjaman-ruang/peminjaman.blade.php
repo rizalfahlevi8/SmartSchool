@@ -93,16 +93,10 @@ Data Peminjaman Ruang
                                             text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
                                     Tanggal Pengembalian
                                 </th>
-                                @if (auth()->user()->hasRole('admin'))
                                 <th class="
                                             text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
                                     surat Peminjaman
                                 </th>
-                                @endif
-                                <!-- <th class="
-                                            text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
-                                    Status Pengajuan
-                                </th> -->
                                 <th class="
                                             text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
                                     Aksi
