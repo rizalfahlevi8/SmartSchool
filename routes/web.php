@@ -19,6 +19,7 @@ use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InputNilaiController;
 use App\Http\Controllers\PeminjamanController;
+use App\Http\Controllers\PeminjamanBarangController;
 use App\Http\Controllers\EditPasswordController;
 use App\Http\Controllers\JadwalMengajarController;
 use App\Http\Controllers\KalenderAkademikController;
@@ -26,6 +27,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\PengumumanController;
 use App\Models\Absensi;
 use App\Models\Akademik;
+use App\Models\Peminjaman;
 
 /*
 |--------------------------------------------------------------------------
@@ -235,6 +237,15 @@ Route::middleware(['userRole:admin'])->group(function () {
     Route::get('/peminjaman-hapus/{id}', [PeminjamanController::class, 'destroy']);
     Route::post('/peminjaman-tambah', [PeminjamanController::class, 'store']);
     Route::put('/peminjaman-update', [PeminjamanController::class, 'update']);
+    Route::get('/peminjaman-confirm/{id}', [PeminjamanController::class, 'confirm']);
+
+    // ==============[ D a t a - P e m i n j a m a n B a r a n g]===============
+    Route::get('/data-peminjaman-barang', [PeminjamanBarangController::class, 'index'])->name('peminjamanBarang.index');
+    Route::post('/data-peminjaman-barang', [PeminjamanBarangController::class, 'store'])->name('peminjamanBarang.store');
+    Route::put('/data-peminjaman-barang', [PeminjamanBarangController::class, 'update'])->name('peminjamanBarang.update');
+    Route::delete('/data-peminjaman-barang/{id}', [PeminjamanBarangController::class, 'destroy'])->name('peminjamanBarang.destroy');
+    Route::get('/data-peminjaman-barang-history', [PeminjamanBarangController::class, 'history']);
+    Route::get('/data-peminjaman-barang-confirm/{id}', [PeminjamanBarangController::class, 'confirm']);
 });
 //======================== G U R U =========================================================
 Route::middleware(['userRole:guru'])->group(function () {
