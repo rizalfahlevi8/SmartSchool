@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('token');
             $table->dateTime('expired_at');
             $table->unsignedBigInteger('id_user');
-            $table->foreign('id_user')->references('id')->on('users');
+            $table->foreign('id_user')->references('id')->on('users')->cascadeOnDelete();
             $table->timestamps();
         });
     }
