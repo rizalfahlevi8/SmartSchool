@@ -271,5 +271,23 @@ class PeminjamanController extends Controller
         return back();
     }
 
+    public function approve( $id)
+    {
+        
+        $peminjaman = Peminjaman::find($id);
+
+        if ($peminjaman) {
+            if ($peminjaman->status_pengajuan) {
+                $peminjaman->status_pengajuan = 0;
+            } else {
+                $peminjaman->status_pengajuan = 1;
+            }
+
+            $peminjaman->save();
+        }
+
+        return back();
+    }
+
 
 }

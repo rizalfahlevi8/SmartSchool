@@ -99,6 +99,10 @@ Data Peminjaman Ruang
                                 </th>
                                 <th class="
                                             text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
+                                    Status Pengajuan
+                                </th>
+                                <th class="
+                                            text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
                                     Aksi
                                 </th>
                             </tr>
@@ -127,6 +131,9 @@ Data Peminjaman Ruang
                                         Lihat file
                                     </a>
                                 </td>
+                                <td class="text-center">
+                                    {{ $p->status ? 'Disetujui' :  'Menunggu' }}
+                                </td>
                                 @if (auth()->user()->hasRole('admin'))
                                 <td class="text-center" style="display: flex; gap: 10px; justify-content: center">
                                     <button type="button" data-bs-toggle="modal" data-bs-target="#update-modal" id-peminjaman="{{ $p->id }}" id-ruang="{{ $p->ruang_id }}" nama-peminjam="{{ $p->nama_peminjam }}" tgl-peminjaman="{{ $p->tanggal_peminjaman }}" tgl-pengembalian="{{ $p->tanggal_pengembalian }}" class="btn btn-warning font-weight-bold btn--edit text-sm rounded-circle" style="margin: 5px 0;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit" onclick="showUpdateModalDialog(this)">
@@ -138,9 +145,12 @@ Data Peminjaman Ruang
                                 </td>
                                 @elseif (auth()->user()->hasRole('wakasek'))
                                 <td class="text-center" style="display: flex; gap: 10px; justify-content: center">
-                                    <button type="button" onclick="showUpdateModalDialog(this)" data-bs-toggle="modal" data-bs-target="#detail-Surat" class="btn btn-info font-weight-bold btn--edit text-sm text-white" id-peminjaman="{{ $p->id }}" id-ruang="{{ $p->ruang_id }}" nama-peminjam="{{ $p->nama_peminjam }}" tgl-peminjaman="{{ $p->tanggal_peminjaman }}" tgl-pengembalian="{{ $p->tanggal_pengembalian }}" style="margin: 5px 0;" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-placement="bottom" title="Surat" onclick="showUpdateModalDialog(this)">
-                                        <span>Lihat Pengajuan</span>
-                                        <i class="fa fa-eye"></i>
+                                    <a href="peminjaman-approve/{{ $p->id }}" class=" btn btn-success font-weight-bold text-sm" title="konfirmasi" onclick="return confirm('Apakah anda yakin menyetujui pengajuan ini?')">
+                                        Setuju
+                                    </a>
+                                    <a href="peminjaman-confirm/{{ $p->id }}" class=" btn btn-danger font-weight-bold text-sm" title="konfirmasi" onclick="return confirm('Apakah anda yakin menolak pengajuan ini?')">
+                                        Tolak
+                                    </a>
                                 </td>
                                 @endif
                             </tr>
@@ -287,7 +297,7 @@ Data Peminjaman Ruang
                     </div>
 
                     <!--Aksi Detail surat waka-->
-                    @if (auth()->user()->hasRole('waka'))
+                    @if (auth()->user()->hasRole('wakasek'))
                     <div class="modal fade" id="detail-Surat" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog  modal-lg">
                             <div class="modal-content">

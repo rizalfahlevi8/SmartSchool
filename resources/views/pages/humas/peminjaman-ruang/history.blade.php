@@ -46,6 +46,7 @@ Data Peminjaman Ruang
                                             text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
                                     Tanggal Pengembalian
                                 </th>
+                                @if (auth()->user()->hasRole('admin'))
                                 <th class="
                                             text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
                                     Status Pengembalian
@@ -54,6 +55,7 @@ Data Peminjaman Ruang
                                             text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
                                     Aksi
                                 </th>
+                                @endif
                             </tr>
                         </thead>
                         @if ($peminjaman->count())
@@ -75,6 +77,7 @@ Data Peminjaman Ruang
                                 <td class="text-center">
                                     {{ $p->tanggal_pengembalian }}
                                 </td>
+                                @if (auth()->user()->hasRole('admin'))
                                 <td class="text-center">
                                     {{ $p->status ? 'Dikembalikan' :  'Belum Dikembalikan' }}
                                 </td>
@@ -86,6 +89,7 @@ Data Peminjaman Ruang
                                         <i class="fa fa-trash"></i>
                                     </a>
                                 </td>
+                                @endif
                             </tr>
                             @endforeach
                             @else
