@@ -26,12 +26,6 @@
           Pie Section
         </div>
       </div>
-
-      <div class="col-lg-5">
-        <div class="bg-danger d-flex align-items-center justify-content-center text-3xl" style="height: 300px; max-height: 300px">
-          Calender Full Section
-        </div>
-      </div>
     </div>
 
     <div id="notification" class="notification-container"></div>
@@ -151,9 +145,40 @@
 </style>
 
 <script>
-    window.addEventListener('load', function() {
-        checkPresensiStatus();
-    });
+
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+
+    window.addEventListener('load', function () {
+    checkAndDisablePresensiOptions();
+    checkPresensiStatus();
+
+    fetch('{{ route('absensi.checkAndFillAbsentData') }}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-CSRF-Token': csrfToken,
+        },
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data.message);
+
+            // Setelah fungsi selesai, cek apakah ada data tambahan yang dimasukkan
+            if (data.success && data.dataInserted) {
+                // Jika ada, refresh tampilan tabel absensi
+                refreshTable();
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+});
+
+function refreshTable() {
+    location.reload();
+}
+
 
     let selectedOption = null;
 
@@ -268,7 +293,7 @@
                         disablePresensiOptions();
                     }
                 })
-                .catch(error => {
+                .catch(error => {disable
                     console.error('Error checking presensi status:', error);
                 });
         }
@@ -284,6 +309,22 @@
         buttonsContainer.innerHTML = '<p>Anda telah melakukan presensi hari ini</p>';
     }
 }
+
+function checkAndDisablePresensiOptions() {
+    const buttonsContainer = document.getElementById('presensiOptions');
+    const currentDate = new Date();
+    const currentHour = currentDate.getHours();
+
+    const opsiButton = document.getElementById('opsiButton'); // Ganti 'opsiButton' dengan ID yang sesuai
+    const submitButton = document.getElementById('submitButton'); // Ganti 'submitButton' dengan ID yang sesuai
+
+    if (currentHour < 7 || currentHour >= 16) {
+        console.log('Kondisi: Anda tidak dapat melakukan presensi');
+        buttonsContainer.innerHTML = '<p>Anda tidak dapat melakukan presensi</p>';
+    }
+}
+
+
 
     function isDateRestricted() {
         const today = new Date();
