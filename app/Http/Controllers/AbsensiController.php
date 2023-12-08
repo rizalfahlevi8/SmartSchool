@@ -72,6 +72,17 @@ class AbsensiController extends Controller
     return view('pages.akademik.absensi.absensi-siswa', compact('absensis'))->with('title', 'Absensi Siswa');
 }
 
+public function showAbsensiGuru(Request $request)
+{
+    $absensis = Absensi::all();
+
+    if ($request->ajax()) {
+        return response()->json($absensis);
+    }
+
+    return view('pages.akademik.absensi.absensi-guru', compact('absensis'))->with('title', 'Absensi Guru');
+}
+
 public function store(Request $request)
 {
     // Log data request
@@ -181,7 +192,6 @@ public function checkAndFillAbsentData()
     // Mengirim respons berdasarkan apakah ada data tambahan atau tidak
     return response()->json(['success' => true, 'dataInserted' => $dataInserted, 'disablePresensiOption' => false]);
 }
-
 
 public function tambahEvent(Request $request)
 {

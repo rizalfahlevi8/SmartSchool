@@ -138,7 +138,7 @@
                 </div>
             </li>
         
-        @else
+        @elseif (auth()->user()->hasRole('siswa'))
         
         <li class="mb-1" style="width: 100%">
             <a class="btn align-items-center rounded text-white font-weight-bold"
@@ -151,6 +151,18 @@
             </a>
         </li>
         
+        @else
+
+        <li class="mb-1" style="width: 100%">
+            <a class="btn align-items-center rounded text-white font-weight-bold"
+                style="text-transform: none; width: 100%; display: flex; align-items: center; column-gap:10px;"
+                href="/akademik/absensi/guru">
+                <span class="material-symbols-outlined">
+                    school
+                </span>
+                Presensi
+            </a>
+        </li>
 
         @endif
     </ul>

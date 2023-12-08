@@ -247,13 +247,17 @@ Route::middleware(['userRole:admin'])->group(function () {
 });
 //======================== G U R U =========================================================
 Route::middleware(['userRole:guru'])->group(function () {
+    Route::get('/akademik/absensi/guru', [AbsensiController::class, 'showAbsensiGuru'])->name('absensi.showAbsensiGuru');
 });
 
 Route::middleware(['userRole:siswa'])->group(function () {
     Route::get('/akademik/absensi/siswa', [AbsensiController::class, 'showAbsensiSiswa'])->name('absensi.showAbsensiSiswa');
-    Route::post('/akademik/absensi/siswaPostAbsensi', [AbsensiController::class, 'store'])->name('absensi.store');
-    Route::post('/absensi/checkAndFillAbsentData', [AbsensiController::class, 'checkAndFillAbsentData'])
-    ->name('absensi.checkAndFillAbsentData');
+});
+
+Route::middleware(['userRole:siswa,guru'])->group(function () {
+    //jadwal pelajaran
+    Route::post('/akademik/absensi/siswaguruPostAbsensi', [AbsensiController::class, 'store'])->name('absensi.store');
+    Route::post('/absensi/checkAndFillAbsentData', [AbsensiController::class, 'checkAndFillAbsentData'])->name('absensi.checkAndFillAbsentData');
 });
 
 Route::middleware(['userRole:siswa,admin'])->group(function () {
