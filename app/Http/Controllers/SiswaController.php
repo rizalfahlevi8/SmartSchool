@@ -12,9 +12,24 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Schema;
+use App\Http\Controllers\Log;
 
 class SiswaController extends Controller
 {
+
+    public function getSiswaByUser($id_user)
+{
+    try {
+        // Ambil data siswa berdasarkan id_user
+        $siswa = Siswa::where('id_user', $id_user)->with('kelas')->first();
+
+        return response()->json(['success' => true, 'data' => $siswa]);
+    } catch (\Exception $e) {
+
+        return response()->json(['success' => false, 'error' => $e->getMessage()], 500);
+    }
+}
+
     public function getSiswaKelasAbsensi(Request $request)
     {
         // Ambil kelas dari request

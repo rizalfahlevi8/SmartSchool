@@ -61,7 +61,7 @@
                                     <td>{{ \Carbon\Carbon::parse($absensi->created_at)->format('H:i:s') }}</td>
                                     <td>{{ $absensi->status_absen }}</td>
                                     <td>
-                                        <a href="#" class="badge bg-warning">2</a>
+                                        <a href="#" class="badge bg-warning">Edit</a>
                                     </td>
                                 </tr>
                             @endif

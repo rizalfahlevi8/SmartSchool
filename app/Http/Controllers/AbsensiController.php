@@ -34,6 +34,33 @@ class AbsensiController extends Controller
             return response()->json(['success' => false, 'error' => $e->getMessage()], 500);
         }
     }
+
+    public function getAbsensiById($id) {
+        try {
+            // Ambil data absensi berdasarkan ID
+            $absensi = Absensi::with(['siswa.kelas', 'guru'])->findOrFail($id);
+    
+            return response()->json(['success' => true, 'data' => $absensi]);
+        } catch (\Exception $e) {
+            Log::error('Error: ' . $e->getMessage());
+    
+            return response()->json(['success' => false, 'error' => $e->getMessage()], 500);
+        }
+    }
+    
+
+    public function updateAbsensi(Request $request, $id)
+    {
+        try {
+            $absensi = Absensi::findOrFail($id);
+            $absensi->update($request->all());
+
+            return response()->json(['success' => true, 'message' => 'Absensi updated successfully']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'error' => $e->getMessage()], 500);
+        }
+    }
+
     public function showAbsensiSiswa(Request $request)
 {
     $absensis = Absensi::all();

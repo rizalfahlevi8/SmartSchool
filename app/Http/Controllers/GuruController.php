@@ -12,6 +12,19 @@ use Illuminate\Support\Facades\Storage;
 class GuruController extends Controller
 {
 
+    public function getGuruByUser($id_user)
+{
+    try {
+        // Ambil data guru berdasarkan id_user
+        $guru = Guru::where('id_user', $id_user)->first();
+
+        return response()->json(['success' => true, 'data' => $guru]);
+    } catch (\Exception $e) {
+
+        return response()->json(['success' => false, 'error' => $e->getMessage()], 500);
+    }
+}
+
     public function getGuru()
     {
         // Dapatkan data guru dari tabel "gurus"

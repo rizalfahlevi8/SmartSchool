@@ -227,12 +227,16 @@ Route::middleware(['userRole:admin'])->group(function () {
     Route::post('/api/akademik/absensi-update/{absensi}', [AbsensiController::class, 'apiUpdateAbsensi'])->name('api.update-absensi');
 
     // Kims-Absensi
-    Route::get('/akademik/absensi/admin', [AbsensiController::class,'showAbsensiAdmin']);
+    Route::get('/akademik/absensi/admin', [AbsensiController::class, 'showAbsensiAdmin']);
     Route::get('/get_kelas', [KelasController::class, 'getKelas']);
     Route::get('/get_siswa', [SiswaController::class, 'getSiswaKelasAbsensi']);
     Route::get('/get_guru', [GuruController::class, 'getGuru']);
     Route::get('/api/events-from-database', [AbsensiController::class, 'getEventsFromDatabase']);
     Route::delete('/api/delete-absensi/{id}', [AbsensiController::class, 'deleteAbsensi']);
+    Route::get('/api/absensi/{id}', [AbsensiController::class, 'getAbsensiById']);
+    Route::put('/api/update-absensi/{id}', [AbsensiController::class, 'updateAbsensi']);
+    Route::get('/api/siswa-by-user/{id_user}', [SiswaController::class, 'getSiswaByUser']);
+    Route::get('/api/guru-by-user/{id_user}', [GuruController::class, 'getGuruByUser']);
 
     // ==============[ D a t a - P e m i n j a m a n ]===============
     Route::get('/data-peminjaman', [PeminjamanController::class, 'index']);
