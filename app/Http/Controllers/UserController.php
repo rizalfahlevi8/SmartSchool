@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\UsersExport;
+use App\Import\UsersImport;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -74,5 +75,18 @@ class UserController extends Controller
     public function export()
     {
         return Excel::download(new UsersExport, 'users.xlsx');
+    }
+    public function showImportForm()
+    {
+        return view('pages.administrasi.data-user.import_form');
+    }
+    
+    public function import(Request $request)
+    {
+        $file = $request->file('excel_file');
+    
+        Excel::import(new UsersImport(), $file, 'xlsx');
+    
+        return redirect()->back()->with('success', 'Data imported successfully.');
     }
 }

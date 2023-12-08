@@ -28,7 +28,7 @@
                         </a>
                         <a href="/userguru/export" type="submit" id="btntambah"
                             class="btn btn-success font-weight-bold text-xs">
-                            Export Data siswa
+                            Export Data Guru
                         </a>
                         <!-- Button trigger modal -->
 

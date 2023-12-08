@@ -44,8 +44,8 @@
                                 style="width: 100%" href="/administrasi/siswa"><i
                                     class="material-icons opacity-10 mx-2">groups</i> Data
                                 Siswa</a></li>
-                                <li><a class="link-light rounded mb-1  'bg-gradient-primary ' : '' }}"
-                                style="width: 100%" href="/administrasi/users/moodle"><i
+                                <li><a class="link-light rounded mb-1 {{ Request::is('administrasi/usermoodle*') ? 'bg-gradient-primary ' : '' }}"
+                                style="width: 100%" href="/administrasi/usermoodle"><i
                                     class="material-icons opacity-10 mx-2">groups</i> Data User Moodle</a>
                                     </li>
                         <li><a class="link-light rounded mb-1 {{ Request::is('akademik/mapel*') ? 'bg-gradient-primary ' : '' }}"
@@ -89,6 +89,12 @@
                                     class="material-icons opacity-10 mx-2">receipt_long</i>
                                 Kalender Akademik</a></li>
                     </ul>
+                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li><a class="link-light rounded mb-1 'bg-gradient-primary ' : '' }}"
+                                style="width: 100%" href="javascript:void(0);" onclick="konfirmasiBukaLink()"><i
+                                    class="material-icons opacity-10 mx-2" >task</i>
+                                Elearning</a></li>
+                    </ul>
                 </div>
             </li>
             <li class="mb-1" style="width: 100%">
@@ -100,12 +106,18 @@
                     </span>
                     Kesiswaan <i class="material-icons opacity-10 ms-auto">expand_more</i>
                 </button>
-                <div class="collapse {{ Request::is('akademik/absensi*') ? 'show' : '' }}" id="kesiswaan-collapse">
+                <div class="collapse {{ Request::is('akademik/absensi*') || Request::is('/data-nilai-moodle/course-moodle*') ? 'show' : '' }}" id="kesiswaan-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                         <li><a class="link-light rounded mb-1 {{ Request::is('akademik/absensi*') ? 'bg-gradient-primary ' : '' }}"
                                 style="width: 100%" href="/akademik/absensi"> <i
                                     class="material-icons opacity-10 mx-2">receipt_long</i>
                                 Presensi</a></li>
+                    </ul>
+                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li><a class="link-light rounded mb-1 {{ Request::is('/data-nilai-moodle/course-moodle*') ? 'bg-gradient-primary ' : '' }}"
+                                style="width: 100%" href="/data-nilai-moodle/course-moodle"> <i
+                                    class="material-icons opacity-10 mx-2">receipt_long</i>
+                                nilai moodle</a></li>
                     </ul>
                 </div>
             </li>
@@ -189,6 +201,12 @@
                     href="/akademik/jadwal-guru/{{ auth()->user()->id }}"> <span
                         class="material-symbols-outlined">event_note</span> Jadwal Mengajar</a>
             </li>
+            <li class="mb-1" style="">
+                <a class="btn rounded text-white font-weight-bold 'bg-gradient-primary ' : '' }}"
+                    style="text-transform: none; width: 100%;display: flex; align-items: center; column-gap:10px"
+                    href="javascript:void(0);" onclick="konfirmasiBukaLink()"> <span
+                        class="material-symbols-outlined">task</span> Elearning</a>
+            </li>
         @elseif (auth()->user()->hasRole('siswa'))
             <li class="mb-1" style="">
                 <a class="btn rounded text-white font-weight-bold {{ Request::is('/akademik/jadwal-siswa/*') ? 'bg-gradient-primary ' : '' }}"
@@ -196,6 +214,21 @@
                     href="/akademik/jadwal-siswa/{{ auth()->user()->siswa->id_kelas ?? 'null' }}"> <span
                         class="material-symbols-outlined">event_note</span> Jadwal Pelajaran</a>
             </li>
+            <li class="mb-1" style="">
+                <a class="btn rounded text-white font-weight-bold 'bg-gradient-primary ' : '' }}"
+                    style="text-transform: none; width: 100%;display: flex; align-items: center; column-gap:10px"
+                    href="javascript:void(0);" onclick="konfirmasiBukaLink()"> <span
+                        class="material-symbols-outlined">task</span> Elearning</a>
+            </li>
         @endif
     </ul>
 </div>
+<script>
+    function konfirmasiBukaLink() {
+        var konfirmasi = confirm("Apakah Anda yakin ingin membuka Elearning?");
+
+        if (konfirmasi) {
+            window.open("http://localhost/moodle/login/index.php", "_blank");
+        }
+    }
+</script>
