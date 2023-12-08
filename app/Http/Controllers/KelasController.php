@@ -80,7 +80,7 @@ class KelasController extends Controller
     {
         $kelas->update([
             'deleted' => 1,
-            'id_guru' => 0
+            'id_guru' => null
         ]);
         return redirect()->route('kelas_main')->with('toast_success', 'Data berhasil dihapus !');
     }
