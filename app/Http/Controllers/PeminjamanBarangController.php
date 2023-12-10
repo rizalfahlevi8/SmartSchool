@@ -166,16 +166,6 @@ class PeminjamanBarangController extends Controller
         return back();
     }
 
-    // public function approve(Peminjaman_barang $peminjaman_barang)
-    // {
-        
-    //     $peminjaman_barang->status_pengajuan = true;
-
-    //     $peminjaman_barang->save();
-
-    //     return back();
-    // }
-
     public function approve($id)
     {
         $peminjaman_barang = Peminjaman_barang::find($id);
