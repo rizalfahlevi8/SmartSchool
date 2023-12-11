@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Guru;
 use App\Models\User;
+use App\Models\Absensi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\File;
@@ -11,6 +12,18 @@ use Illuminate\Support\Facades\Storage;
 
 class GuruController extends Controller
 {
+
+    public function updateAbsensi(Request $request, $id)
+    {
+        try {
+            $absensi = Absensi::findOrFail($id);
+            $absensi->update($request->all());
+
+            return response()->json(['success' => true, 'message' => 'Absensi updated successfully']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'error' => $e->getMessage()], 500);
+        }
+    }
 
     public function getGuruByUser($id_user)
 {

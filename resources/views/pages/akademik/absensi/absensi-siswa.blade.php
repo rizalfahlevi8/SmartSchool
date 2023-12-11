@@ -61,7 +61,7 @@
                                     <td>{{ \Carbon\Carbon::parse($absensi->created_at)->format('H:i:s') }}</td>
                                     <td>{{ $absensi->status_absen }}</td>
                                     <td>
-                                        <a href="#" class="badge bg-warning">Edit</a>
+                                        <a href="#" class="btn btn-warning" onclick="showEditModal({{ $absensi->id }})">Edit</a>
                                     </td>
                                 </tr>
                             @endif
@@ -92,6 +92,47 @@
     </div>
     {{-- Template putih end --}}
   </div>
+
+  <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit Absensi</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm">
+                    <div class="mb-3">
+                        <label for="namaEdit" class="form-label">Nama:</label>
+                        <input type="text" class="form-control" id="namaEdit" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="kelasEdit" class="form-label">Kelas:</label>
+                        <input type="text" class="form-control" id="kelasEdit" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="tanggalEdit" class="form-label">Tanggal:</label>
+                        <input type="text" class="form-control" id="tanggalEdit" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="jamAbsenEdit" class="form-label">Jam Absen:</label>
+                        <input type="text" class="form-control" id="jamAbsenEdit" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="statusEdit" class="form-label">Status:</label>
+                        <select class="form-select" id="statusEdit" name="status">
+                            <option value="Masuk">Masuk</option>
+                            <option value="Sakit">Sakit</option>
+                            <option value="Izin">Izin</option>
+                        </select>
+                    </div>
+                    <input type="hidden" id="absensiId" name="absensiId">
+                    <button type="button" class="btn btn-primary" onclick="submitEditForm()">Simpan Perubahan</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 </div>
 
 <style>
@@ -415,6 +456,101 @@ function checkAndDisablePresensiOptions() {
         }
 
         return false;
+    }
+
+    function showEditModal(absensiId) {
+    console.log('Memulai fungsi showEditModal');
+
+    // Fetch data absensi dari server
+    fetch(`/api/absensi/${absensiId}`)
+        .then(response => response.json())
+        .then(data => {
+            console.log('Data yang diterima dari server:', data);
+
+            // Set nilai pada elemen HTML
+            $('#absensiId').val(data.data.id);
+            $('#statusEdit').val(data.data.status_absen);
+
+            // Konversi format tanggal dan jam
+            const createdDate = new Date(data.data.created_at);
+            const formattedDate = createdDate.getDate() + ' ' +
+                new Intl.DateTimeFormat('id-ID', { month: 'long' }).format(createdDate) + ' ' +
+                createdDate.getFullYear();
+
+            const formattedTime = createdDate.getHours().toString().padStart(2, '0') + ':' +
+                createdDate.getMinutes().toString().padStart(2, '0') + ':' +
+                createdDate.getSeconds().toString().padStart(2, '0');
+
+            // Set nilai pada elemen HTML
+            $('#tanggalEdit').val(formattedDate);
+            $('#jamAbsenEdit').val(formattedTime);
+
+            // Periksa apakah data milik siswa atau guru
+            if (data.data.role === 'siswa') {
+                // Ambil data siswa dari tabel siswas berdasarkan id_user
+                fetch(`/api/siswa-by-user/${data.data.id_user}`)
+                    .then(response => response.json())
+                    .then(siswaData => {
+                        // Tampilkan nama dan kelas siswa
+                        $('#namaEdit').val(siswaData.data.nama);
+                        $('#kelasEdit').val(siswaData.data.kelas ? siswaData.data.kelas.nama_kelas : '');
+
+                        // Munculkan popup
+                        $('#editModal').modal('show');
+                    })
+                    .catch(error => console.error('Error:', error));
+            } else if (data.data.role === 'guru') {
+                // Ambil data guru dari tabel guru berdasarkan id_user
+                fetch(`/api/guru-by-user/${data.data.id_user}`)
+                    .then(response => response.json())
+                    .then(guruData => {
+                        // Tampilkan nama guru dan kosongkan kelas
+                        $('#namaEdit').val(guruData.data.nama || '');
+                        $('#kelasEdit').val('');
+
+                        // Munculkan popup
+                        $('#editModal').modal('show');
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+function submitEditForm() {
+    const absensiId = $('#absensiId').val();
+    const status = $('#statusEdit').val();
+    console.log('Submitting form for absensiId:', absensiId);
+
+    // Rest of the code...
+
+    fetch(`/api/update-absensi-siswa/${absensiId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-CSRF-Token': csrfToken,
+        },
+        body: JSON.stringify({ status_absen: status }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Response from server:', data);
+
+        // Rest of the code...
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+
+        Swal.fire({
+        icon: 'success',
+        title: 'Sukses!',
+        text: 'Data absensi telah berhasil diubah',
+    }).then(() => {
+        // Setelah menutup notifikasi, refresh halaman
+        location.reload();
+    });
     }
 </script>
 

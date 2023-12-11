@@ -233,10 +233,7 @@ Route::middleware(['userRole:admin'])->group(function () {
     Route::get('/get_guru', [GuruController::class, 'getGuru']);
     Route::get('/api/events-from-database', [AbsensiController::class, 'getEventsFromDatabase']);
     Route::delete('/api/delete-absensi/{id}', [AbsensiController::class, 'deleteAbsensi']);
-    Route::get('/api/absensi/{id}', [AbsensiController::class, 'getAbsensiById']);
     Route::put('/api/update-absensi/{id}', [AbsensiController::class, 'updateAbsensi']);
-    Route::get('/api/siswa-by-user/{id_user}', [SiswaController::class, 'getSiswaByUser']);
-    Route::get('/api/guru-by-user/{id_user}', [GuruController::class, 'getGuruByUser']);
 
     // ==============[ D a t a - P e m i n j a m a n ]===============
     Route::get('/data-peminjaman', [PeminjamanController::class, 'index']);
@@ -248,10 +245,13 @@ Route::middleware(['userRole:admin'])->group(function () {
 //======================== G U R U =========================================================
 Route::middleware(['userRole:guru'])->group(function () {
     Route::get('/akademik/absensi/guru', [AbsensiController::class, 'showAbsensiGuru'])->name('absensi.showAbsensiGuru');
+    Route::put('/api/update-absensi-guru/{id}', [GuruController::class, 'updateAbsensi']);
 });
 
 Route::middleware(['userRole:siswa'])->group(function () {
     Route::get('/akademik/absensi/siswa', [AbsensiController::class, 'showAbsensiSiswa'])->name('absensi.showAbsensiSiswa');
+    Route::put('/api/update-absensi-siswa/{id}', [SiswaController::class, 'updateAbsensi']);
+
 });
 
 Route::middleware(['userRole:siswa,guru'])->group(function () {
@@ -263,6 +263,10 @@ Route::middleware(['userRole:siswa,guru'])->group(function () {
 Route::middleware(['userRole:siswa,admin'])->group(function () {
     //jadwal pelajaran
     Route::get('/akademik/jadwal-siswa/{id}', [JadwalController::class, 'jadwalsiswa']);
+});
 
-
+Route::middleware(['userRole:siswa,guru,admin'])->group(function () {
+    Route::get('/api/absensi/{id}', [AbsensiController::class, 'getAbsensiById']);
+    Route::get('/api/siswa-by-user/{id_user}', [SiswaController::class, 'getSiswaByUser']);
+    Route::get('/api/guru-by-user/{id_user}', [GuruController::class, 'getGuruByUser']);
 });

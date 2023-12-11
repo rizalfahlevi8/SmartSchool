@@ -61,6 +61,8 @@ class AbsensiController extends Controller
         }
     }
 
+    
+
     public function showAbsensiSiswa(Request $request)
 {
     $absensis = Absensi::all();

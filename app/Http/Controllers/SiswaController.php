@@ -8,14 +8,28 @@ use App\Models\Siswa;
 use App\Models\Kelas;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\Absensi;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Schema;
-use App\Http\Controllers\Log;
+use Illuminate\Support\Facades\Log;
 
 class SiswaController extends Controller
 {
+
+    public function updateAbsensi(Request $request, $id)
+    {
+        try {
+            $absensi = Absensi::findOrFail($id);
+            $absensi->update($request->all());
+
+            return response()->json(['success' => true, 'message' => 'Absensi updated successfully']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'error' => $e->getMessage()], 500);
+        }
+    }
+
 
     public function getSiswaByUser($id_user)
 {
