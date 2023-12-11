@@ -10,9 +10,15 @@
         "production": "mix --production"
     },
     "devDependencies": {
-        "axios": "^0.25",
+        "axios": "^1.6.2",
         "laravel-mix": "^6.0.6",
         "lodash": "^4.17.19",
         "postcss": "^8.1.14"
+    },
+    "dependencies": {
+        "@fullcalendar/core": "^6.1.10",
+        "@fullcalendar/daygrid": "^6.1.10",
+        "apexcharts": "^3.44.2",
+        "moment": "^2.29.4"
     }
 }

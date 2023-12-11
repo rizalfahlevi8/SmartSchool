@@ -12,6 +12,13 @@ use Illuminate\Support\Facades\DB;
 
 class KelasController extends Controller
 {
+    public function getKelas()
+    {
+        // Mengambil data kelas
+        $kelas = Kelas::pluck('nama_kelas');
+
+        return response()->json($kelas);
+    }
     public function index()
     {
         $kelas = Kelas::where('deleted', 0)->orderBy('nama_kelas', 'asc')->get();

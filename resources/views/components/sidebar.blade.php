@@ -1,8 +1,6 @@
 <div class="flex-shrink-0 p-3 bg-transparent" style="">
-    <a href="/" class="d-flex align-items-center pb-3 my-4 link-dark text-decoration-none"
-        style="border-bottom: 2px solid white; justify-content: center">
-        <div class="text-white w-auto "
-            style="display: flex; align-items: center; justify-content: center; column-gap: 3px">
+    <a href="/" class="d-flex align-items-center pb-3 my-4 link-dark text-decoration-none" style="border-bottom: 2px solid white; justify-content: center">
+        <div class="text-white w-auto " style="display: flex; align-items: center; justify-content: center; column-gap: 3px">
             {{-- <img src="{{ asset('assets/img/web-icon-brain.png') }}" alt="HTML tutorial"
             style="height: 36px;filter:brightness(0%) invert(90%)"> --}}
             <img src="{{ asset('assets/img/smart scholl only icon.png') }}" alt="HTML tutorial" style="height: 36px;">
@@ -12,7 +10,6 @@
                    -webkit-background-clip: text;color: transparent;">
                 Smart School
             </span>
-
         </div>
     </a>
     <ul class="list-unstyled ps-0" style="width: 100%">
@@ -29,13 +26,9 @@
                     <span class="material-symbols-outlined"> database </span> Master <i
                         class="material-icons opacity-10 ms-auto" style="">expand_more</i>
                 </button>
-                <div class="collapse {{ Request::is('administrasi/guru*') || Request::is('administrasi/siswa*') || Request::is('akademik/mapel*') || Request::is('sarana/kelas*') || Request::is('sarana/ruang*') || Request::is('sarana/barang*') || Request::is('administrasi/users*') ? 'show' : '' }}"
+                <div class="collapse {{ Request::is('administrasi/guru*') || Request::is('administrasi/siswa*') || Request::is('akademik/mapel*') || Request::is('sarana/kelas*') || Request::is('sarana/ruang*') || Request::is('sarana/barang*') ? 'show' : '' }}"
                     id="master-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                        <li><a class="link-light rounded mb-1 {{ Request::is('administrasi/users*') ? 'bg-gradient-primary ' : '' }}"
-                                style="width: 100%" href="/administrasi/users"><i
-                                    class="material-icons opacity-10 mx-2">groups</i> Data User</a>
-                        </li>
                         <li><a class="link-light rounded mb-1 {{ Request::is('administrasi/guru*') ? 'bg-gradient-primary ' : '' }}"
                                 style="width: 100%" href="/administrasi/guru"><i
                                     class="material-icons opacity-10 mx-2">groups</i> Data
@@ -63,6 +56,7 @@
                     </ul>
                 </div>
             </li>
+
             <li class="mb-1" style="width: 100%">
                 <button class="btn align-items-center rounded collapsed text-white font-weight-bold"
                     style="text-transform: none; width: 100%;display: flex; align-items: center; column-gap:10px"
@@ -88,6 +82,9 @@
                     </ul>
                 </div>
             </li>
+            
+            {{-- Presensi --}}
+
             <li class="mb-1" style="width: 100%">
                 <button class="btn align-items-center rounded collapsed text-white font-weight-bold"
                     style="text-transform: none; width: 100%;display: flex; align-items: center; column-gap:10px;"
@@ -99,13 +96,17 @@
                 </button>
                 <div class="collapse {{ Request::is('akademik/absensi*') ? 'show' : '' }}" id="kesiswaan-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                        <li><a class="link-light rounded mb-1 {{ Request::is('akademik/absensi*') ? 'bg-gradient-primary ' : '' }}"
-                                style="width: 100%" href="/akademik/absensi"> <i
-                                    class="material-icons opacity-10 mx-2">receipt_long</i>
-                                Presensi</a></li>
+                        <li>
+                            <a class="link-light rounded mb-1 {{ Request::is('akademik/absensi*') ? 'bg-gradient-primary ' : '' }}"
+                                href="/akademik/absensi/admin">
+                                <i class="material-icons opacity-10 mx-2">receipt_long</i>
+                                Presensi Admin
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </li>
+
             <li class="mb-1">
                 <button class="btn align-items-center rounded collapsed text-white font-weight-bold"
                     style="text-transform: none; width: 100%;display: flex; align-items: center; column-gap:10px"
@@ -198,6 +199,16 @@
                     href="/akademik/jadwal-guru/{{ auth()->user()->id }}"> <span
                         class="material-symbols-outlined">event_note</span> Jadwal Mengajar</a>
             </li>
+            <li class="mb-1" style="width: 100%">
+                <a class="btn align-items-center rounded text-white font-weight-bold"
+                    style="text-transform: none; width: 100%; display: flex; align-items: center; column-gap:10px;"
+                    href="/akademik/absensi/guru">
+                    <span class="material-symbols-outlined">
+                        school
+                    </span>
+                    Presensi
+                </a>
+            </li>
         @elseif (auth()->user()->hasRole('siswa'))
             <li class="mb-1" style="">
                 <a class="btn rounded text-white font-weight-bold {{ Request::is('akademik/jadwal-siswa*') ? 'bg-gradient-primary ' : '' }}"
@@ -205,6 +216,17 @@
                     href="/akademik/jadwal-siswa/{{ auth()->user()->siswa->id_kelas ?? 'null' }}"> <span
                         class="material-symbols-outlined">event_note</span> Jadwal Pelajaran</a>
             </li>
+            <li class="mb-1" style="width: 100%">
+                <a class="btn align-items-center rounded text-white font-weight-bold"
+                    style="text-transform: none; width: 100%; display: flex; align-items: center; column-gap:10px;"
+                    href="/akademik/absensi/siswa">
+                    <span class="material-symbols-outlined">
+                        school
+                    </span>
+                    Presensi
+                </a>
+            </li>
+
         @endif
     </ul>
 </div>

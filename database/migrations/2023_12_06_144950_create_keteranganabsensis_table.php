@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('absensis', function (Blueprint $table) {
+        Schema::create('keteranganabsensis', function (Blueprint $table) {
             $table->id();
-            $table->enum('status_absen', ['masuk', 'sakit', 'izin', 'tidak masuk'])->default('tidak masuk');
-            $table->string('role');
-            $table->unsignedBigInteger('id_user')->nullable(true);
+            $table->date('tanggal');
+            $table->string('status'); // 'weekend' or 'libur'
+            $table->text('keterangan')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('absensis');
+        Schema::dropIfExists('keteranganabsensis');
     }
 };

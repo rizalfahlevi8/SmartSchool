@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Guru;
 use App\Models\User;
+use App\Models\Absensi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\File;
@@ -11,6 +12,40 @@ use Illuminate\Support\Facades\Storage;
 
 class GuruController extends Controller
 {
+
+    public function updateAbsensi(Request $request, $id)
+    {
+        try {
+            $absensi = Absensi::findOrFail($id);
+            $absensi->update($request->all());
+
+            return response()->json(['success' => true, 'message' => 'Absensi updated successfully']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function getGuruByUser($id_user)
+{
+    try {
+        // Ambil data guru berdasarkan id_user
+        $guru = Guru::where('id_user', $id_user)->first();
+
+        return response()->json(['success' => true, 'data' => $guru]);
+    } catch (\Exception $e) {
+
+        return response()->json(['success' => false, 'error' => $e->getMessage()], 500);
+    }
+}
+
+    public function getGuru()
+    {
+        // Dapatkan data guru dari tabel "gurus"
+        $guru = Guru::all();
+
+        // Kembalikan data dalam format JSON
+        return response()->json($guru);
+    }
     public function index()
     {
         $guru = Guru::where('deleted', 0)->get();
