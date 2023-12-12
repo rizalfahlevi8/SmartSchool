@@ -9,8 +9,8 @@ class KeteranganabsensiSeeder extends Seeder
 {
     public function run()
     {
-        $startDate = '2023-10-01';
-        $endDate = '2024-01-01';
+        $startDate = '2023-01-01';
+        $endDate = '2024-12-31';
 
         $currentDate = $startDate;
 

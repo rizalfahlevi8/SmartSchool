@@ -138,58 +138,64 @@ public function checkAndFillAbsentData()
     $userId = Auth::id();
 
     // Tentukan tanggal awal dan akhir untuk pengecekan
-    $startDate = now()->setYear(2023)->setMonth(12)->setDay(1);
+    $startDate = now()->setYear(2023)->setMonth(11)->setDay(30);
     $endDate = now()->subDay(); // Tanggal kemarin (sehari sebelum hari ini)
 
     $dataInserted = false; // Indikator apakah ada data tambahan yang dimasukkan
 
     // Looping untuk setiap tanggal
     while ($startDate <= $endDate) {
-        // Periksa apakah sudah ada data absensi untuk tanggal ini
-        $absensi = Absensi::where('id_user', $userId)
-            ->whereDate('created_at', $startDate->format('Y-m-d'))
-            ->first();
+        // Pengecekan apakah hari ini bukan Sabtu (6) atau Minggu (0)
+        $dayOfWeek = $startDate->dayOfWeek;
+        if ($dayOfWeek != 6 && $dayOfWeek != 0) {
+            // Periksa apakah sudah ada data absensi untuk tanggal ini
+            $absensi = Absensi::where('id_user', $userId)
+                ->whereDate('created_at', $startDate->format('Y-m-d'))
+                ->first();
 
-        // Jika belum ada data absensi, isi otomatis
-        if (!$absensi) {
-            $role = Auth::user()->role;
-            $createdDate = $startDate->format('Y-m-d') . ' 16:00:00';
+            // Jika belum ada data absensi, isi otomatis
+            if (!$absensi) {
+                $role = Auth::user()->role;
+                $createdDate = $startDate->format('Y-m-d') . ' 16:00:00';
 
-            Absensi::create([
-                'status_absen' => 'tidak masuk',
-                'role' => $role,
-                'id_user' => $userId,
-                'created_at' => $createdDate,
-            ]);
+                Absensi::create([
+                    'status_absen' => 'tidak masuk',
+                    'role' => $role,
+                    'id_user' => $userId,
+                    'created_at' => $createdDate,
+                ]);
 
-            $dataInserted = true; // Set indikator bahwa ada data tambahan yang dimasukkan
+                $dataInserted = true; // Set indikator bahwa ada data tambahan yang dimasukkan
+            }
         }
 
         // Tambahkan satu hari untuk lanjut ke tanggal berikutnya
         $startDate->addDay();
     }
 
-    // Cek apakah sudah ada data absensi untuk hari ini
+        // Cek apakah sudah ada data absensi untuk hari ini
     $absensiToday = Absensi::where('id_user', $userId)
-        ->whereDate('created_at', now()->format('Y-m-d'))
-        ->first();
+    ->whereDate('created_at', now()->format('Y-m-d'))
+    ->first();
 
-    // Jika belum ada data absensi untuk hari ini dan sudah lebih dari jam 16:00
-    if (!$absensiToday && now()->format('H:i:s') >= '16:00:00') {
-        $roleToday = Auth::user()->role;
+    // Pengecekan apakah hari ini bukan Sabtu (6) atau Minggu (0)
+    $dayOfWeekToday = now()->dayOfWeek;
+    if (!$absensiToday && now()->format('H:i:s') >= '16:00:00' && $dayOfWeekToday != 6 && $dayOfWeekToday != 0) {
+    $roleToday = Auth::user()->role;
 
-        Absensi::create([
-            'status_absen' => 'tidak masuk',
-            'role' => $roleToday,
-            'id_user' => $userId,
-            'created_at' => now(),
-        ]);
+    Absensi::create([
+        'status_absen' => 'tidak masuk',
+        'role' => $roleToday,
+        'id_user' => $userId,
+        'created_at' => now(),
+    ]);
 
-        $dataInserted = true; // Set indikator bahwa ada data tambahan yang dimasukkan
+    $dataInserted = true; // Set indikator bahwa ada data tambahan yang dimasukkan
 
-        // Aktifkan fungsi disablePresensiOption pada web page
-        return response()->json(['success' => true, 'dataInserted' => $dataInserted, 'disablePresensiOption' => true]);
+    // Aktifkan fungsi disablePresensiOption pada web page
+    return response()->json(['success' => true, 'dataInserted' => $dataInserted, 'disablePresensiOption' => true]);
     }
+
 
     // Mengirim respons berdasarkan apakah ada data tambahan atau tidak
     return response()->json(['success' => true, 'dataInserted' => $dataInserted, 'disablePresensiOption' => false]);

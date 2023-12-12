@@ -1001,7 +1001,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const eventsArr = [];
     const databaseEvents = [];
-    const weekendDates = [];
 
     getEvents();
     console.log(eventsArr);
@@ -1409,6 +1408,7 @@ document.addEventListener("DOMContentLoaded", function() {
             // Assign data dari databaseEvents
             databaseEvents.length = 0;
             databaseEvents.push(...data);
+            Log('sebelum convert :', databaseEvents);
 
             // Konversi dan masukkan ke dalam eventsArr
             convertDatabaseEventsToEventsArr();
@@ -1422,11 +1422,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
 function convertDatabaseEventsToEventsArr() {
     // ...
-    weekendDates.forEach((date) => {
-        const day = date.getDate();
-        const month = date.getMonth() + 1;
-        const year = date.getFullYear();
+    databaseEvents.forEach((date) => {
+        const day = new Date(date).getDate();
+        const month = new Date(date).getMonth() + 1;
+        const year = new Date(date).getFullYear();
 
+        // Pengecekan apakah tanggal sudah ada di eventsArr
         const existingEventIndex = eventsArr.findIndex((event) => event.day === day && event.month === month && event.year === year);
 
         if (existingEventIndex !== -1) {
@@ -1455,8 +1456,11 @@ function convertDatabaseEventsToEventsArr() {
             });
         }
     });
+
+    // Pastikan struktur data sama dengan eventsArr
     saveEvents();
 }
+
 
     function convertTime(time) {
     //convert time to 24 hour format
