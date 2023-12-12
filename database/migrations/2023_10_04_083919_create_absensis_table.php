@@ -18,6 +18,7 @@ return new class extends Migration
             $table->enum('status_absen', ['masuk', 'sakit', 'izin', 'tidak masuk'])->default('tidak masuk');
             $table->string('role');
             $table->unsignedBigInteger('id_user')->nullable(true);
+            $table->string('file_path')->nullable();
             $table->timestamps();
         });
     }

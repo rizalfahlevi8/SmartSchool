@@ -134,6 +134,7 @@ public function store(Request $request)
         'status_absen' => 'required|in:masuk,sakit,izin',
         'role' => 'required',
         'id_user' => 'required',
+        'file' => 'nullable|mimes:pdf|max:5120', // Menambah validasi untuk file PDF
     ]);
 
     // Cek apakah pengguna telah melakukan presensi pada hari ini
@@ -161,6 +162,22 @@ public function store(Request $request)
 
     // Simpan data absensi ke database
     $absensi->save();
+
+    // Handle unggahan file PDF (jika ada)
+    if ($request->hasFile('file')) {
+        $file = $request->file('file');
+    
+        // Log nama file yang diunggah
+        Log::info('Uploaded file name: ' . $file->getClientOriginalName());
+    
+        $filePath = $file->storeAs('absensi_files', 'absensi_' . $absensi->id . '.' . $file->getClientOriginalExtension(), 'public');
+    
+        // Log path/nama file yang disimpan
+        Log::info('File path saved: ' . $filePath);
+    
+        // Simpan path/nama file ke dalam kolom file_path
+        $absensi->update(['file_path' => $filePath]);
+    }
 
     return response()->json(['message' => 'Data absensi berhasil disimpan'], 201);
 }
