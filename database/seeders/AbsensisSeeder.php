@@ -18,7 +18,7 @@ class AbsensisSeeder extends Seeder
     $startDate = now()->setYear(2023)->setMonth(11)->setDay(30);
     $endDate = now()->setYear(2023)->setMonth(12)->setDay(7);
 
-    $userIds = range(2, 143); // Assuming user IDs are between 2 and 621
+    $userIds = range(2, 143);
 
     foreach ($userIds as $userId) {
         $role = ($userId >= 2 && $userId <= 143) ? 'guru' : 'siswa';
@@ -41,6 +41,7 @@ class AbsensisSeeder extends Seeder
         $startDate->setYear(2023)->setMonth(11)->setDay(30); // Reset start date for the next user
     }
 }
-
 }
+
+
 
