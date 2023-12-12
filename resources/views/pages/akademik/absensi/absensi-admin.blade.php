@@ -64,7 +64,7 @@
                     </tr>
                 </thead>
                 <tbody id="tableBodySiswa">
-                @foreach ($absensis as $absensi)
+                @foreach ($siswaAbsensis as $absensi)
                     @php
                         $user = \App\Models\User::find($absensi->id_user);
                     @endphp
@@ -120,7 +120,7 @@
                     </tr>
                 </thead>
                 <tbody id="tableBodyGuru">
-                    @foreach ($absensis as $absensi)
+                    @foreach ($guruAbsensis as $absensi)
                         @php
                             $user = \App\Models\User::find($absensi->id_user);
                         @endphp
@@ -256,6 +256,7 @@
                             <option value="Masuk">Masuk</option>
                             <option value="Sakit">Sakit</option>
                             <option value="Izin">Izin</option>
+                            <option value="Tidak Masuk">Tidak Masuk</option>
                         </select>
                     </div>
                     <input type="hidden" id="absensiId" name="absensiId">
@@ -579,6 +580,7 @@
     font-size: 1rem;
     font-weight: 400;
     margin-left: 20px;
+    color: #f5f5f5
     }
     .events .event i {
     color: var(--primary-clr);

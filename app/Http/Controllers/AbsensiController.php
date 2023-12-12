@@ -18,8 +18,42 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as Middleware;
 class AbsensiController extends Controller
 {
     public function showAbsensiAdmin(){
+        $absensis = Absensi::all();
+    
+        // Sort absensi by Tanggal
+        $absensis = $absensis->sortBy('created_at');
+    
+        // Separate data for siswa and guru
+        $siswaAbsensi = $absensis->filter(function ($absensi) {
+            return $absensi->user->role == 'siswa';
+        });
+    
+        $guruAbsensi = $absensis->filter(function ($absensi) {
+            return $absensi->user->role == 'guru';
+        });
+    
+        // Sort siswaAbsensi by Tanggal, Kelas, Nama
+        $siswaAbsensi = $siswaAbsensi->sortBy([
+            'created_at',
+            function ($absensi) {
+                return optional($absensi->siswa->kelas)->nama_kelas;
+            },
+            function ($absensi) {
+                return optional($absensi->siswa)->nama;
+            },
+        ]);
+    
+        // Sort guruAbsensi by Tanggal, Nama
+        $guruAbsensi = $guruAbsensi->sortBy([
+            'created_at',
+            function ($absensi) {
+                return optional($absensi->guru)->nama;
+            },
+        ]);
+    
         return view('pages.akademik.absensi.absensi-admin', [
-            'absensis'=>Absensi::all()
+            'siswaAbsensis' => $siswaAbsensi,
+            'guruAbsensis' => $guruAbsensi,
         ])->with('title', 'Absensi Admin');
     }
 

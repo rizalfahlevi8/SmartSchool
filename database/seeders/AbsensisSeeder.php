@@ -21,7 +21,7 @@ class AbsensisSeeder extends Seeder
     $userIds = range(2, 143);
 
     foreach ($userIds as $userId) {
-        $role = ($userId >= 2 && $userId <= 143) ? 'guru' : 'siswa';
+        $role = ($userId >= 2 && $userId <= 21) ? 'guru' : 'siswa';
 
         while ($startDate <= $endDate) {
             // Pengecekan apakah hari ini bukan Sabtu (6) atau Minggu (7)
