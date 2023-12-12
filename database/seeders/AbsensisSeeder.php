@@ -14,28 +14,32 @@ use Carbon\Carbon;
 class AbsensisSeeder extends Seeder
 {
     public function run(): void
-    {
-        $startDate = now()->setYear(2023)->setMonth(12)->setDay(1);
-        $endDate = now()->setYear(2023)->setMonth(12)->setDay(5);
+{
+    $startDate = now()->setYear(2023)->setMonth(11)->setDay(30);
+    $endDate = now()->setYear(2023)->setMonth(12)->setDay(7);
 
-        $userIds = range(2, 621); // Assuming user IDs are between 2 and 621
+    $userIds = range(2, 143);
 
-        foreach ($userIds as $userId) {
-            $role = ($userId >= 2 && $userId <= 21) ? 'guru' : 'siswa';
+    foreach ($userIds as $userId) {
+        $role = ($userId >= 2 && $userId <= 143) ? 'guru' : 'siswa';
 
-            while ($startDate <= $endDate) {
+        while ($startDate <= $endDate) {
+            // Pengecekan apakah hari ini bukan Sabtu (6) atau Minggu (7)
+            $dayOfWeek = $startDate->dayOfWeek;
+            if ($dayOfWeek != 6 && $dayOfWeek != 0) {
                 DB::table('absensis')->insert([
                     'status_absen' => fake('id_ID')->randomElement(['masuk', 'sakit', 'izin', 'tidak masuk']),
                     'role' => $role,
                     'id_user' => $userId,
                     'created_at' => $startDate,
                 ]);
-
-                $startDate->addDay();
             }
 
-            $startDate->setYear(2023)->setMonth(12)->setDay(1); // Reset start date for the next user
+            $startDate->addDay();
         }
+
+        $startDate->setYear(2023)->setMonth(11)->setDay(30); // Reset start date for the next user
     }
+}
 }
 
