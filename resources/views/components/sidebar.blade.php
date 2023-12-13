@@ -215,6 +215,17 @@
                         class="material-symbols-outlined">event_note</span> Jadwal Mengajar</a>
             </li>
 
+            <li class="mb-1" style="width: 100%">
+                <a class="btn align-items-center rounded text-white font-weight-bold"
+                    style="text-transform: none; width: 100%; display: flex; align-items: center; column-gap:10px;"
+                    href="/akademik/absensi/guru">
+                    <span class="material-symbols-outlined">
+                        school
+                    </span>
+                    Presensi
+                </a>
+            </li>
+
             <li class="mb-1" style="">
                 <a class="btn rounded text-white font-weight-bold 'bg-gradient-primary ' : '' }}"
                     style="text-transform: none; width: 100%;display: flex; align-items: center; column-gap:10px"
@@ -228,6 +239,17 @@
                     style="text-transform: none; width: 100%;display: flex; align-items: center; column-gap:10px"
                     href="/akademik/jadwal-siswa/{{ auth()->user()->siswa->id_kelas ?? 'null' }}"> <span
                         class="material-symbols-outlined">event_note</span> Jadwal Pelajaran</a>
+            </li>
+
+            <li class="mb-1" style="width: 100%">
+                <a class="btn align-items-center rounded text-white font-weight-bold"
+                    style="text-transform: none; width: 100%; display: flex; align-items: center; column-gap:10px;"
+                    href="/akademik/absensi/siswa">
+                    <span class="material-symbols-outlined">
+                        school
+                    </span>
+                    Presensi
+                </a>
             </li>
 
             <li class="mb-1" style="">
