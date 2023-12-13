@@ -75,11 +75,32 @@
             <div class="border border-2 rounded p-4 my-4 d-flex flex-column text-md" style="height: auto; max-height: 300px; position: relative;" id="presensiOptions">
                 <h5 class="font-weight-bold mb-3">Presensi Absensi Siswa</h5>
                 <form id="absensiForm" enctype="multipart/form-data">
-                    <div class="d-flex justify-content-center">
+                    {{-- <div class="d-flex justify-content-center">
                         <button type="button" class="absensi-button" onclick="selectOption('masuk')">Masuk</button>
                         <button type="button" class="absensi-button" onclick="selectOption('sakit')">Sakit</button>
                         <button type="button" class="absensi-button" onclick="selectOption('izin')">Izin</button>
+                    </div> --}}
+                    <div class="d-flex justify-content-center">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" onclick="selectOption('masuk')">
+                            <label class="form-check-label" for="flexRadioDefault1">
+                                Masuk
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" onclick="selectOption('sakit')">
+                            <label class="form-check-label" for="flexRadioDefault2">
+                              Sakit
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3" onclick="selectOption('izin')">
+                            <label class="form-check-label" for="flexRadioDefault3">
+                              Izin
+                            </label>
+                        </div>
                     </div>
+                    
                     <div class="file-upload-container" id="fileUploadContainer">
                         <div class="mb-3">
                             <label for="fileInput" class="form-label">Unggah File (PDF):</label>
@@ -144,6 +165,15 @@
 </div>
 
 <style>
+
+.form-check-label {
+    font-size: 20px; /* Sesuaikan dengan ukuran teks yang diinginkan */
+    margin-right: 10px; /* Sesuaikan dengan jarak yang diinginkan antara label dan tombol input */
+}
+
+.form-check {
+    margin-right: 40px;
+}
 
 .file-upload-container {
     display: none;
