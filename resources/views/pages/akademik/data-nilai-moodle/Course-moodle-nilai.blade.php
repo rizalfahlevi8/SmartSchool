@@ -18,42 +18,43 @@
             </a>
         </div>
     </div>
-    
 
     @foreach ($gradeItems['usergrades'] as $grade)
-        <div class="row mt-3">
-            <div class="col-12">
-                <!-- Card for User Fullname -->
-                <div class="card mb-2" style="background-color: #3498db; color: #ffffff; font-size: 14px; border-radius: 8px;">
-                    <div class="card-body">
-                        <h4 class="card-title">{{ $grade['userfullname'] }}</h4>
-                        <!-- Iterate through gradeitems -->
-                        @foreach ($grade['gradeitems'] as $item)
-                            <!-- Check if itemmodule is quiz or assign -->
-                            @if (in_array($item['itemmodule'], ['quiz', 'assign']))
-                                <!-- Card for Item Name -->
-                                <div class="card mb-2" style="background-color: #ffffff; border-radius: 6px;">
-                                    <div class="card-body">
-                                        <h5 class="card-title" style="font-size: 16px;">{{ $item['itemname'] }}</h5>
-                                        <ul class="list-group list-group-flush">
-                                            <li class="list-group-item" style="font-size: 16px;">Nilai: {{ $item['graderaw'] }}</li>
-                                            <!-- Check if items key exists before looping -->
-                                            @if (array_key_exists('items', $item))
-                                                <!-- Loop untuk menampilkan data lainnya -->
-                                                @foreach ($item['items'] as $column)
-                                                    <li class="list-group-item" style="font-size: 14px;">{{ $column['column1'] }}: {{ $column['column2'] }}</li>
-                                                @endforeach
-                                            @endif
-                                        </ul>
+        @if (strpos(strtolower($grade['userfullname']), 'pengajar') === false)
+            <div class="row mt-3">
+                <div class="col-12">
+                    <!-- Card for User Fullname -->
+                    <div class="card mb-1" style="background-color: #D9D9D9; color: #ffffff; font-size: px; border-radius: 14px;">
+                        <div class="card-body">
+                            <h4 class="card-title"style="font-size: 20px;">{{ $grade['userfullname'] }}</h4>
+                            <!-- Iterate through gradeitems -->
+                            @foreach ($grade['gradeitems'] as $item)
+                                <!-- Check if itemmodule is quiz or assign -->
+                                @if (in_array($item['itemmodule'], ['quiz', 'assign']))
+                                    <!-- Card for Item Name -->
+                                    <div class="card mb-2" style="background-color: #ffffff; border-radius: 6px;">
+                                        <div class="card-body">
+                                            <h5 class="card-title" style="font-size: 14px; margin-bottom: 0;">{{ $item['itemname'] }}</h5>
+                                            <ul class="list-group list-group-flush">
+                                                <li class="list-group-item" style="font-size: 14px; padding: 1px;">Nilai: {{ $item['graderaw'] }}</li>
+                                                <!-- Check if items key exists before looping -->
+                                                @if (array_key_exists('items', $item))
+                                                    <!-- Loop untuk menampilkan data lainnya -->
+                                                    @foreach ($item['items'] as $column)
+                                                        <li class="list-group-item" style="font-size: 14px; padding: 1px;">{{ $column['column1'] }}: {{ $column['column2'] }}</li>
+                                                    @endforeach
+                                                @endif
+                                            </ul>
+                                        </div>
                                     </div>
-                                </div>
-                                <!-- End of Card for Item Name -->
-                            @endif
-                        @endforeach
+                                    <!-- End of Card for Item Name -->
+                                @endif
+                            @endforeach
+                        </div>
                     </div>
+                    <!-- End of Card for User Fullname -->
                 </div>
-                <!-- End of Card for User Fullname -->
             </div>
-        </div>
+        @endif
     @endforeach
 @endsection
