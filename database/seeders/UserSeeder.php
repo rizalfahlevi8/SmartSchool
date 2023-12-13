@@ -21,7 +21,7 @@ class UserSeeder extends Seeder
     public function run()
     {
         $guru = 20;
-        $siswa_per_kelas = 10;
+        $siswa_per_kelas = 2;
         for ($i = 2; $i <= $guru + 1; $i++) {
             DB::table('users')->insert([
                 'username' => fake('id_ID')->unique()->userName(),
@@ -68,6 +68,7 @@ class UserSeeder extends Seeder
                         'nama_ibu' => fake('id_ID')->name('female'),
                         'nama_wali' => $ayah,
                         'status' => fake('id_ID')->randomElement(['bukan pindahan', 'pindahan', 'lulus', 'mutasi']),
+                        'tanggal_keluar' => fake('id_ID')->dateTimeBetween('2022-01-01', '2023-12-31'),
                         'tanggal_lahir' => fake('id_ID')->date(),
                         'tempat_lahir' => fake('id_ID')->citySuffix(),
                         'alamat' => fake('id_ID')->city(),
@@ -87,5 +88,59 @@ class UserSeeder extends Seeder
                 DB::select("UPDATE siswas SET siswas.status = 'lulus' WHERE id_angkatan = ?", [$angkatan->id]);
             }
         }
+
+
+        $guru = User::create([
+            'username' => 'guru',
+            'email' => fake('id_ID')->unique()->email(),
+            'password' => bcrypt('guru'),
+            'role' => 'guru',
+            'remember_token' => Str::random(20)
+        ]);
+
+        DB::table('gurus')->insert([
+            'nip' => random_int(10000, 59999) . '' . random_int(10000, 59999),
+            'nama' => fake('id_ID')->name(),
+            'no_telp' => fake('id_ID')->phoneNumber(),
+            'jenis_kelamin' => fake('id_ID')->randomElement(['laki-laki', 'perempuan']),
+            'agama' => fake('id_ID')->randomElement(['islam', 'kristen', 'hindu', 'konghucu', 'buddha']),
+            'tempat_lahir' => fake('id_ID')->citySuffix(),
+            'tanggal_lahir' => fake('id_ID')->date('Y-m-d', 'now'),
+            'foto' => 'default_img.png',
+            'signature' => 'default_signature.png',
+            'alamat' => fake('id_ID')->city(),
+            'deleted' => 0,
+            'id_user' => $guru->id,
+        ]);
+
+        $siswa_solo = User::create([
+            'username' => 'siswa',
+            'email' => fake('id_ID')->unique()->email(),
+            'password' => bcrypt('siswa'),
+            'role' => 'siswa',
+            'remember_token' => Str::random(20)
+        ]);
+
+        DB::table('siswas')->insert([
+            // 'no_pendaftaran' => random_int(60000, 99999). '' . random_int(100, 999) . $angkatan->id . $kelas->id . $i,
+            'nis' => random_int(60000, 99999) . '' . random_int(100, 999) . 1 . 1 . $i,
+            'nisn' => random_int(60000, 99999) . '' . random_int(60000, 99999) . 1 . 1 . $i,
+            'nik' => random_int(90000, 99999) . '' . random_int(90000, 99999) . '' . random_int(1, 1000) . 1 . 1,
+            'nama' => fake('id_ID')->name(),
+            'no_telp' => fake('id_ID')->phoneNumber(),
+            'nama_ayah' => $ayah = fake('id_ID')->name('male'),
+            'nama_ibu' => fake('id_ID')->name('female'),
+            'nama_wali' => $ayah,
+            'status' => fake('id_ID')->randomElement(['bukan pindahan', 'pindahan', 'lulus', 'mutasi']),
+            'tanggal_keluar' => fake('id_ID')->dateTimeBetween('2022-01-01', '2023-12-31'),
+            'tanggal_lahir' => fake('id_ID')->date(),
+            'tempat_lahir' => fake('id_ID')->citySuffix(),
+            'alamat' => fake('id_ID')->city(),
+            'jenis_kelamin' => fake('id_ID')->randomElement(['laki-laki', 'perempuan']),
+            'agama' => fake('id_ID')->randomElement(['islam', 'kristen', 'hindu', 'buddha', 'konghucu']),
+            'id_kelas' => 1,
+            'id_angkatan' => 2,
+            'id_user' => $siswa_solo->id
+        ]);
     }
 }

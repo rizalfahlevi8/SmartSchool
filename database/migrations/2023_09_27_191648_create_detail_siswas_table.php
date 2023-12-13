@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('kelas_awal')->nullable();
             $table->string('kelas_akhir')->nullable();
             $table->unsignedBigInteger('id_siswa');
-            $table->foreign('id_siswa')->references('id')->on('siswas');
+            $table->foreign('id_siswa')->references('id')->on('siswas')->cascadeOnDelete();
             $table->timestamps();
         });
     }

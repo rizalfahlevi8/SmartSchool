@@ -20,9 +20,11 @@
                     </div>
                 </div>
                 <div class="card-body px-0 pb-2">
-                    <form action="{{ route('update-barang', $barang->id) }}" class="row g-3 py-1 px-4" method="post">
+                    <form action="{{ route('update-barang', $barang->id) }}" class="row g-3 py-1 px-4" method="post" enctype="multipart/form-data">
                         @method('PUT')
                         @csrf
+
+                        <input type="hidden" name="oldImage" value="{{$barang->image}}">
                         <div class="col-md-6">
                             <label class="form-label">Nama Barang</label>
                             <input type="text" name="nama_barang" class="form-control rounded-3" required
@@ -34,6 +36,16 @@
                                 <input type="date" name="tahun_pengadaan" class="form-control rounded-3" required
                                     value="{{ $barang->tahun_pengadaan }}">
                             </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="formFile" class="form-label">Gambar</label>
+                            <br>
+                            <img src="{{ asset('storage/public/' . $barang->image) }}" height="150px" width="200px">   
+                            <br>
+                            <label for="image" class="form-label">Pilih Gambar Baru</label>
+                            <img class="img-preview img-fluid">
+                                <input type="file" name="image" id="image" class="form-control rounded-3" 
+                                onchange="previewImage()">
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Jenis</label>
@@ -67,4 +79,19 @@
             </div>
         </div>
     </div>
+    <script>
+        function previewImage(){
+            const image =document.querySelector('#image');
+            const imgPreview = document.querySelector('.img-preview');
+
+            imgPreview.style.display = 'block';
+
+            const oFReader = new FileReader();
+            oFReader.readAsDataURL(image.files[0]);
+
+            oFReader.onload = function(oFREvent){
+                imgPreview.src = oFREvent.target.result;
+            }
+        }
+    </script>
 @endsection

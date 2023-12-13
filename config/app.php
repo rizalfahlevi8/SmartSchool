@@ -198,5 +198,5 @@ return [
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
     ])->toArray(),
 
-    'DB_user_roles' => ['admin', 'guru', 'siswa', 'tamu', 'teknisi'],
+    'DB_user_roles' => ['admin', 'guru', 'siswa', 'tamu', 'teknisi', 'wakasek', 'kepsek'],
 ];

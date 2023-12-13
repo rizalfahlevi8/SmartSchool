@@ -95,7 +95,7 @@
                                                 {{ $siswa->status }}
                                             </td>
                                             <td class="text-center">
-                                                {{ $siswa->updated_at }}
+                                                {{ $siswa->tanggal_keluar }}
                                             </td>
                                             <td class="text-center">
                                                 <button type="button"data-bs-toggle="modal" data-bs-target="#detail-modal"
@@ -105,7 +105,7 @@
                                                     onclick="showDetailModal(this)" nama-siswa="{{ $siswa->nama }}"
                                                     nis="{{ $siswa->nis }}" nisn="{{ $siswa->nisn }}"
                                                     jenis-kelamin="{{ $siswa->jenis_kelamin }}"
-                                                    kelas="{{ $siswa->kelas->nama_kelas }}" nik="{{ $siswa->nik }}"
+                                                    {{-- kelas="{{ $siswa->kelas->nama_kelas }}" --}} nik="{{ $siswa->nik }}"
                                                     tempat-lahir="{{ $siswa->tempat_lahir }}"
                                                     tanggal-lahir="{{ $siswa->tanggal_lahir }}"
                                                     nama-wali="{{ $siswa->nama_wali }}" no-telp="{{ $siswa->no_telp }}"
@@ -113,11 +113,6 @@
                                                     foto="{{ asset('storage/murid/img/' . $siswa->foto) }}">
                                                     <i class="fa fa-eye"></i>
                                                 </button>
-                                                <a href="data-siswa-edit/{{ $siswa->id }}"
-                                                    class=" btn btn-warning font-weight-bold text-sm rounded-circle"
-                                                    data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit">
-                                                    <i class="fa fa-edit"></i>
-                                                </a>
                                                 <a href="data-siswa-hapus/{{ $siswa->id }}"
                                                     onclick="return confirm('Anda yakin akan menghapus data ini?')"
                                                     class=" btn btn-danger font-weight-bold text-sm rounded-circle"
@@ -200,7 +195,7 @@
                                         </div>
                                     </div>
                                 </li>
-                                <li class="list-group-item">
+                                {{-- <li class="list-group-item">
                                     <div class="row">
                                         <div class="col-md-5">
                                             <span class="float-start fw-bold">Kelas</span>
@@ -210,7 +205,7 @@
 
                                         </div>
                                     </div>
-                                </li>
+                                </li> --}}
                                 <li class="list-group-item">
                                     <div class="row">
                                         <div class="col-md-5">
@@ -305,7 +300,7 @@
             const wali = detailModalDialog.querySelector('#wali');
             const ttl = detailModalDialog.querySelector('#ttl');
             const alamat = detailModalDialog.querySelector('#alamat');
-            const kelas = detailModalDialog.querySelector('#kelas');
+            // const kelas = detailModalDialog.querySelector('#kelas');
             const jenis_kelamin = detailModalDialog.querySelector('#jenis-kelamin');
             const no_telp = detailModalDialog.querySelector('#no-telp');
             const agama = detailModalDialog.querySelector('#agama');
@@ -319,7 +314,7 @@
             ttl.innerText = `${element.getAttribute('tempat-lahir')}, ${element.getAttribute('tanggal-lahir')}`;
             alamat.innerText = element.getAttribute('alamat');
             agama.innerText = element.getAttribute('agama');
-            kelas.innerText = element.getAttribute('kelas');
+            // kelas.innerText = element.getAttribute('kelas');
             jenis_kelamin.innerText = element.getAttribute('jenis-kelamin');
             no_telp.innerText = element.getAttribute('no-telp');
             foto.src = element.getAttribute('foto');

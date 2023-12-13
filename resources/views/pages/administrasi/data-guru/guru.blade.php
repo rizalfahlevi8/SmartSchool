@@ -49,7 +49,7 @@
                                     </th>
                                     <th
                                         class="
-                                            text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
+                                            text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-5">
                                         No Telepon
                                     </th>
                                     <th
