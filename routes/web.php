@@ -33,6 +33,16 @@ use App\Http\Controllers\UserMoodleController;
 use App\Models\Peminjaman;
 
 
+use App\Http\Controllers\KerjaSamaController;
+// use App\Http\Controllers\UserController;
+// use App\Models\Absensi;
+// use App\Models\Akademik;
+
+use App\Models\Tamu;
+use App\Http\Controllers\TamuController;
+use App\Models\Kerjasama;
+// use App\Http\Controllers\KerjaSamaController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -110,6 +120,11 @@ Route::middleware(['userRole:admin,guru'])->group(function () {
 
     //raport siswa
     Route::post('/data-raport-siswa/{id}', [RaportController::class, 'raportsiswa']);
+
+    //jadwal siswa
+    Route::get('/data-jadwal/{id}', [JadwalController::class, 'jadwalsiswa']);
+    Route::get('/data-jadwalsiswa/cetak_pdf/{id}', [JadwalController::class, 'cetakjadwalsiswa']);
+
     Route::get('/data-raport-cetak-siswa/{id}/{smt}', [RaportController::class, 'cetakraportsiswa']);
 
     //kepsek
@@ -134,6 +149,13 @@ Route::middleware(['userRole:admin,wakasek'])->group(function () {
     Route::post('/dashboard/buat-pengumuman', [PengumumanController::class, 'store']);
     Route::get('/dashboard/hapus-pengumuman/{pengumuman}', [PengumumanController::class, 'destroy']);
     Route::put('/dashboard/update-pengumuman/{pengumuman}', [PengumumanController::class, 'update'])->name('update-pengumuman');
+
+    Route::get('/administrasi/users', [UserController::class, 'index'])->name('user_management');
+    Route::post('/administrasi/users/{user}', ['UserController', 'update']);
+});
+
+//==========================================================================================
+Route::middleware(['userRole:admin'])->group(function () {
     // Daftar Barang
     Route::get('/sarana/barang', [BarangController::class, 'index'])->name('barang_main');
     Route::get('/sarana/barang-tambah', [BarangController::class, 'create'])->name('tambah-barang');
@@ -263,6 +285,28 @@ Route::middleware(['userRole:admin,wakasek'])->group(function () {
     Route::get('/peminjaman-hapus/{id}', [PeminjamanController::class, 'destroy']);
     Route::post('/peminjaman-tambah', [PeminjamanController::class, 'store']);
     Route::put('/peminjaman-update', [PeminjamanController::class, 'update']);
+
+     // ==============[ D a t a - T a m u ]===============
+     Route::get('/data-tamu', [TamuController::class, 'index']);
+     Route::get('/tamu', [TamuController::class, 'create']);
+     Route::post('/tamu', [TamuController::class, 'kirim']);
+     Route::get('/tamu-edit/{id}', [TamuController::class, 'edit']);
+     Route::put('/tamu-edit/{id}', [TamuController::class, 'update']);
+     Route::get('/tamu-delete/{tamu}', [TamuController::class, 'delete']);
+     // Route::get('/get-guru-username', 'TamuController@create')->name('get_guru_user');
+     Route::get('/get-username-by-role/{role}', [TamuController::class, 'getUsernamesByRole']);
+     // Route::get('/search-by-username/{username}', [TamuController::class, 'searchByUsername']);
+     
+     // ==============[ D a t a - K e r j a s a m a ]===============
+     Route::get('/mou',[KerjaSamaController::class, 'lihat']);
+     Route::get('/add-mou', [KerjaSamaController::class, 'create']);
+     Route::post('/add-mou', [KerjaSamaController::class, 'store']);
+     Route::get('/edit-mou/{id}', [KerjaSamaController::class, 'edit']);
+     Route::put('/edit-mou/{id}', [KerjaSamaController::class, 'update']);
+     Route::get('/delete-mou/{kerjasama}', [KerjaSamaController::class, 'destroy']);
+     // file
+    //  Route::get('/storage/kerjasama/file/{file}', [KerjaSamaController::class, 'viewfile'])->name('viewfile');  
+
     Route::get('/peminjaman-confirm/{id}', [PeminjamanController::class, 'confirm']);
     Route::get('/peminjaman-approve/{peminjaman}', [PeminjamanController::class, 'approve']);
     Route::get('/peminjaman-decline/{peminjaman}', [PeminjamanController::class, 'decline']);
@@ -276,6 +320,7 @@ Route::middleware(['userRole:admin,wakasek'])->group(function () {
     Route::get('/data-peminjaman-barang-confirm/{id}', [PeminjamanBarangController::class, 'confirm']);
     Route::get('/data-peminjaman-barang-approve/{peminjaman}', [PeminjamanBarangController::class, 'approve']);
     Route::get('/data-peminjaman-barang-decline/{peminjaman}', [PeminjamanBarangController::class, 'decline']);
+
 });
 //======================== G U R U =========================================================
 Route::middleware(['userRole:guru'])->group(function () {
@@ -298,10 +343,29 @@ Route::middleware(['userRole:siswa,guru'])->group(function () {
 Route::middleware(['userRole:siswa,admin'])->group(function () {
     //jadwal pelajaran
     Route::get('/akademik/jadwal-siswa/{id}', [JadwalController::class, 'jadwalsiswa']);
+
+   
+
 });
+
+Route::middleware(['userRole:siswa,admin'])->group(function () {
+    Route::get('/akademik/raport-siswa/{jenis_raport}', [RaportController::class, 'show_raport']);
+    Route::get('/akademik/jadwal-siswa', [JadwalController::class, 'showJadwalSiswa']);
+    Route::get('/akademik/raport/{jenis_nilai}/{siswa}', [RaportController::class, 'show']);
+});
+
+//==========================================================================================
+    // ==============[ D a f t a r - T a m u ]===============
+
+    Route::get('showTamuByUser/{username}', [DashboardController::class, 'showTamuByUser']);
+
+    Route::get('/get-username-by-role/{role}', [TamuController::class, 'getUsernamesByRole']);
+    Route::get('/daftar-tamu', [TamuController::class, 'daftar'])->name('daftar-tamu'); 
+    Route::post('/datar-tamu', [TamuController::class, 'store'])->name('kirim-tamu');
 
 Route::middleware(['userRole:siswa,guru,admin'])->group(function () {
     Route::get('/api/absensi/{id}', [AbsensiController::class, 'getAbsensiById']);
     Route::get('/api/siswa-by-user/{id_user}', [SiswaController::class, 'getSiswaByUser']);
     Route::get('/api/guru-by-user/{id_user}', [GuruController::class, 'getGuruByUser']);
 });
+
