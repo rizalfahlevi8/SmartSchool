@@ -109,37 +109,28 @@
         </div>
     </div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function () {
-    $('#nama_barang_dropdown').select2();
-
-    $('#nama_barang_cari').on('input', function () {
+    $('#nama_barang_cari').keyup(function () {
         var query = $(this).val();
-
-        if (query === '') {
+        
+        if (query.length > 2) {
             $.ajax({
-                url: '{{ route("get-all-barang") }}',
+                url: '{{ route("search-barang") }}',
                 method: 'GET',
+                data: { searchTerm: query },
                 success: function (response) {
                     var dropdown = $('#nama_barang_dropdown');
                     dropdown.empty();
 
-                    if (Array.isArray(response) && response.length > 0) {
+                    if (response.length > 0) {
                         response.forEach(function (barang) {
                             dropdown.append($('<option></option>').attr('value', barang.nama_barang).text(barang.nama_barang));
                         });
                     } else {
-                        dropdown.append($('<option></option>').text('Tidak ada data ditemukan'));
+                        dropdown.append($('<option></option>').text('No matches found'));
                     }
-
-                    dropdown.trigger('change'); // Pemicu pembaruan untuk Select2
-                },
-                error: function (xhr, status, error) {
-                    console.error('Kesalahan mengambil data:', error);
                 }
             });
         }
@@ -151,20 +142,18 @@
         $.ajax({
             url: '{{ route("get-barang-detail-by-name") }}',
             method: 'GET',
-            data: { selectedBarang: selectedBarang },
+            data: { selectedBarang: selectedBarang }, 
             success: function (response) {
                 $('#barang_id').val(response.barang_id);
                 $('#nama_barang').val(response.nama_barang);
                 $('#tahun_pengadaan').val(response.tahun_pengadaan);
                 $('#jenis').val(response.jenis);
             },
-            error: function (xhr, status, error) {
-                console.error('Gagal mendapatkan detail barang:', error);
+            error: function () {
+                console.error('Gagal mendapatkan detail barang.');
             }
         });
     });
 });
-
-
 </script>
 @endsection
