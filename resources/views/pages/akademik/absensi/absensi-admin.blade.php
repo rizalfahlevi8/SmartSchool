@@ -64,7 +64,7 @@
                     </tr>
                 </thead>
                 <tbody id="tableBodySiswa">
-                @foreach ($absensis as $absensi)
+                @foreach ($siswaAbsensis as $absensi)
                     @php
                         $user = \App\Models\User::find($absensi->id_user);
                     @endphp
@@ -83,6 +83,9 @@
                                 <td>
                                     <button class="btn btn-warning" onclick="showEditModal({{ $absensi->id }})">Edit</button>
                                     <button class="btn btn-danger btn-sm" onclick="deleteAbsensi({{ $absensi->id }})">Delete</button>
+                                    @if ($absensi->file_path) <!-- Tambah kondisi untuk menampilkan jika ada file -->
+                                        <a href="{{ asset('storage/' . $absensi->file_path) }}" class="btn btn-info btn-sm" target="_blank">Lihat File</a>
+                                    @endif
                                 </td>
                             </tr>
                         @endif
@@ -120,7 +123,7 @@
                     </tr>
                 </thead>
                 <tbody id="tableBodyGuru">
-                    @foreach ($absensis as $absensi)
+                    @foreach ($guruAbsensis as $absensi)
                         @php
                             $user = \App\Models\User::find($absensi->id_user);
                         @endphp
@@ -138,6 +141,9 @@
                                     <td>
                                         <button class="btn btn-warning" onclick="showEditModal({{ $absensi->id }})">Edit</button>
                                         <button class="btn btn-danger btn-sm" onclick="deleteAbsensi({{ $absensi->id }})">Delete</button>
+                                        @if ($absensi->file_path) <!-- Tambah kondisi untuk menampilkan jika ada file -->
+                                            <a href="{{ asset('storage/' . $absensi->file_path) }}" class="btn btn-info btn-sm" target="_blank">Lihat File</a>
+                                        @endif
                                     </td>
                                 </tr>
                             @endif
@@ -256,6 +262,7 @@
                             <option value="Masuk">Masuk</option>
                             <option value="Sakit">Sakit</option>
                             <option value="Izin">Izin</option>
+                            <option value="Tidak Masuk">Tidak Masuk</option>
                         </select>
                     </div>
                     <input type="hidden" id="absensiId" name="absensiId">
@@ -579,6 +586,7 @@
     font-size: 1rem;
     font-weight: 400;
     margin-left: 20px;
+    color: #f5f5f5
     }
     .events .event i {
     color: var(--primary-clr);
@@ -829,973 +837,977 @@
 
 <script>
 
-document.addEventListener("DOMContentLoaded", function() {
-    // Fungsi untuk mengambil data dan menghitung jumlah
-    function countStatusAbsen(rows, columnIndex) {
-        let masukCount = 0;
-        let sakitCount = 0;
-        let izinCount = 0;
-        let tidakMasukCount = 0;
-
-        for (let i = 0; i < rows.length; i++) {
-            const statusAbsen = rows[i].querySelector(`td:nth-child(${columnIndex})`).textContent;
-
-            switch (statusAbsen.toLowerCase()) {
-                case 'masuk':
-                    masukCount++;
-                    break;
-                case 'sakit':
-                    sakitCount++;
-                    break;
-                case 'izin':
-                    izinCount++;
-                    break;
-                case 'tidak masuk':
-                    tidakMasukCount++;
-                    break;
-                // Tambahkan case untuk status_absen lain jika diperlukan
+    document.addEventListener("DOMContentLoaded", function() {
+        // Fungsi untuk mengambil data dan menghitung jumlah
+        function countStatusAbsen(rows, columnIndex) {
+            let masukCount = 0;
+            let sakitCount = 0;
+            let izinCount = 0;
+            let tidakMasukCount = 0;
+    
+            for (let i = 0; i < rows.length; i++) {
+                const statusAbsen = rows[i].querySelector(`td:nth-child(${columnIndex})`).textContent;
+    
+                switch (statusAbsen.toLowerCase()) {
+                    case 'masuk':
+                        masukCount++;
+                        break;
+                    case 'sakit':
+                        sakitCount++;
+                        break;
+                    case 'izin':
+                        izinCount++;
+                        break;
+                    case 'tidak masuk':
+                        tidakMasukCount++;
+                        break;
+                    // Tambahkan case untuk status_absen lain jika diperlukan
+                }
             }
+    
+            return {
+                masuk: masukCount,
+                sakit: sakitCount,
+                izin: izinCount,
+                tidakMasuk: tidakMasukCount
+            };
         }
-
-        return {
-            masuk: masukCount,
-            sakit: sakitCount,
-            izin: izinCount,
-            tidakMasuk: tidakMasukCount
+    
+        // Ambil data dari tabel siswa
+        const absensiTableSiswa = document.getElementById('tableBodySiswa');
+        const absensiRowsSiswa = absensiTableSiswa.getElementsByTagName('tr');
+        const siswaData = countStatusAbsen(absensiRowsSiswa, 6); // Ganti 6 sesuai dengan indeks kolom status_absen pada tabel siswa
+    
+        // Ambil data dari tabel guru
+        const absensiTableGuru = document.getElementById('tableBodyGuru');
+        const absensiRowsGuru = absensiTableGuru.getElementsByTagName('tr');
+        const guruData = countStatusAbsen(absensiRowsGuru, 5); // Ganti 5 sesuai dengan indeks kolom status_absen pada tabel guru
+    
+        // Gabungkan data dari kedua tabel
+        const combinedData = {
+            masuk: siswaData.masuk + guruData.masuk,
+            sakit: siswaData.sakit + guruData.sakit,
+            izin: siswaData.izin + guruData.izin,
+            tidakMasuk: siswaData.tidakMasuk + guruData.tidakMasuk
         };
-    }
-
-    // Ambil data dari tabel siswa
-    const absensiTableSiswa = document.getElementById('tableBodySiswa');
-    const absensiRowsSiswa = absensiTableSiswa.getElementsByTagName('tr');
-    const siswaData = countStatusAbsen(absensiRowsSiswa, 6); // Ganti 6 sesuai dengan indeks kolom status_absen pada tabel siswa
-
-    // Ambil data dari tabel guru
-    const absensiTableGuru = document.getElementById('tableBodyGuru');
-    const absensiRowsGuru = absensiTableGuru.getElementsByTagName('tr');
-    const guruData = countStatusAbsen(absensiRowsGuru, 5); // Ganti 5 sesuai dengan indeks kolom status_absen pada tabel guru
-
-    // Gabungkan data dari kedua tabel
-    const combinedData = {
-        masuk: siswaData.masuk + guruData.masuk,
-        sakit: siswaData.sakit + guruData.sakit,
-        izin: siswaData.izin + guruData.izin,
-        tidakMasuk: siswaData.tidakMasuk + guruData.tidakMasuk
-    };
-
-    // Inisialisasi pie chart dengan data yang dihitung
-    window.ApexCharts && new ApexCharts(document.getElementById('chart-demo-pie'), {
-        chart: {
-            type: "donut",
-            fontFamily: 'inherit',
-            height: 400,
-            sparkline: {
-                enabled: true
+    
+        // Inisialisasi pie chart dengan data yang dihitung
+        window.ApexCharts && new ApexCharts(document.getElementById('chart-demo-pie'), {
+            chart: {
+                type: "donut",
+                fontFamily: 'inherit',
+                height: 400,
+                sparkline: {
+                    enabled: true
+                },
+                animations: {
+                    enabled: false
+                },
             },
-            animations: {
-                enabled: false
+            fill: {
+                opacity: 1,
             },
-        },
-        fill: {
-            opacity: 1,
-        },
-        series: [combinedData.masuk, combinedData.sakit, combinedData.izin, combinedData.tidakMasuk],
-        labels: ["Masuk", "Sakit", "Izin", "Tidak Masuk"],
-        tooltip: {
-            theme: 'dark'
-        },
-        grid: {
-            strokeDashArray: 4,
-        },
-        colors: ['#2845ff', '#Feef50', '#20f000', '#ff1818' ],
-        legend: {
-            show: true,
-            position: 'bottom',
-            offsetY: 12,
-            markers: {
-                width: 10,
-                height: 10,
-                radius: 100,
+            series: [combinedData.masuk, combinedData.sakit, combinedData.izin, combinedData.tidakMasuk],
+            labels: ["Masuk", "Sakit", "Izin", "Tidak Masuk"],
+            tooltip: {
+                theme: 'dark'
             },
-            itemMargin: {
-                horizontal: 8,
-                vertical: 8
+            grid: {
+                strokeDashArray: 4,
             },
-        },
-        tooltip: {
-            fillSeriesColor: false
-        },
-    }).render();
-});
-
-
-
-    function Log(...messages) {
-        // Menggabungkan pesan-pesan menjadi satu string
-        const logMessage = messages.join(' ');
-
-        // Mencetak pesan log ke konsol
-        console.log(logMessage);
-
-        // Jika Anda ingin menampilkan log pada halaman web, tambahkan elemen atau tampilan yang sesuai di sini
-    }
-
-    Log('Script loaded.');
-
-    const calendar = document.querySelector(".calendar"),
-    date = document.querySelector(".date"),
-    daysContainer = document.querySelector(".days"),
-    prev = document.querySelector(".prev"),
-    next = document.querySelector(".next"),
-    todayBtn = document.querySelector(".today-btn"),
-    gotoBtn = document.querySelector(".goto-btn"),
-    dateInput = document.querySelector(".date-input"),
-    eventDay = document.querySelector(".event-day"),
-    eventDate = document.querySelector(".event-date"),
-    eventsContainer = document.querySelector(".events"),
-    addEventBtn = document.querySelector(".add-event"),
-    addEventWrapper = document.querySelector(".add-event-wrapper "),
-    addEventCloseBtn = document.querySelector(".close "),
-    addEventTitle = document.querySelector(".event-name "),
-    addEventFrom = document.querySelector(".event-time-from "),
-    addEventTo = document.querySelector(".event-time-to "),
-    addEventSubmit = document.querySelector(".add-event-btn ");
-
-    let today = new Date();
-    let activeDay;
-    let month = today.getMonth();
-    let year = today.getFullYear();
-
-    const months = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-    ];
-
-    // const eventsArr = [
-    //   {
-    //     day: 13,
-    //     month: 11,
-    //     year: 2022,
-    //     events: [
-    //       {
-    //         title: "Event 1 lorem ipsun dolar sit genfa tersd dsad ",
-    //         time: "10:00 AM",
-    //       },
-    //       {
-    //         title: "Event 2",
-    //         time: "11:00 AM",
-    //       },
-    //     ],
-    //   },
-    // ];
-
-    const eventsArr = [];
-    const databaseEvents = [];
-    const weekendDates = [];
-
-    getEvents();
-    console.log(eventsArr);
-
-    getEventsFromDatabase();
-
-
-    //function to add days in days with class day and prev-date next-date on previous month and next month days and active on today
-    function initCalendar() {
-    const firstDay = new Date(year, month, 1);
-    const lastDay = new Date(year, month + 1, 0);
-    const prevLastDay = new Date(year, month, 0);
-    const prevDays = prevLastDay.getDate();
-    const lastDate = lastDay.getDate();
-    const day = firstDay.getDay();
-    const nextDays = 7 - lastDay.getDay() - 1;
-
-    date.innerHTML = months[month] + " " + year;
-
-    let days = "";
-
-    for (let x = day; x > 0; x--) {
-        days += `<div class="day prev-date">${prevDays - x + 1}</div>`;
-    }
-
-    for (let i = 1; i <= lastDate; i++) {
-        //check if event is present on that day
-        let event = false;
-        eventsArr.forEach((eventObj) => {
-        if (
-            eventObj.day === i &&
-            eventObj.month === month + 1 &&
-            eventObj.year === year
-        ) {
-            event = true;
+            colors: ['#2845ff', '#Feef50', '#20f000', '#ff1818' ],
+            legend: {
+                show: true,
+                position: 'bottom',
+                offsetY: 12,
+                markers: {
+                    width: 10,
+                    height: 10,
+                    radius: 100,
+                },
+                itemMargin: {
+                    horizontal: 8,
+                    vertical: 8
+                },
+            },
+            tooltip: {
+                fillSeriesColor: false
+            },
+        }).render();
+    });
+    
+    
+    
+        function Log(...messages) {
+            // Menggabungkan pesan-pesan menjadi satu string
+            const logMessage = messages.join(' ');
+    
+            // Mencetak pesan log ke konsol
+            console.log(logMessage);
+    
+            // Jika Anda ingin menampilkan log pada halaman web, tambahkan elemen atau tampilan yang sesuai di sini
         }
-        });
-        if (
-        i === new Date().getDate() &&
-        year === new Date().getFullYear() &&
-        month === new Date().getMonth()
-        ) {
-        activeDay = i;
-        getActiveDay(i);
-        updateEvents(i);
-        if (event) {
-            days += `<div class="day today active event">${i}</div>`;
-        } else {
-            days += `<div class="day today active">${i}</div>`;
+    
+        Log('Script loaded.');
+    
+        const calendar = document.querySelector(".calendar"),
+        date = document.querySelector(".date"),
+        daysContainer = document.querySelector(".days"),
+        prev = document.querySelector(".prev"),
+        next = document.querySelector(".next"),
+        todayBtn = document.querySelector(".today-btn"),
+        gotoBtn = document.querySelector(".goto-btn"),
+        dateInput = document.querySelector(".date-input"),
+        eventDay = document.querySelector(".event-day"),
+        eventDate = document.querySelector(".event-date"),
+        eventsContainer = document.querySelector(".events"),
+        addEventBtn = document.querySelector(".add-event"),
+        addEventWrapper = document.querySelector(".add-event-wrapper "),
+        addEventCloseBtn = document.querySelector(".close "),
+        addEventTitle = document.querySelector(".event-name "),
+        addEventFrom = document.querySelector(".event-time-from "),
+        addEventTo = document.querySelector(".event-time-to "),
+        addEventSubmit = document.querySelector(".add-event-btn ");
+    
+        let today = new Date();
+        let activeDay;
+        let month = today.getMonth();
+        let year = today.getFullYear();
+    
+        const months = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+        ];
+    
+        // const eventsArr = [
+        //   {
+        //     day: 13,
+        //     month: 11,
+        //     year: 2022,
+        //     events: [
+        //       {
+        //         title: "Event 1 lorem ipsun dolar sit genfa tersd dsad ",
+        //         time: "10:00 AM",
+        //       },
+        //       {
+        //         title: "Event 2",
+        //         time: "11:00 AM",
+        //       },
+        //     ],
+        //   },
+        // ];
+    
+        const eventsArr = [];
+        const databaseEvents = [];
+    
+        getEvents();
+        console.log(eventsArr);
+    
+        getEventsFromDatabase();
+    
+    
+        //function to add days in days with class day and prev-date next-date on previous month and next month days and active on today
+        function initCalendar() {
+        const firstDay = new Date(year, month, 1);
+        const lastDay = new Date(year, month + 1, 0);
+        const prevLastDay = new Date(year, month, 0);
+        const prevDays = prevLastDay.getDate();
+        const lastDate = lastDay.getDate();
+        const day = firstDay.getDay();
+        const nextDays = 7 - lastDay.getDay() - 1;
+    
+        date.innerHTML = months[month] + " " + year;
+    
+        let days = "";
+    
+        for (let x = day; x > 0; x--) {
+            days += `<div class="day prev-date">${prevDays - x + 1}</div>`;
         }
-        } else {
-        if (event) {
-            days += `<div class="day event">${i}</div>`;
-        } else {
-            days += `<div class="day ">${i}</div>`;
-        }
-        }
-    }
-
-    for (let j = 1; j <= nextDays; j++) {
-        days += `<div class="day next-date">${j}</div>`;
-    }
-    daysContainer.innerHTML = days;
-    addListner();
-    }
-
-    //function to add month and year on prev and next button
-    function prevMonth() {
-    month--;
-    if (month < 0) {
-        month = 11;
-        year--;
-    }
-    initCalendar();
-    }
-
-    function nextMonth() {
-    month++;
-    if (month > 11) {
-        month = 0;
-        year++;
-    }
-    initCalendar();
-    }
-
-    prev.addEventListener("click", prevMonth);
-    next.addEventListener("click", nextMonth);
-
-    initCalendar();
-
-    //function to add active on day
-    function addListner() {
-    const days = document.querySelectorAll(".day");
-    days.forEach((day) => {
-        day.addEventListener("click", (e) => {
-        getActiveDay(e.target.innerHTML);
-        updateEvents(Number(e.target.innerHTML));
-        activeDay = Number(e.target.innerHTML);
-        //remove active
-        days.forEach((day) => {
-            day.classList.remove("active");
-        });
-        //if clicked prev-date or next-date switch to that month
-        if (e.target.classList.contains("prev-date")) {
-            prevMonth();
-            //add active to clicked day afte month is change
-            setTimeout(() => {
-            //add active where no prev-date or next-date
-            const days = document.querySelectorAll(".day");
-            days.forEach((day) => {
-                if (
-                !day.classList.contains("prev-date") &&
-                day.innerHTML === e.target.innerHTML
-                ) {
-                day.classList.add("active");
-                }
+    
+        for (let i = 1; i <= lastDate; i++) {
+            //check if event is present on that day
+            let event = false;
+            eventsArr.forEach((eventObj) => {
+            if (
+                eventObj.day === i &&
+                eventObj.month === month + 1 &&
+                eventObj.year === year
+            ) {
+                event = true;
+            }
             });
-            }, 100);
-        } else if (e.target.classList.contains("next-date")) {
-            nextMonth();
-            //add active to clicked day afte month is changed
-            setTimeout(() => {
-            const days = document.querySelectorAll(".day");
-            days.forEach((day) => {
-                if (
-                !day.classList.contains("next-date") &&
-                day.innerHTML === e.target.innerHTML
-                ) {
-                day.classList.add("active");
-                }
-            });
-            }, 100);
-        } else {
-            e.target.classList.add("active");
+            if (
+            i === new Date().getDate() &&
+            year === new Date().getFullYear() &&
+            month === new Date().getMonth()
+            ) {
+            activeDay = i;
+            getActiveDay(i);
+            updateEvents(i);
+            if (event) {
+                days += `<div class="day today active event">${i}</div>`;
+            } else {
+                days += `<div class="day today active">${i}</div>`;
+            }
+            } else {
+            if (event) {
+                days += `<div class="day event">${i}</div>`;
+            } else {
+                days += `<div class="day ">${i}</div>`;
+            }
+            }
         }
-        });
-    });
-    }
-
-    todayBtn.addEventListener("click", () => {
-    today = new Date();
-    month = today.getMonth();
-    year = today.getFullYear();
-    initCalendar();
-    });
-
-    dateInput.addEventListener("input", (e) => {
-    dateInput.value = dateInput.value.replace(/[^0-9/]/g, "");
-    if (dateInput.value.length === 2) {
-        dateInput.value += "/";
-    }
-    if (dateInput.value.length > 7) {
-        dateInput.value = dateInput.value.slice(0, 7);
-    }
-    if (e.inputType === "deleteContentBackward") {
-        if (dateInput.value.length === 3) {
-        dateInput.value = dateInput.value.slice(0, 2);
+    
+        for (let j = 1; j <= nextDays; j++) {
+            days += `<div class="day next-date">${j}</div>`;
         }
-    }
-    });
-
-    gotoBtn.addEventListener("click", gotoDate);
-
-    function gotoDate() {
-    console.log("here");
-    const dateArr = dateInput.value.split("/");
-    if (dateArr.length === 2) {
-        if (dateArr[0] > 0 && dateArr[0] < 13 && dateArr[1].length === 4) {
-        month = dateArr[0] - 1;
-        year = dateArr[1];
+        daysContainer.innerHTML = days;
+        addListner();
+        }
+    
+        //function to add month and year on prev and next button
+        function prevMonth() {
+        month--;
+        if (month < 0) {
+            month = 11;
+            year--;
+        }
         initCalendar();
-        return;
         }
-    }
-    alert("Invalid Date");
-    }
-
-    //function get active day day name and date and update eventday eventdate
-    function getActiveDay(date) {
-    const day = new Date(year, month, date);
-    const dayName = day.toString().split(" ")[0];
-    eventDay.innerHTML = dayName;
-    eventDate.innerHTML = date + " " + months[month] + " " + year;
-    }
-
-    //function update events when a day is active
-    function updateEvents(date) {
-    let events = "";
-    eventsArr.forEach((event) => {
-        if (
-        date === event.day &&
-        month + 1 === event.month &&
-        year === event.year
-        ) {
-        event.events.forEach((event) => {
-            events += `<div class="event">
-                <div class="title">
-                <i class="fas fa-circle"></i>
-                <h3 class="event-title">${event.title}</h3>
-                </div>
-                <div class="event-time">
-                <span class="event-time">${event.time}</span>
-                </div>
-            </div>`;
+    
+        function nextMonth() {
+        month++;
+        if (month > 11) {
+            month = 0;
+            year++;
+        }
+        initCalendar();
+        }
+    
+        prev.addEventListener("click", prevMonth);
+        next.addEventListener("click", nextMonth);
+    
+        initCalendar();
+    
+        //function to add active on day
+        function addListner() {
+        const days = document.querySelectorAll(".day");
+        days.forEach((day) => {
+            day.addEventListener("click", (e) => {
+            getActiveDay(e.target.innerHTML);
+            updateEvents(Number(e.target.innerHTML));
+            activeDay = Number(e.target.innerHTML);
+            //remove active
+            days.forEach((day) => {
+                day.classList.remove("active");
+            });
+            //if clicked prev-date or next-date switch to that month
+            if (e.target.classList.contains("prev-date")) {
+                prevMonth();
+                //add active to clicked day afte month is change
+                setTimeout(() => {
+                //add active where no prev-date or next-date
+                const days = document.querySelectorAll(".day");
+                days.forEach((day) => {
+                    if (
+                    !day.classList.contains("prev-date") &&
+                    day.innerHTML === e.target.innerHTML
+                    ) {
+                    day.classList.add("active");
+                    }
+                });
+                }, 100);
+            } else if (e.target.classList.contains("next-date")) {
+                nextMonth();
+                //add active to clicked day afte month is changed
+                setTimeout(() => {
+                const days = document.querySelectorAll(".day");
+                days.forEach((day) => {
+                    if (
+                    !day.classList.contains("next-date") &&
+                    day.innerHTML === e.target.innerHTML
+                    ) {
+                    day.classList.add("active");
+                    }
+                });
+                }, 100);
+            } else {
+                e.target.classList.add("active");
+            }
+            });
         });
         }
-    });
-    if (events === "") {
-        events = `<div class="no-event">
-                <h3>No Events</h3>
-            </div>`;
-    }
-    eventsContainer.innerHTML = events;
-    saveEvents();
-    }
-
-    //function to add event
-    addEventBtn.addEventListener("click", () => {
-    addEventWrapper.classList.toggle("active");
-    });
-
-    addEventCloseBtn.addEventListener("click", () => {
-    addEventWrapper.classList.remove("active");
-    });
-
-    document.addEventListener("click", (e) => {
-    if (e.target !== addEventBtn && !addEventWrapper.contains(e.target)) {
-        addEventWrapper.classList.remove("active");
-    }
-    });
-
-    //allow 50 chars in eventtitle
-    addEventTitle.addEventListener("input", (e) => {
-    addEventTitle.value = addEventTitle.value.slice(0, 60);
-    });
-
-    //allow only time in eventtime from and to
-    addEventFrom.addEventListener("input", (e) => {
-    addEventFrom.value = addEventFrom.value.replace(/[^0-9:]/g, "");
-    if (addEventFrom.value.length === 2) {
-        addEventFrom.value += ":";
-    }
-    if (addEventFrom.value.length > 5) {
-        addEventFrom.value = addEventFrom.value.slice(0, 5);
-    }
-    });
-
-    addEventTo.addEventListener("input", (e) => {
-    addEventTo.value = addEventTo.value.replace(/[^0-9:]/g, "");
-    if (addEventTo.value.length === 2) {
-        addEventTo.value += ":";
-    }
-    if (addEventTo.value.length > 5) {
-        addEventTo.value = addEventTo.value.slice(0, 5);
-    }
-    });
-
-    //function to add event to eventsArr
-    addEventSubmit.addEventListener("click", () => {
-    const eventTitle = addEventTitle.value;
-    const eventTimeFrom = addEventFrom.value;
-    const eventTimeTo = addEventTo.value;
-    if (eventTitle === "" || eventTimeFrom === "" || eventTimeTo === "") {
-        alert("Please fill all the fields");
-        return;
-    }
-
-    //check correct time format 24 hour
-    const timeFromArr = eventTimeFrom.split(":");
-    const timeToArr = eventTimeTo.split(":");
-    if (
-        timeFromArr.length !== 2 ||
-        timeToArr.length !== 2 ||
-        timeFromArr[0] > 23 ||
-        timeFromArr[1] > 59 ||
-        timeToArr[0] > 23 ||
-        timeToArr[1] > 59
-    ) {
-        alert("Invalid Time Format");
-        return;
-    }
-
-    const timeFrom = convertTime(eventTimeFrom);
-    const timeTo = convertTime(eventTimeTo);
-
-    //check if event is already added
-    let eventExist = false;
-    eventsArr.forEach((event) => {
-        if (
-        event.day === activeDay &&
-        event.month === month + 1 &&
-        event.year === year
-        ) {
-        event.events.forEach((event) => {
-            if (event.title === eventTitle) {
-            eventExist = true;
+    
+        todayBtn.addEventListener("click", () => {
+        today = new Date();
+        month = today.getMonth();
+        year = today.getFullYear();
+        initCalendar();
+        });
+    
+        dateInput.addEventListener("input", (e) => {
+        dateInput.value = dateInput.value.replace(/[^0-9/]/g, "");
+        if (dateInput.value.length === 2) {
+            dateInput.value += "/";
+        }
+        if (dateInput.value.length > 7) {
+            dateInput.value = dateInput.value.slice(0, 7);
+        }
+        if (e.inputType === "deleteContentBackward") {
+            if (dateInput.value.length === 3) {
+            dateInput.value = dateInput.value.slice(0, 2);
+            }
+        }
+        });
+    
+        gotoBtn.addEventListener("click", gotoDate);
+    
+        function gotoDate() {
+        console.log("here");
+        const dateArr = dateInput.value.split("/");
+        if (dateArr.length === 2) {
+            if (dateArr[0] > 0 && dateArr[0] < 13 && dateArr[1].length === 4) {
+            month = dateArr[0] - 1;
+            year = dateArr[1];
+            initCalendar();
+            return;
+            }
+        }
+        alert("Invalid Date");
+        }
+    
+        //function get active day day name and date and update eventday eventdate
+        function getActiveDay(date) {
+        const day = new Date(year, month, date);
+        const dayName = day.toString().split(" ")[0];
+        eventDay.innerHTML = dayName;
+        eventDate.innerHTML = date + " " + months[month] + " " + year;
+        }
+    
+        //function update events when a day is active
+        function updateEvents(date) {
+        let events = "";
+        eventsArr.forEach((event) => {
+            if (
+            date === event.day &&
+            month + 1 === event.month &&
+            year === event.year
+            ) {
+            event.events.forEach((event) => {
+                events += `<div class="event">
+                    <div class="title">
+                    <i class="fas fa-circle"></i>
+                    <h3 class="event-title">${event.title}</h3>
+                    </div>
+                    <div class="event-time">
+                    <span class="event-time">${event.time}</span>
+                    </div>
+                </div>`;
+            });
             }
         });
+        if (events === "") {
+            events = `<div class="no-event">
+                    <h3>No Events</h3>
+                </div>`;
         }
-    });
-    if (eventExist) {
-        alert("Event already added");
-        return;
-    }
-    const newEvent = {
-        title: eventTitle,
-        time: timeFrom + " - " + timeTo,
-    };
-    console.log(newEvent);
-    console.log(activeDay);
-    let eventAdded = false;
-    if (eventsArr.length > 0) {
-        eventsArr.forEach((item) => {
+        eventsContainer.innerHTML = events;
+        saveEvents();
+        }
+    
+        //function to add event
+        addEventBtn.addEventListener("click", () => {
+        addEventWrapper.classList.toggle("active");
+        });
+    
+        addEventCloseBtn.addEventListener("click", () => {
+        addEventWrapper.classList.remove("active");
+        });
+    
+        document.addEventListener("click", (e) => {
+        if (e.target !== addEventBtn && !addEventWrapper.contains(e.target)) {
+            addEventWrapper.classList.remove("active");
+        }
+        });
+    
+        //allow 50 chars in eventtitle
+        addEventTitle.addEventListener("input", (e) => {
+        addEventTitle.value = addEventTitle.value.slice(0, 60);
+        });
+    
+        //allow only time in eventtime from and to
+        addEventFrom.addEventListener("input", (e) => {
+        addEventFrom.value = addEventFrom.value.replace(/[^0-9:]/g, "");
+        if (addEventFrom.value.length === 2) {
+            addEventFrom.value += ":";
+        }
+        if (addEventFrom.value.length > 5) {
+            addEventFrom.value = addEventFrom.value.slice(0, 5);
+        }
+        });
+    
+        addEventTo.addEventListener("input", (e) => {
+        addEventTo.value = addEventTo.value.replace(/[^0-9:]/g, "");
+        if (addEventTo.value.length === 2) {
+            addEventTo.value += ":";
+        }
+        if (addEventTo.value.length > 5) {
+            addEventTo.value = addEventTo.value.slice(0, 5);
+        }
+        });
+    
+        //function to add event to eventsArr
+        addEventSubmit.addEventListener("click", () => {
+        const eventTitle = addEventTitle.value;
+        const eventTimeFrom = addEventFrom.value;
+        const eventTimeTo = addEventTo.value;
+        if (eventTitle === "" || eventTimeFrom === "" || eventTimeTo === "") {
+            alert("Please fill all the fields");
+            return;
+        }
+    
+        //check correct time format 24 hour
+        const timeFromArr = eventTimeFrom.split(":");
+        const timeToArr = eventTimeTo.split(":");
         if (
-            item.day === activeDay &&
-            item.month === month + 1 &&
-            item.year === year
+            timeFromArr.length !== 2 ||
+            timeToArr.length !== 2 ||
+            timeFromArr[0] > 23 ||
+            timeFromArr[1] > 59 ||
+            timeToArr[0] > 23 ||
+            timeToArr[1] > 59
         ) {
-            item.events.push(newEvent);
-            eventAdded = true;
+            alert("Invalid Time Format");
+            return;
         }
-        });
-    }
-
-    if (!eventAdded) {
-        eventsArr.push({
-        day: activeDay,
-        month: month + 1,
-        year: year,
-        events: [newEvent],
-        });
-    }
-
-    // console.log(eventsArr);
-    // addEventWrapper.classList.remove("active");
-    addEventTitle.value = "";
-    addEventFrom.value = "";
-    addEventTo.value = "";
-    updateEvents(activeDay);
-    //select active day and add event class if not added
-    const activeDayEl = document.querySelector(".day.active");
-    if (!activeDayEl.classList.contains("event")) {
-        activeDayEl.classList.add("event");
-    }
-    });
-
-    //function to delete event when clicked on event
-    eventsContainer.addEventListener("click", (e) => {
-    if (e.target.classList.contains("event")) {
-        if (confirm("Are you sure you want to delete this event?")) {
-        const eventTitle = e.target.children[0].children[1].innerHTML;
+    
+        const timeFrom = convertTime(eventTimeFrom);
+        const timeTo = convertTime(eventTimeTo);
+    
+        //check if event is already added
+        let eventExist = false;
         eventsArr.forEach((event) => {
             if (
             event.day === activeDay &&
             event.month === month + 1 &&
             event.year === year
             ) {
-            event.events.forEach((item, index) => {
-                if (item.title === eventTitle) {
-                event.events.splice(index, 1);
+            event.events.forEach((event) => {
+                if (event.title === eventTitle) {
+                eventExist = true;
                 }
             });
-            //if no events left in a day then remove that day from eventsArr
-            if (event.events.length === 0) {
-                eventsArr.splice(eventsArr.indexOf(event), 1);
-                //remove event class from day
-                const activeDayEl = document.querySelector(".day.active");
-                if (activeDayEl.classList.contains("event")) {
-                activeDayEl.classList.remove("event");
-                }
-            }
             }
         });
-        updateEvents(activeDay);
+        if (eventExist) {
+            alert("Event already added");
+            return;
         }
-    }
-    });
-
-    function saveEvents() {
-    localStorage.setItem("events", JSON.stringify(eventsArr));
-    logLocalStorageData();
-    console.log('Events saved to localStorage:', eventsArr);
-
-    setTimeout(() => {
-        logLocalStorageData();
-    }, 10);
-}
-
-    function logLocalStorageData() {
-    const localStorageData = localStorage.getItem("events");
-    Log('Data in localStorage:', localStorageData);
-}
-
-    function getEvents() {
-    if (localStorage.getItem("events") === null) {
-        return;
-    }
-    eventsArr.push(...JSON.parse(localStorage.getItem("events")));
-    }
-
-    function getEventsFromDatabase() {
-    fetch('/api/events-from-database')
-        .then(response => response.json())
-        .then(data => {
-            // Assign data dari databaseEvents
-            databaseEvents.length = 0;
-            databaseEvents.push(...data);
-
-            // Konversi dan masukkan ke dalam eventsArr
-            convertDatabaseEventsToEventsArr();
-
-            Log('Data from database:', databaseEvents);
-        })
-        .catch(error => {
-            console.error('Error fetching data from database:', error);
-        });
-}
-
-function convertDatabaseEventsToEventsArr() {
-    // ...
-    weekendDates.forEach((date) => {
-        const day = date.getDate();
-        const month = date.getMonth() + 1;
-        const year = date.getFullYear();
-
-        const existingEventIndex = eventsArr.findIndex((event) => event.day === day && event.month === month && event.year === year);
-
-        if (existingEventIndex !== -1) {
-            // Pemeriksaan apakah acara "Weekend" sudah ada pada tanggal tersebut
-            const existingWeekendEvent = eventsArr[existingEventIndex].events.find((event) => event.title === "Weekend");
-
-            if (!existingWeekendEvent) {
-                // Jika belum ada, tambahkan acara "Weekend"
-                eventsArr[existingEventIndex].events.push({
-                    title: "Weekend",
-                    time: "00:00 AM - 23:59 PM"
-                });
+        const newEvent = {
+            title: eventTitle,
+            time: timeFrom + " - " + timeTo,
+        };
+        console.log(newEvent);
+        console.log(activeDay);
+        let eventAdded = false;
+        if (eventsArr.length > 0) {
+            eventsArr.forEach((item) => {
+            if (
+                item.day === activeDay &&
+                item.month === month + 1 &&
+                item.year === year
+            ) {
+                item.events.push(newEvent);
+                eventAdded = true;
             }
-        } else {
-            // Jika tanggal belum ada di eventsArr, tambahkan objek baru dengan acara "Weekend"
+            });
+        }
+    
+        if (!eventAdded) {
             eventsArr.push({
-                day: day,
-                month: month,
-                year: year,
-                events: [
-                    {
+            day: activeDay,
+            month: month + 1,
+            year: year,
+            events: [newEvent],
+            });
+        }
+    
+        // console.log(eventsArr);
+        // addEventWrapper.classList.remove("active");
+        addEventTitle.value = "";
+        addEventFrom.value = "";
+        addEventTo.value = "";
+        updateEvents(activeDay);
+        //select active day and add event class if not added
+        const activeDayEl = document.querySelector(".day.active");
+        if (!activeDayEl.classList.contains("event")) {
+            activeDayEl.classList.add("event");
+        }
+        });
+    
+        //function to delete event when clicked on event
+        eventsContainer.addEventListener("click", (e) => {
+        if (e.target.classList.contains("event")) {
+            if (confirm("Are you sure you want to delete this event?")) {
+            const eventTitle = e.target.children[0].children[1].innerHTML;
+            eventsArr.forEach((event) => {
+                if (
+                event.day === activeDay &&
+                event.month === month + 1 &&
+                event.year === year
+                ) {
+                event.events.forEach((item, index) => {
+                    if (item.title === eventTitle) {
+                    event.events.splice(index, 1);
+                    }
+                });
+                //if no events left in a day then remove that day from eventsArr
+                if (event.events.length === 0) {
+                    eventsArr.splice(eventsArr.indexOf(event), 1);
+                    //remove event class from day
+                    const activeDayEl = document.querySelector(".day.active");
+                    if (activeDayEl.classList.contains("event")) {
+                    activeDayEl.classList.remove("event");
+                    }
+                }
+                }
+            });
+            updateEvents(activeDay);
+            }
+        }
+        });
+    
+        function saveEvents() {
+        localStorage.setItem("events", JSON.stringify(eventsArr));
+        logLocalStorageData();
+        console.log('Events saved to localStorage:', eventsArr);
+    
+        setTimeout(() => {
+            logLocalStorageData();
+        }, 10);
+    }
+    
+        function logLocalStorageData() {
+        const localStorageData = localStorage.getItem("events");
+        Log('Data in localStorage:', localStorageData);
+    }
+    
+        function getEvents() {
+        if (localStorage.getItem("events") === null) {
+            return;
+        }
+        eventsArr.push(...JSON.parse(localStorage.getItem("events")));
+        }
+    
+        function getEventsFromDatabase() {
+        fetch('/api/events-from-database')
+            .then(response => response.json())
+            .then(data => {
+                // Assign data dari databaseEvents
+                databaseEvents.length = 0;
+                databaseEvents.push(...data);
+                Log('sebelum convert :', databaseEvents);
+    
+                // Konversi dan masukkan ke dalam eventsArr
+                convertDatabaseEventsToEventsArr();
+    
+                Log('Data from database:', databaseEvents);
+            })
+            .catch(error => {
+                console.error('Error fetching data from database:', error);
+            });
+    }
+    
+    function convertDatabaseEventsToEventsArr() {
+        // ...
+        databaseEvents.forEach((date) => {
+            const day = new Date(date).getDate();
+            const month = new Date(date).getMonth() + 1;
+            const year = new Date(date).getFullYear();
+    
+            // Pengecekan apakah tanggal sudah ada di eventsArr
+            const existingEventIndex = eventsArr.findIndex((event) => event.day === day && event.month === month && event.year === year);
+    
+            if (existingEventIndex !== -1) {
+                // Pemeriksaan apakah acara "Weekend" sudah ada pada tanggal tersebut
+                const existingWeekendEvent = eventsArr[existingEventIndex].events.find((event) => event.title === "Weekend");
+    
+                if (!existingWeekendEvent) {
+                    // Jika belum ada, tambahkan acara "Weekend"
+                    eventsArr[existingEventIndex].events.push({
                         title: "Weekend",
                         time: "00:00 AM - 23:59 PM"
-                    }
-                ]
-            });
-        }
-    });
-    saveEvents();
-}
-
-    function convertTime(time) {
-    //convert time to 24 hour format
-    let timeArr = time.split(":");
-    let timeHour = timeArr[0];
-    let timeMin = timeArr[1];
-    let timeFormat = timeHour >= 12 ? "PM" : "AM";
-    timeHour = timeHour % 12 || 12;
-    time = timeHour + ":" + timeMin + " " + timeFormat;
-    return time;
-    }
-
-    var dropdownKelas = document.getElementById("dropdownkelas");
-    var dropdownSiswaContainer = document.getElementById("dropdownsiswacontainer");
-    var dropdownSiswa = document.getElementById("dropdownsiswa");
-    var dropdownKelasGuru = document.getElementById("dropdownkelasGuru");
-    var searchInputSiswa = document.getElementById("searchSiswa");
-    var searchInputGuru = document.getElementById("searchGuru");
-
-    // Function to filter "Data Siswa" table by class
-    function filterTableSiswaByKelas(selectedKelas) {
-        var tableRowsSiswa = document.querySelectorAll("#tableBodySiswa tr");
-
-        tableRowsSiswa.forEach(function (row) {
-            var kelasCell = row.querySelector("td:nth-child(4)"); // Adjust based on your table structure
-
-            // Display all rows if "Semua Siswa" is selected or class matches the selected one
-            if (selectedKelas === "semua" || kelasCell.textContent.trim() === selectedKelas) {
-                row.style.display = "";
-            } else {
-                row.style.display = "none";
-            }
-        });
-    }
-
-    // Function to filter "Data Siswa" table by student
-    function filterTableSiswaBySiswa(selectedSiswa) {
-        var tableRowsSiswa = document.querySelectorAll("#tableBodySiswa tr");
-
-        tableRowsSiswa.forEach(function (row) {
-            var siswaCell = row.querySelector("td:nth-child(3)"); // Adjust based on your table structure
-
-            // Display all rows if "Semua Siswa" is selected or student name matches the selected one
-            if (selectedSiswa === "Semua Siswa" || siswaCell.textContent.trim() === selectedSiswa) {
-                row.style.display = "";
-            } else {
-                row.style.display = "none";
-            }
-        });
-    }
-
-    // Function to filter "Data Guru" table by teacher
-    function filterTableGuruByGuru(selectedGuru) {
-        var tableRowsGuru = document.querySelectorAll("#tableBodyGuru tr");
-
-        tableRowsGuru.forEach(function (row) {
-            var namaCellGuru = row.querySelector("td:nth-child(3)"); // Adjust based on your table structure
-
-            // Display all rows if "Semua Guru" is selected or teacher name matches the selected one
-            if (selectedGuru === "Semua Guru" || namaCellGuru.textContent.trim() === selectedGuru) {
-                row.style.display = "";
-            } else {
-                row.style.display = "none";
-            }
-        });
-    }
-
-    // Function to perform live search on "Data Guru" table
-    function liveSearchGuru(searchTerm) {
-        var tableRowsGuru = document.querySelectorAll("#tableBodyGuru tr");
-
-        tableRowsGuru.forEach(function (row) {
-            var namaCellGuru = row.querySelector("td:nth-child(3)"); // Adjust based on your table structure
-            var namaGuru = namaCellGuru.textContent.trim().toLowerCase();
-
-            // Display row if it contains the search term or if the search term is empty
-            if (namaGuru.includes(searchTerm.toLowerCase()) || searchTerm === "") {
-                row.style.display = "";
-            } else {
-                row.style.display = "none";
-            }
-        });
-    }
-
-    function liveSearchSiswa(searchTerm) {
-        var tableRowsSiswa = document.querySelectorAll("#tableBodySiswa tr");
-
-        tableRowsSiswa.forEach(function (row) {
-            var namaCellSiswa = row.querySelector("td:nth-child(3)"); // Adjust based on your table structure
-            var namaSiswa = namaCellSiswa.textContent.trim().toLowerCase();
-
-            // Display row if it contains the search term or if the search term is empty
-            if (namaSiswa.includes(searchTerm.toLowerCase()) || searchTerm === "") {
-                row.style.display = "";
-            } else {
-                row.style.display = "none";
-            }
-        });
-    }
-
-    // Initialization for "Data Siswa" dropdowns
-    fetch('/get_kelas')
-        .then(response => response.json())
-        .then(data => {
-            data.forEach(kelas => {
-                var option = document.createElement("option");
-                option.text = kelas;
-                dropdownKelas.add(option);
-            });
-        });
-
-    // Event listener for changes in the selected class in "Data Siswa" dropdown
-    dropdownKelas.addEventListener("change", function () {
-        var selectedKelas = this.value;
-
-        // Reset search input for "Data Siswa" table
-        searchInputSiswa.value = '';
-
-        if (selectedKelas === "semua") {
-            dropdownSiswaContainer.style.display = "none";
-            // Perform something with the selected value (e.g., filter "Data Siswa" table by class)
-            filterTableSiswaByKelas(selectedKelas);
-        } else {
-            dropdownSiswaContainer.style.display = "block";
-            // Fetch student data based on the selected class (replace with the appropriate endpoint)
-            fetch('/get_siswa?kelas=' + selectedKelas)
-                .then(response => response.json())
-                .then(data => {
-                    data.sort((a, b) => a.nama.localeCompare(b.nama));
-                    dropdownSiswa.innerHTML = "";
-                    var defaultOption = document.createElement("option");
-                    defaultOption.text = "Semua Siswa";
-                    dropdownSiswa.add(defaultOption);
-                    data.forEach(siswa => {
-                        var option = document.createElement("option");
-                        option.text = siswa.nama;
-                        dropdownSiswa.add(option);
                     });
-                })
-                .then(() => {
-                    // Perform something with the selected value (e.g., filter "Data Siswa" table by class)
-                    filterTableSiswaByKelas(selectedKelas);
-                });
-        }
-    });
-
-    // Event listener for changes in the selected student in "Data Siswa" dropdown
-    dropdownSiswa.addEventListener("change", function () {
-        var selectedSiswa = this.value;
-
-        // Perform something with the selected value (e.g., filter "Data Siswa" table by student)
-        filterTableSiswaBySiswa(selectedSiswa);
-    });
-
-    // Initialization for "Data Guru" dropdowns
-    fetch('/get_guru')
-        .then(response => response.json())
-        .then(data => {
-            data.sort((a, b) => a.nama.localeCompare(b.nama));
-            dropdownKelasGuru.innerHTML = "";
-            var defaultOption = document.createElement("option");
-            defaultOption.text = "Semua Guru";
-            dropdownKelasGuru.add(defaultOption);
-            data.forEach(guru => {
-                var option = document.createElement("option");
-                option.text = guru.nama;
-                dropdownKelasGuru.add(option);
-            });
-        });
-
-    // Event listener for changes in the selected teacher in "Data Guru" dropdown
-    dropdownKelasGuru.addEventListener("change", function () {
-        var selectedKelasGuru = this.value;
-
-        // Reset search input for "Data Guru" table
-        searchInputGuru.value = '';
-
-        // Perform something with the selected value (e.g., filter "Data Guru" table by teacher)
-        filterTableGuruByGuru(selectedKelasGuru);
-    });
-
-    // Event listener for live search in "Data Guru" table
-    searchInputGuru.addEventListener('input', function () {
-        var searchTermGuru = this.value.trim();
-
-        // Perform live search in "Data Guru" table
-        liveSearchGuru(searchTermGuru);
-    });
-
-    // Event listener for live search in "Data Siswa" table
-    searchInputSiswa.addEventListener('input', function () {
-        var searchTermSiswa = this.value.trim();
-
-        // Perform live search in "Data Siswa" table
-        liveSearchSiswa(searchTermSiswa);
-    });
-
-    function deleteAbsensi(id) {
-    if (confirm('Apakah Anda yakin ingin menghapus data absensi ini?')) {
-        // Get the CSRF token from the meta tag
-        var csrfToken = $('meta[name="csrf-token"]').attr('content');
-
-        // Include the CSRF token in the headers
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': csrfToken
-            }
-        });
-
-        // Send the delete request
-        $.ajax({
-            type: 'DELETE',
-            url: '/api/delete-absensi/' + id,
-            success: function () {
-                // Refresh the page after successful deletion
-                location.reload();
-            },
-            error: function (error) {
-                console.error('Error deleting absensi:', error);
-                alert('Terjadi kesalahan saat menghapus data absensi.');
-            }
-        });
-    }
-}
-
-
-function showEditModal(absensiId) {
-    console.log('Memulai fungsi showEditModal');
-
-    // Fetch data absensi dari server
-    fetch(`/api/absensi/${absensiId}`)
-        .then(response => response.json())
-        .then(data => {
-            console.log('Data yang diterima dari server:', data);
-
-            // Set nilai pada elemen HTML
-            $('#absensiId').val(data.data.id);
-            $('#statusEdit').val(data.data.status_absen);
-
-            // Konversi format tanggal dan jam
-            const createdDate = new Date(data.data.created_at);
-            const formattedDate = createdDate.getDate() + ' ' +
-                new Intl.DateTimeFormat('id-ID', { month: 'long' }).format(createdDate) + ' ' +
-                createdDate.getFullYear();
-
-            const formattedTime = createdDate.getHours().toString().padStart(2, '0') + ':' +
-                createdDate.getMinutes().toString().padStart(2, '0') + ':' +
-                createdDate.getSeconds().toString().padStart(2, '0');
-
-            // Set nilai pada elemen HTML
-            $('#tanggalEdit').val(formattedDate);
-            $('#jamAbsenEdit').val(formattedTime);
-
-            // Periksa apakah data milik siswa atau guru
-            if (data.data.role === 'siswa') {
-                // Ambil data siswa dari tabel siswas berdasarkan id_user
-                fetch(`/api/siswa-by-user/${data.data.id_user}`)
-                    .then(response => response.json())
-                    .then(siswaData => {
-                        // Tampilkan nama dan kelas siswa
-                        $('#namaEdit').val(siswaData.data.nama);
-                        $('#kelasEdit').val(siswaData.data.kelas ? siswaData.data.kelas.nama_kelas : '');
-
-                        // Munculkan popup
-                        $('#editModal').modal('show');
-                    })
-                    .catch(error => console.error('Error:', error));
-            } else if (data.data.role === 'guru') {
-                // Ambil data guru dari tabel guru berdasarkan id_user
-                fetch(`/api/guru-by-user/${data.data.id_user}`)
-                    .then(response => response.json())
-                    .then(guruData => {
-                        // Tampilkan nama guru dan kosongkan kelas
-                        $('#namaEdit').val(guruData.data.nama || '');
-                        $('#kelasEdit').val('');
-
-                        // Munculkan popup
-                        $('#editModal').modal('show');
-                    })
-                    .catch(error => console.error('Error:', error));
-            }
-        })
-        .catch(error => console.error('Error:', error));
-}
-
-
-
-    function submitEditForm() {
-        const absensiId = $('#absensiId').val();
-        const status = $('#statusEdit').val();
-
-        // Mengambil token CSRF dari meta tag
-        const csrfToken = $('meta[name="csrf-token"]').attr('content');
-
-        // Mengirim data perubahan ke server menggunakan AJAX
-        fetch(`/api/update-absensi/${absensiId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'X-CSRF-Token': csrfToken,
-            },
-            body: JSON.stringify({ status_absen: status }),
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                // Jika berhasil, sembunyikan modal dan lakukan refresh tabel atau operasi lain yang diperlukan
-                $('#editModal').modal('hide');
-                // location.reload(); // Implementasikan fungsi refreshTable sesuai kebutuhan
+                }
             } else {
-                console.error('Error:', data.error);
+                // Jika tanggal belum ada di eventsArr, tambahkan objek baru dengan acara "Weekend"
+                eventsArr.push({
+                    day: day,
+                    month: month,
+                    year: year,
+                    events: [
+                        {
+                            title: "Weekend",
+                            time: "00:00 AM - 23:59 PM"
+                        }
+                    ]
+                });
             }
-        })
-        .catch(error => {
-            console.error('Error:', error);
         });
-
-        Swal.fire({
-        icon: 'success',
-        title: 'Sukses!',
-        text: 'Data absensi telah berhasil diubah',
-    }).then(() => {
-        // Setelah menutup notifikasi, refresh halaman
-        location.reload();
-    });
+    
+        // Pastikan struktur data sama dengan eventsArr
+        saveEvents();
     }
-
-    function formatDate(dateTimeString) {
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    return new Date(dateTimeString).toLocaleDateString('id-ID', options);
-}
-
-// Fungsi untuk memformat waktu
-    function formatTime(dateTimeString) {
-        return new Date(dateTimeString).toLocaleTimeString('id-ID');
+    
+    
+        function convertTime(time) {
+        //convert time to 24 hour format
+        let timeArr = time.split(":");
+        let timeHour = timeArr[0];
+        let timeMin = timeArr[1];
+        let timeFormat = timeHour >= 12 ? "PM" : "AM";
+        timeHour = timeHour % 12 || 12;
+        time = timeHour + ":" + timeMin + " " + timeFormat;
+        return time;
+        }
+    
+        var dropdownKelas = document.getElementById("dropdownkelas");
+        var dropdownSiswaContainer = document.getElementById("dropdownsiswacontainer");
+        var dropdownSiswa = document.getElementById("dropdownsiswa");
+        var dropdownKelasGuru = document.getElementById("dropdownkelasGuru");
+        var searchInputSiswa = document.getElementById("searchSiswa");
+        var searchInputGuru = document.getElementById("searchGuru");
+    
+        // Function to filter "Data Siswa" table by class
+        function filterTableSiswaByKelas(selectedKelas) {
+            var tableRowsSiswa = document.querySelectorAll("#tableBodySiswa tr");
+    
+            tableRowsSiswa.forEach(function (row) {
+                var kelasCell = row.querySelector("td:nth-child(4)"); // Adjust based on your table structure
+    
+                // Display all rows if "Semua Siswa" is selected or class matches the selected one
+                if (selectedKelas === "semua" || kelasCell.textContent.trim() === selectedKelas) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        }
+    
+        // Function to filter "Data Siswa" table by student
+        function filterTableSiswaBySiswa(selectedSiswa) {
+            var tableRowsSiswa = document.querySelectorAll("#tableBodySiswa tr");
+    
+            tableRowsSiswa.forEach(function (row) {
+                var siswaCell = row.querySelector("td:nth-child(3)"); // Adjust based on your table structure
+    
+                // Display all rows if "Semua Siswa" is selected or student name matches the selected one
+                if (selectedSiswa === "Semua Siswa" || siswaCell.textContent.trim() === selectedSiswa) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        }
+    
+        // Function to filter "Data Guru" table by teacher
+        function filterTableGuruByGuru(selectedGuru) {
+            var tableRowsGuru = document.querySelectorAll("#tableBodyGuru tr");
+    
+            tableRowsGuru.forEach(function (row) {
+                var namaCellGuru = row.querySelector("td:nth-child(3)"); // Adjust based on your table structure
+    
+                // Display all rows if "Semua Guru" is selected or teacher name matches the selected one
+                if (selectedGuru === "Semua Guru" || namaCellGuru.textContent.trim() === selectedGuru) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        }
+    
+        // Function to perform live search on "Data Guru" table
+        function liveSearchGuru(searchTerm) {
+            var tableRowsGuru = document.querySelectorAll("#tableBodyGuru tr");
+    
+            tableRowsGuru.forEach(function (row) {
+                var namaCellGuru = row.querySelector("td:nth-child(3)"); // Adjust based on your table structure
+                var namaGuru = namaCellGuru.textContent.trim().toLowerCase();
+    
+                // Display row if it contains the search term or if the search term is empty
+                if (namaGuru.includes(searchTerm.toLowerCase()) || searchTerm === "") {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        }
+    
+        function liveSearchSiswa(searchTerm) {
+            var tableRowsSiswa = document.querySelectorAll("#tableBodySiswa tr");
+    
+            tableRowsSiswa.forEach(function (row) {
+                var namaCellSiswa = row.querySelector("td:nth-child(3)"); // Adjust based on your table structure
+                var namaSiswa = namaCellSiswa.textContent.trim().toLowerCase();
+    
+                // Display row if it contains the search term or if the search term is empty
+                if (namaSiswa.includes(searchTerm.toLowerCase()) || searchTerm === "") {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        }
+    
+        // Initialization for "Data Siswa" dropdowns
+        fetch('/get_kelas')
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(kelas => {
+                    var option = document.createElement("option");
+                    option.text = kelas;
+                    dropdownKelas.add(option);
+                });
+            });
+    
+        // Event listener for changes in the selected class in "Data Siswa" dropdown
+        dropdownKelas.addEventListener("change", function () {
+            var selectedKelas = this.value;
+    
+            // Reset search input for "Data Siswa" table
+            searchInputSiswa.value = '';
+    
+            if (selectedKelas === "semua") {
+                dropdownSiswaContainer.style.display = "none";
+                // Perform something with the selected value (e.g., filter "Data Siswa" table by class)
+                filterTableSiswaByKelas(selectedKelas);
+            } else {
+                dropdownSiswaContainer.style.display = "block";
+                // Fetch student data based on the selected class (replace with the appropriate endpoint)
+                fetch('/get_siswa?kelas=' + selectedKelas)
+                    .then(response => response.json())
+                    .then(data => {
+                        data.sort((a, b) => a.nama.localeCompare(b.nama));
+                        dropdownSiswa.innerHTML = "";
+                        var defaultOption = document.createElement("option");
+                        defaultOption.text = "Semua Siswa";
+                        dropdownSiswa.add(defaultOption);
+                        data.forEach(siswa => {
+                            var option = document.createElement("option");
+                            option.text = siswa.nama;
+                            dropdownSiswa.add(option);
+                        });
+                    })
+                    .then(() => {
+                        // Perform something with the selected value (e.g., filter "Data Siswa" table by class)
+                        filterTableSiswaByKelas(selectedKelas);
+                    });
+            }
+        });
+    
+        // Event listener for changes in the selected student in "Data Siswa" dropdown
+        dropdownSiswa.addEventListener("change", function () {
+            var selectedSiswa = this.value;
+    
+            // Perform something with the selected value (e.g., filter "Data Siswa" table by student)
+            filterTableSiswaBySiswa(selectedSiswa);
+        });
+    
+        // Initialization for "Data Guru" dropdowns
+        fetch('/get_guru')
+            .then(response => response.json())
+            .then(data => {
+                data.sort((a, b) => a.nama.localeCompare(b.nama));
+                dropdownKelasGuru.innerHTML = "";
+                var defaultOption = document.createElement("option");
+                defaultOption.text = "Semua Guru";
+                dropdownKelasGuru.add(defaultOption);
+                data.forEach(guru => {
+                    var option = document.createElement("option");
+                    option.text = guru.nama;
+                    dropdownKelasGuru.add(option);
+                });
+            });
+    
+        // Event listener for changes in the selected teacher in "Data Guru" dropdown
+        dropdownKelasGuru.addEventListener("change", function () {
+            var selectedKelasGuru = this.value;
+    
+            // Reset search input for "Data Guru" table
+            searchInputGuru.value = '';
+    
+            // Perform something with the selected value (e.g., filter "Data Guru" table by teacher)
+            filterTableGuruByGuru(selectedKelasGuru);
+        });
+    
+        // Event listener for live search in "Data Guru" table
+        searchInputGuru.addEventListener('input', function () {
+            var searchTermGuru = this.value.trim();
+    
+            // Perform live search in "Data Guru" table
+            liveSearchGuru(searchTermGuru);
+        });
+    
+        // Event listener for live search in "Data Siswa" table
+        searchInputSiswa.addEventListener('input', function () {
+            var searchTermSiswa = this.value.trim();
+    
+            // Perform live search in "Data Siswa" table
+            liveSearchSiswa(searchTermSiswa);
+        });
+    
+        function deleteAbsensi(id) {
+        if (confirm('Apakah Anda yakin ingin menghapus data absensi ini?')) {
+            // Get the CSRF token from the meta tag
+            var csrfToken = $('meta[name="csrf-token"]').attr('content');
+    
+            // Include the CSRF token in the headers
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken
+                }
+            });
+    
+            // Send the delete request
+            $.ajax({
+                type: 'DELETE',
+                url: '/api/delete-absensi/' + id,
+                success: function () {
+                    // Refresh the page after successful deletion
+                    location.reload();
+                },
+                error: function (error) {
+                    console.error('Error deleting absensi:', error);
+                    alert('Terjadi kesalahan saat menghapus data absensi.');
+                }
+            });
+        }
     }
-
-</script>
+    
+    
+    function showEditModal(absensiId) {
+        console.log('Memulai fungsi showEditModal');
+    
+        // Fetch data absensi dari server
+        fetch(`/api/absensi/${absensiId}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log('Data yang diterima dari server:', data);
+    
+                // Set nilai pada elemen HTML
+                $('#absensiId').val(data.data.id);
+                $('#statusEdit').val(data.data.status_absen);
+    
+                // Konversi format tanggal dan jam
+                const createdDate = new Date(data.data.created_at);
+                const formattedDate = createdDate.getDate() + ' ' +
+                    new Intl.DateTimeFormat('id-ID', { month: 'long' }).format(createdDate) + ' ' +
+                    createdDate.getFullYear();
+    
+                const formattedTime = createdDate.getHours().toString().padStart(2, '0') + ':' +
+                    createdDate.getMinutes().toString().padStart(2, '0') + ':' +
+                    createdDate.getSeconds().toString().padStart(2, '0');
+    
+                // Set nilai pada elemen HTML
+                $('#tanggalEdit').val(formattedDate);
+                $('#jamAbsenEdit').val(formattedTime);
+    
+                // Periksa apakah data milik siswa atau guru
+                if (data.data.role === 'siswa') {
+                    // Ambil data siswa dari tabel siswas berdasarkan id_user
+                    fetch(`/api/siswa-by-user/${data.data.id_user}`)
+                        .then(response => response.json())
+                        .then(siswaData => {
+                            // Tampilkan nama dan kelas siswa
+                            $('#namaEdit').val(siswaData.data.nama);
+                            $('#kelasEdit').val(siswaData.data.kelas ? siswaData.data.kelas.nama_kelas : '');
+    
+                            // Munculkan popup
+                            $('#editModal').modal('show');
+                        })
+                        .catch(error => console.error('Error:', error));
+                } else if (data.data.role === 'guru') {
+                    // Ambil data guru dari tabel guru berdasarkan id_user
+                    fetch(`/api/guru-by-user/${data.data.id_user}`)
+                        .then(response => response.json())
+                        .then(guruData => {
+                            // Tampilkan nama guru dan kosongkan kelas
+                            $('#namaEdit').val(guruData.data.nama || '');
+                            $('#kelasEdit').val('');
+    
+                            // Munculkan popup
+                            $('#editModal').modal('show');
+                        })
+                        .catch(error => console.error('Error:', error));
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+    
+    
+    
+        function submitEditForm() {
+            const absensiId = $('#absensiId').val();
+            const status = $('#statusEdit').val();
+    
+            // Mengambil token CSRF dari meta tag
+            const csrfToken = $('meta[name="csrf-token"]').attr('content');
+    
+            // Mengirim data perubahan ke server menggunakan AJAX
+            fetch(`/api/update-absensi/${absensiId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-Token': csrfToken,
+                },
+                body: JSON.stringify({ status_absen: status }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Jika berhasil, sembunyikan modal dan lakukan refresh tabel atau operasi lain yang diperlukan
+                    $('#editModal').modal('hide');
+                    // location.reload(); // Implementasikan fungsi refreshTable sesuai kebutuhan
+                } else {
+                    console.error('Error:', data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    
+            Swal.fire({
+            icon: 'success',
+            title: 'Sukses!',
+            text: 'Data absensi telah berhasil diubah',
+        }).then(() => {
+            // Setelah menutup notifikasi, refresh halaman
+            location.reload();
+        });
+        }
+    
+        function formatDate(dateTimeString) {
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        return new Date(dateTimeString).toLocaleDateString('id-ID', options);
+    }
+    
+    // Fungsi untuk memformat waktu
+        function formatTime(dateTimeString) {
+            return new Date(dateTimeString).toLocaleTimeString('id-ID');
+        }
+    
+    </script>
 
 
 

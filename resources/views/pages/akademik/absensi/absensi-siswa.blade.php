@@ -74,19 +74,48 @@
             {{-- Section Setting Absensi --}}
             <div class="border border-2 rounded p-4 my-4 d-flex flex-column text-md" style="height: auto; max-height: 300px; position: relative;" id="presensiOptions">
                 <h5 class="font-weight-bold mb-3">Presensi Absensi Siswa</h5>
-                <div class="d-flex justify-content-center">
-                    <button class="absensi-button" onclick="selectOption('masuk')">Masuk</button>
-                    <button class="absensi-button" onclick="selectOption('sakit')">Sakit</button>
-                    <button class="absensi-button" onclick="selectOption('izin')">Izin</button>
-                </div>
-                <div class="d-flex justify-content-end mt-3">
-                    <button class="submit-button" onclick="submitData()" id="submitButton">Submit</button>
-                    <div id="submitIndicator"></div>
-                </div>
+                <form id="absensiForm" enctype="multipart/form-data">
+                    {{-- <div class="d-flex justify-content-center">
+                        <button type="button" class="absensi-button" onclick="selectOption('masuk')">Masuk</button>
+                        <button type="button" class="absensi-button" onclick="selectOption('sakit')">Sakit</button>
+                        <button type="button" class="absensi-button" onclick="selectOption('izin')">Izin</button>
+                    </div> --}}
+                    <div class="d-flex justify-content-center">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" onclick="selectOption('masuk')">
+                            <label class="form-check-label" for="flexRadioDefault1">
+                                Masuk
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" onclick="selectOption('sakit')">
+                            <label class="form-check-label" for="flexRadioDefault2">
+                              Sakit
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3" onclick="selectOption('izin')">
+                            <label class="form-check-label" for="flexRadioDefault3">
+                              Izin
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="file-upload-container" id="fileUploadContainer">
+                        <div class="mb-3">
+                            <label for="fileInput" class="form-label">Unggah File (PDF):</label>
+                            <input type="file" class="form-control" id="fileInput" name="file" accept=".pdf">
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end mt-3">
+                        <button type="button" class="submit-button" onclick="submitData()" id="submitButton">Submit</button>
+                        <div id="submitIndicator"></div>
+                    </div>
+                </form>
             </div>
-
-      </div>
-      </div>
+            
+    </div>
+    </div>
     </div>
     {{-- Isi content end --}}
     </div>
@@ -136,6 +165,21 @@
 </div>
 
 <style>
+
+.form-check-label {
+    font-size: 20px; /* Sesuaikan dengan ukuran teks yang diinginkan */
+    margin-right: 10px; /* Sesuaikan dengan jarak yang diinginkan antara label dan tombol input */
+}
+
+.form-check {
+    margin-right: 40px;
+}
+
+.file-upload-container {
+    display: none;
+    margin-top: 10px;
+  }
+
   .absensi-button {
       border: none;
       border-radius: 50%;
@@ -299,6 +343,7 @@ function refreshTable() {
     function selectOption(option) {
         selectedOption = option;
         updateButtonState();
+        toggleFileUploadContainer();
     }
 
     function updateButtonState() {
@@ -310,63 +355,65 @@ function refreshTable() {
     }
 
     function submitData() {
-        if (!selectedOption) {
-            alert('Pilih opsi absensi terlebih dahulu.');
-            return;
-        }
-
-        const submitButton = document.getElementById('submitButton');
-        submitButton.innerHTML = 'Submitting...';
-
-        const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
-        const userId = @json(Auth::id());
-
-        fetch('{{ route('absensi.store') }}', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'X-CSRF-Token': csrfToken,
-            },
-            body: JSON.stringify({
-                'status_absen': selectedOption,
-                'role': 'siswa',
-                'id_user': userId,
-            }),
-        })
-        .then(response => response.json())
-        .then(data => {
-            submitButton.innerHTML = 'Submit';
-
-            const notificationContainer = document.getElementById('notification');
-            const notification = document.createElement('div');
-            notification.classList.add('notification', 'success');
-            notification.innerHTML = `
-                <p>${data.message}</p>
-                <button onclick="closeNotification()">Tutup</button>
-            `;
-            notificationContainer.appendChild(notification);
-
-            refreshTable();
-            checkPresensiStatus(); // Perbarui status presensi setelah submit
-            disablePresensiOptions(); // Nonaktifkan opsi jika diperlukan
-        })
-        .catch(error => {
-            submitButton.innerHTML = 'Submit';
-
-            // Handle error response from server
-            error.json().then(data => {
-                if (data && data.errors) {
-                    // Server validation error
-                    alert('Terjadi kesalahan validasi pada server: ' + data.errors.join(', '));
-                } else {
-                    // General server error
-                    alert('Terjadi kesalahan saat mengirim data absensi.');
-                    console.error('Error:', error);
-                }
-            });
-        });
+    if (!selectedOption) {
+        alert('Pilih opsi absensi terlebih dahulu.');
+        return;
     }
+
+    const submitButton = document.getElementById('submitButton');
+    submitButton.innerHTML = 'Submitting...';
+
+    const absensiForm = document.getElementById('absensiForm');
+    const formData = new FormData(absensiForm);
+
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+    const userId = @json(Auth::id());
+
+    formData.append('status_absen', selectedOption);
+    formData.append('role', 'siswa');
+    formData.append('id_user', userId);
+
+    fetch('{{ route('absensi.store') }}', {
+        method: 'POST',
+        headers: {
+            'X-CSRF-Token': csrfToken,
+        },
+        body: formData,
+    })
+    .then(response => response.json())
+    .then(data => {
+        submitButton.innerHTML = 'Submit';
+
+        const notificationContainer = document.getElementById('notification');
+        const notification = document.createElement('div');
+        notification.classList.add('notification', 'success');
+        notification.innerHTML = `
+            <p>${data.message}</p>
+            <button onclick="closeNotification()">Tutup</button>
+        `;
+        notificationContainer.appendChild(notification);
+
+        refreshTable();
+        checkPresensiStatus(); // Perbarui status presensi setelah submit
+        disablePresensiOptions(); // Nonaktifkan opsi jika diperlukan
+    })
+    .catch(error => {
+        submitButton.innerHTML = 'Submit';
+
+        // Handle error response from server
+        error.json().then(data => {
+            if (data && data.errors) {
+                // Server validation error
+                alert('Terjadi kesalahan validasi pada server: ' + data.errors.join(', '));
+            } else {
+                // General server error
+                alert('Terjadi kesalahan saat mengirim data absensi.');
+                console.error('Error:', error);
+            }
+        });
+    });
+}
+
 
     function closeNotification() {
         const notificationContainer = document.getElementById('notification');
@@ -552,6 +599,16 @@ function submitEditForm() {
         location.reload();
     });
     }
+
+  function toggleFileUploadContainer() {
+    const fileUploadContainer = document.getElementById('fileUploadContainer');
+
+    if (selectedOption === 'sakit' || selectedOption === 'izin') {
+      fileUploadContainer.style.display = 'block';
+    } else {
+      fileUploadContainer.style.display = 'none';
+    }
+  }
 </script>
 
 

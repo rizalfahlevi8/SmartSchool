@@ -8,9 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Absensi extends Model
 {
     use HasFactory;
+
     protected $table = 'absensis';
 
-    protected $fillable = ['status_absen', 'role', 'id_user', 'created_at'];
+    protected $fillable = ['status_absen', 'role', 'id_user', 'file_path', 'created_at'];
 
     public function guru()
     {
@@ -23,8 +24,8 @@ class Absensi extends Model
     }
 
     public function user()
-{
-    return $this->belongsTo(User::class, 'id_user', 'id');
+    {
+        return $this->belongsTo(User::class, 'id_user', 'id');
+    }
 }
 
-}
