@@ -55,7 +55,7 @@
                                         <td class="text-center">{{ $i->barang->nama_barang ?? '-' }}</td>
                                         <td class="text-center">{{ $i->tahun_pengadaan ?? '-' }}</td>
                                         <td class="text-center">{{ $i->jenis ?? '-' }}</td>
-                                        <td><img src="{{ asset('storage/public/' . $i->barang->image) }}" height="100px" width="120px"></td>
+                                        <td><img src="{{ asset('storage/image/' . $i->barang->image) }}" height="100px" width="120px"></td>
                                         <td class="text-center">{{ $i->jumlah_barang ?? '-' }}</td>
                                         @if (auth()->user()->hasRole('admin'))
                                             <td class="text-center">
