@@ -7,6 +7,7 @@ use App\Models\Kelas;
 use App\Models\Siswa;
 use App\Models\User;
 use App\Models\Pengumuman;
+use App\Models\Tamu;
 use App\Models\KalenderAkademik;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -96,7 +97,9 @@ class DashboardController extends Controller
                     # code...
                     break;
             }
+
             if (Auth::check()) {
+                
                 $query = Pengumuman::orderBy('created_at', 'desc');
                 // Admin
                 if (auth()->user()->hasRole('admin', 'kepsek')) {
@@ -108,9 +111,35 @@ class DashboardController extends Controller
 
                 $datas['pengumumans'] = $pengumumans;
                 $rolePengumuman = $pengumumans->pluck('role')->unique()->toArray();
+
+            }
+            
+            if (Auth::check()) {
+
+                $userId = auth()->user()->id;
+
+                // Ambil username yang dipilih pada opsi_lanjutan
+                $selectedUsernames = Tamu::select('Opsi_lanjutan')->distinct()->get()->pluck('Opsi_lanjutan');
+
+                if ($selectedUsernames->isNotEmpty()) {
+                    // Query untuk mengambil data tamu_tabel yang sesuai dengan username yang dipilih
+                    $tamu_pesans = Tamu::whereIn('Opsi_lanjutan', $selectedUsernames)
+                        ->where('user_id', $userId) 
+                        ->orderByDesc('created_at')
+                        ->get();
+                    // dd('asd');
+                } else {
+                    $tamu_pesans = collect(); // Jika tidak ada username yang dipilih, berikan koleksi kosong
+                }
+
             }
 
-            return view('pages.dashboard.dashboard', ['rolePengumuman' => $rolePengumuman] + $datas)->with('title', 'Dashboard');
+            return view('pages.dashboard.dashboard'
+            ,compact('tamu_pesans')
+            , ['rolePengumuman' => $rolePengumuman] + $datas)->with('title', 'Dashboard');
+        
+
         }
     }
+
 }

@@ -29,6 +29,10 @@
                 <div class="collapse {{ Request::is('administrasi/guru*') || Request::is('administrasi/siswa*') || Request::is('akademik/mapel*') || Request::is('sarana/kelas*') || Request::is('sarana/ruang*') || Request::is('sarana/barang*') ? 'show' : '' }}"
                     id="master-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                    <li><a class="link-light rounded mb-1 {{ Request::is('administrasi/users*') ? 'bg-gradient-primary ' : '' }}"
+                                style="width: 100%" href="/administrasi/users"><i
+                                    class="material-icons opacity-10 mx-2">groups</i> Data User</a>
+                        </li>
                         <li><a class="link-light rounded mb-1 {{ Request::is('administrasi/guru*') ? 'bg-gradient-primary ' : '' }}"
                                 style="width: 100%" href="/administrasi/guru"><i
                                     class="material-icons opacity-10 mx-2">groups</i> Data
@@ -162,14 +166,25 @@
                     </span>
                     Humas <i class="material-icons opacity-10 ms-auto">expand_more</i>
                 </button>
-                <div class="collapse" id="humas-collapse">
+                <div class="collapse {{ Request::is('data-tamu*') || Request::is('mou*') ? 'show' : '' }}" id="humas-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                        <li><a class="link-light rounded mb-1" style="width: 100%" href="#"> <i
+                        {{-- <li><a class="link-light rounded mb-1{{ Request::is('data-tamu')}}" style="width: 100%" href="/data-tamu"> <i
                                     class="material-icons opacity-10 mx-2">groups</i>
-                                Tamu</a></li>
+                                Tamu</a></li> --}}
+                    {{-- </ul> --}}
+                    <li><a class="link-light rounded mb-1 {{ Request::is('data-tamu')}}" 
+                        href="/data-tamu"> <i class="material-icons opacity-10 mx-2">groups</i> 
+                        Tamu</a></li>
+                    </ul>
+                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+
+                    {{-- <li><a class="link-light rounded mb-1" href="{{ route('kerjasama.lihat') }}"> <i --}}
+                        <li><a class="link-light rounded mb-1" style="width: 100%" href="/mou"> <i
+                            class="material-icons opacity-10 mx-2"> groups </i> Kerja Sama ( MoU ) </a></li>
                     </ul>
                 </div>
             </li>
+
         @elseif (auth()->user()->hasRole('wakasek'))
             <li class="mb-1">
                 <button class="btn align-items-center rounded collapsed text-white font-weight-bold"
@@ -202,6 +217,7 @@
                     </ul>
                 </div>
             </li>
+
         @elseif (auth()->user()->hasRole('guru'))
             {{-- <li class="mb-1" style="">
                 <a class="btn rounded text-white font-weight-bold {{ Request::is('#*') ? 'bg-gradient-primary ' : '' }}"
@@ -258,6 +274,7 @@
                     href="javascript:void(0);" onclick="konfirmasiBukaLink()"> <span
                         class="material-symbols-outlined">task</span> Elearning</a>
             </li>
+
 
         @endif
     </ul>
