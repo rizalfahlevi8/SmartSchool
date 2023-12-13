@@ -16,6 +16,14 @@
                             Tambah
                         </button> --}}
                         <!-- Button trigger modal -->
+
+                        <a href="/administrasi/user/export" type="export" id="btnexport"
+                            class="btn btn-success font-weight-bold text-xs">
+                            Export Data user
+                        </a>
+                        <button type="button" class="btn btn-success font-weight-bold text-xs" data-bs-toggle="modal" data-bs-target="#importModal">
+    Import Data User
+</button>
                 
                         <table id="example" class="table align-items-center mb-0">
                             <thead>
@@ -66,6 +74,27 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-success">
+                <h5 class="modal-title text-white" id="importModalLabel">Import Data User</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('users.import') }}" method="post" enctype="multipart/form-data">
+                    @csrf
+                    <div class="mb-3">
+                        <label for="excel_file" class="form-label">Choose Excel File</label>
+                        <input type="file" class="form-control" id="excel_file" name="excel_file" required>
+                    </div>
+                    <button type="submit" class="btn btn-success">Import Data</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
     <div class="modal fade" id="update-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -237,5 +266,14 @@
             usernameValue.value = element.getAttribute('username');
             nama.innerText = element.getAttribute('nama');
         }
+        document.getElementById('importDataUserBtn').addEventListener('click', function () {
+        // Optional: Close any existing modals
+        // var existingModal = new bootstrap.Modal(document.getElementById('reset-modal'));
+        // existingModal.hide();
+
+        // Open the import modal
+        var importModal = new bootstrap.Modal(document.getElementById('importModal'));
+        importModal.show();
+    });
     </script>
 @endsection
