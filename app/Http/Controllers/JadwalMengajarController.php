@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 
 class JadwalMengajarController extends Controller
@@ -108,17 +109,25 @@ class JadwalMengajarController extends Controller
         }
 
         $guruId = auth()->user()->guru->id;
-        $detail_jadwal = Detail_jadwal::with('jadwal', 'mapel', 'ruang')
-        ->whereHas('guru', function ($query) use ($guruId) {
-            $query->where('id', $guruId);
-        })
-        ->whereHas('jadwal', function ($query) {
-            $query->whereHas('akademik', function ($query) {
-                $query->where('selected', 1);
-            });
-        })
-        ->get();
-    
+        $detail_jadwal = Detail_jadwal::select('detail_jadwals.*')
+            ->join('jadwals', 'detail_jadwals.id_jadwal', '=', 'jadwals.id')
+            ->join('mapels', 'detail_jadwals.id_mapel', '=', 'mapels.id')
+            ->join('ruangs', 'detail_jadwals.id_ruang', '=', 'ruangs.id')
+            ->join('gurus', 'detail_jadwals.id_guru', '=', 'gurus.id')
+            ->where('gurus.id', '=', $guruId)
+            ->whereExists(function ($query) {
+                $query->select(DB::raw(1))
+                    ->from('akademiks')
+                    ->whereColumn('jadwals.id_akademik', 'akademiks.id')
+                    ->where('akademiks.selected', '=', 1);
+            })
+            ->orderByRaw("FIELD(jadwals.hari, 'senin', 'selasa', 'rabu', 'kamis', 'jumat', 'sabtu'), jam_mulai ASC")
+            ->get();
+
+
+        // Output atau melakukan hal lain dengan $detailJadwals
+
+
 
         // $detail_jadwal = Detail_jadwal::with('jadwal', 'mapel', 'ruang')
         //     ->join('jadwals', 'detail_jadwals.id', '=', 'jadwals.id')
@@ -160,7 +169,6 @@ class JadwalMengajarController extends Controller
             })
             ->orderBy('jam_mulai', 'asc')
             ->get();
-
 
         return view('pages.akademik.data-jadwal-guru.jadwalguru', [
             'all_jadwal' => $all_jadwal,

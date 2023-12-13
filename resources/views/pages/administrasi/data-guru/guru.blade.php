@@ -26,6 +26,10 @@
                             <i class="material-icons opacity-10">add</i>
                             Tambah
                         </a>
+                        <a href="/userguru/export" type="submit" id="btntambah"
+                            class="btn btn-success font-weight-bold text-xs">
+                            Export Data Guru
+                        </a>
                         <!-- Button trigger modal -->
 
                         <table id="example" class="table align-items-center mb-0">
@@ -45,7 +49,7 @@
                                     </th>
                                     <th
                                         class="
-                                            text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
+                                            text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-5">
                                         No Telepon
                                     </th>
                                     <th

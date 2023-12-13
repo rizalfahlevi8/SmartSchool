@@ -63,6 +63,7 @@ class User extends Authenticatable
         return in_array($this->current_role, $roles);
     }
 
+
     // untuk tampil data pengumuan tamu 
     public function tamu_penguman()
     {
@@ -70,4 +71,10 @@ class User extends Authenticatable
     }
 
     // public function
+
+    public function absensis()
+{
+    return $this->hasMany(Absensi::class, 'id_user', 'id');
+}
+
 }

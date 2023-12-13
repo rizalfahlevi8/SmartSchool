@@ -58,20 +58,24 @@
                     <form action="/administrasi/siswa-tambah" class="row g-3 py-1 px-4" method="post"
                         enctype="multipart/form-data">
                         @csrf
-<<<<<<< HEAD
+
+
                         {{-- <div class="col-md-6">
                             <label for="no_pendaftaran" class="form-label">Nomer Pendaftaran</label>
+
+                        <div class="col-md-6">
+                            <label for="no-pendaftar" class="form-label">Nomer Pendaftaran</label>
+
                             <div class="input-group">
-                                <input type="text" onkeypress="return hanyaAngka(event)" name="no_pendaftaran"
-                                    class="form-control rounded-3" id="no_pendaftaran" required
-                                    value="{{ old('no_pendaftaran') }}"
-                                    {{ $errors->has('no_pendaftaran') ? 'autofocus="true"' : '' }}>
+                                <input type="text" onkeypress="return hanyaAngka(event)" name="no_pendaftar"
+                                    class="form-control rounded-3" id="no-pendaftar" required
+                                    value="{{ old('no_pendaftar') }}"
+                                    {{ $errors->has('no_pendaftar') ? 'autofocus="true"' : '' }}>
                             </div>
-                            @if ($errors->has('no_pendaftaran'))
-                                <span class="text-danger">{{ $errors->first('no_pendaftaran') }}</span>
+                            @if ($errors->has('no_pendaftar'))
+                                <span class="text-danger">{{ $errors->first('no_pendaftar') }}</span>
                             @endif
-                        </div> --}}
-=======
+
                         <div class="col-md-6">
                             <label for="no-pendaftar" class="form-label">Nomer Pendaftaran</label>
                             <div class="input-group">
@@ -84,7 +88,9 @@
                                 <span class="text-danger">{{ $errors->first('no_pendaftar') }}</span>
                             @endif
                         </div>
->>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
+
+                        </div>
+
                         <div class="col-md-6">
                             <label for="nis" class="form-label">NIS</label>
                             <div class="input-group">
@@ -191,11 +197,12 @@
                             <label class="form-label" for="nama-wali">Nama Wali</label>
                             <div class="input-group">
                                 <input type="text" name="nama_wali" class="form-control rounded-3" id="nama-wali"
-<<<<<<< HEAD
+
+
                                     value="{{ old('nama_wali') }}"
-=======
+
                                     required value="{{ old('nama_wali') }}"
->>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
+
                                     {{ $errors->has('nama_wali') ? 'autofocus="true"' : '' }}>
                             </div>
                         </div>
@@ -256,11 +263,11 @@
                         <div class="col-md-6">
                             <label for="file-input-poster" class="form-label">Foto</label>
                             <input class="form-control rounded-3 text-sm" name="foto" type="file"
-<<<<<<< HEAD
+
                                 id="file-input-poster" accept="image/*" onchange="showPreviewposter(event);"
-=======
+
                                 id="file-input-poster" accept="image/*" required onchange="showPreviewposter(event);"
->>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
+
                                 value="{{ old('foto') }}" {{ $errors->has('foto') ? 'autofocus' : '' }}>
                             <img src="{{ asset('assets' . '/img/thumbnail.png') }}" id="file-preview-poster"
                                 alt="..." class="img-thumbnail mt-2" width="50%">
@@ -272,7 +279,7 @@
                                 <i class="fa fa-right"></i>
                                 Simpan
                             </button>
-                            <a href="data-siswa" type="button" class="btn btn-danger text-sm rounded-3"
+                            <a href="siswa" type="button" class="btn btn-danger text-sm rounded-3"
                                 style="float: right;margin-right:10px"><i class="fa fa-arrow-left"></i>
                                 Kembali
                             </a>

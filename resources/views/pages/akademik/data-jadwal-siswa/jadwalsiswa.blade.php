@@ -9,79 +9,81 @@
     <h6 class="font-weight-bolder mb-0">Jadwal Pelajaran</h6>
 @endsection
 @section('content')
-<div class="row">
-    <div class="col-12">
-        <div class="card my-4">
-            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-                <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
-                    <h6 class="text-white text-capitalize ps-3">Jadwal :
-                        {{ $kelas->nama_kelas }}
-                        {{-- {{ $guru->nama ?? '' }} ({{ $guru->NIP ?? '' }}) --}}
-                        {{-- {{ $j->mapel->namamapel ?? '' }} --}}
-                    </h6>
-                </div>
-            </div>
-
-            <div class="card-body px-0 pb-2">
-                <div class="table-responsive pb-2 px-3">
-                    <div class="col text-right">
+    <div class="row">
+        <div class="col-12">
+            <div class="card my-4">
+                <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                    <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+                        <h6 class="text-white text-capitalize ps-3">Jadwal :
+                            {{ $kelas->nama_kelas }}
+                            {{-- {{ $guru->nama ?? '' }} ({{ $guru->NIP ?? '' }}) --}}
+                            {{-- {{ $j->mapel->namamapel ?? '' }} --}}
+                        </h6>
                     </div>
-                    <!-- Button trigger modal -->
-                    <table class="table align-items-center mb-0">
-                        <thead>
-                            <tr>
-                                <th
-                                    class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
-                                    Hari</th>
-                                <th
-                                    class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
-                                    Mapel</th>
-                                <th
-                                    class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
-                                    Guru</th>
-                                <th
-                                    class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
-                                    Jam
-                                </th>
-                                <th
-                                    class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
-                                    Ruang
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($jadwals as $jadwal)
-                                <tr>
-                                    <td class="text-center" style= "background-color: {{ $jadwal->jadwal->hari == $hari_ini ? 'green' : '' }};color: {{ $jadwal->jadwal->hari == $hari_ini ? 'white' : '' }}">
-                                        {{ $jadwal->jadwal->hari }}
-                                    </td>
+                </div>
 
-                                    <td class="text-center" style= "background-color: {{ $jadwal->jadwal->hari == $hari_ini ? 'green' : '' }};color: {{ $jadwal->jadwal->hari == $hari_ini ? 'white' : '' }}">
-                                        {{ $jadwal->mapel->nama_mapel }}
-                                    </td>
 
-                                    <td class="text-center" style= "background-color: {{ $jadwal->jadwal->hari == $hari_ini ? 'green' : '' }};color: {{ $jadwal->jadwal->hari == $hari_ini ? 'white' : '' }}">
-                                        {{ $jadwal->guru->nama }}
-                                    </td>
+                <div class="card-body px-0 pb-2">
+                    <div class="table-responsive pb-2 px-3">
+                        <div class="col text-right">
+                        </div>
+                        <div class="container mt-5">
+                            <div class="row">
+                                @foreach ($jadwals as $jadwal)
+                                    @php
+                                        $status = $jadwal->status;
+                                    @endphp
 
-                                    <td class="text-center" style= "background-color: {{ $jadwal->jadwal->hari == $hari_ini ? 'green' : '' }};color: {{ $jadwal->jadwal->hari == $hari_ini ? 'white' : '' }}">
-                                        {{ Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} -
-                                        {{ Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}
-                                    </td>
-                                    <td class="text-center" style= "background-color: {{ $jadwal->jadwal->hari == $hari_ini ? 'green' : '' }};color: {{ $jadwal->jadwal->hari == $hari_ini ? 'white' : '' }}">
-                                        {{ $jadwal->ruang->nama_ruang }}
-                                    </td>
+                                    <div class="col-md-4" style="margin-bottom: 20px">
 
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                                        <div class="card">
+                                            <div class="card-header {{ $jadwal->hari == $hari_ini ? 'bg-success' : 'bg-primary' }}"
+                                                style="display: flex; justify-content: space-between; align-items: center">
+                                                <b style="color: rgb(255, 255, 255)">{{ ucfirst($jadwal->hari) }}
+                                                    {{ $jadwal->hari == $hari_ini ? ' - Hari ini' : '' }}</b>
+                                            </div>
+
+                                            <div class="card-body">
+                                                @if (strtolower($status) == 'libur')
+                                                    <h5 class="card-title">Libur</h5>
+                                                    <p class="card-text">Libur</p>
+                                                @else
+                                                    @foreach ($jadwal->detail_jadwal as $detail_jadwal)
+                                                        <div
+                                                            style="border-bottom: 1.5px dashed grey; padding-bottom: 10px; margin-top: 10px">
+                                                            <div>
+                                                                @php
+                                                                    $raw_timeMulai = new DateTime($detail_jadwal->jam_mulai);
+                                                                    $timeMulai = $raw_timeMulai->format('H:i');
+                                                                    $raw_timeSelesai = new DateTime($detail_jadwal->jam_selesai);
+                                                                    $timeSelesai = $raw_timeSelesai->format('H:i');
+                                                                @endphp
+                                                                {{ $timeMulai }} -
+                                                                {{ $timeSelesai }}
+                                                                <b>({{ $detail_jadwal->ruang->nama_ruang }})</b>
+                                                            </div>
+                                                            <div>
+                                                                <b>{{ $detail_jadwal->mapel->nama_mapel }}</b>
+                                                                <span>({{ $detail_jadwal->guru->nama }})</span>
+                                                            </div>
+                                                        </div>
+                                                    @endforeach
+                                                @endif
+                                                <div class="" style="margin-top: 10px">
+                                                    <p><b>Catatan : </b>{{ $jadwal->catatan }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                        <!-- Button trigger modal -->
+
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
-
 @endsection
 {{-- footer --}}
