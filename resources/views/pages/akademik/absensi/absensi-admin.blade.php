@@ -83,6 +83,9 @@
                                 <td>
                                     <button class="btn btn-warning" onclick="showEditModal({{ $absensi->id }})">Edit</button>
                                     <button class="btn btn-danger btn-sm" onclick="deleteAbsensi({{ $absensi->id }})">Delete</button>
+                                    @if ($absensi->file_path) <!-- Tambah kondisi untuk menampilkan jika ada file -->
+                                        <a href="{{ asset('storage/' . $absensi->file_path) }}" class="btn btn-info btn-sm" target="_blank">Lihat File</a>
+                                    @endif
                                 </td>
                             </tr>
                         @endif
@@ -138,6 +141,9 @@
                                     <td>
                                         <button class="btn btn-warning" onclick="showEditModal({{ $absensi->id }})">Edit</button>
                                         <button class="btn btn-danger btn-sm" onclick="deleteAbsensi({{ $absensi->id }})">Delete</button>
+                                        @if ($absensi->file_path) <!-- Tambah kondisi untuk menampilkan jika ada file -->
+                                            <a href="{{ asset('storage/' . $absensi->file_path) }}" class="btn btn-info btn-sm" target="_blank">Lihat File</a>
+                                        @endif
                                     </td>
                                 </tr>
                             @endif

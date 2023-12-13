@@ -93,9 +93,6 @@
                 </form>
             </div>
             
-
-            
-
     </div>
     </div>
     </div>
@@ -307,7 +304,7 @@
 });
 
 function refreshTable() {
-    // location.reload();
+    location.reload();
 }
 
 
@@ -393,7 +390,7 @@ function refreshTable() {
         notificationContainer.innerHTML = ''; // Hapus notifikasi
 
         // Reload the entire page
-        // location.reload();
+        location.reload();
     }
 
     function checkPresensiStatus() {
@@ -452,7 +449,7 @@ function checkAndDisablePresensiOptions() {
     const opsiButton = document.getElementById('opsiButton'); // Ganti 'opsiButton' dengan ID yang sesuai
     const submitButton = document.getElementById('submitButton'); // Ganti 'submitButton' dengan ID yang sesuai
 
-    if (currentHour < 3 || currentHour >= 16) {
+    if (currentHour < 7 || currentHour >= 16) {
         console.log('Kondisi: Anda tidak dapat melakukan presensi');
         buttonsContainer.innerHTML = '<p>Anda tidak dapat melakukan presensi</p>';
     }
@@ -569,7 +566,7 @@ function submitEditForm() {
         text: 'Data absensi telah berhasil diubah',
     }).then(() => {
         // Setelah menutup notifikasi, refresh halaman
-        // location.reload();
+        location.reload();
     });
     }
 
