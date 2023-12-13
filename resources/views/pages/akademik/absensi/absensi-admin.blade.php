@@ -81,11 +81,12 @@
                                 <td>{{ \Carbon\Carbon::parse($absensi->created_at)->format('H:i:s') }}</td>
                                 <td>{{ $absensi->status_absen }}</td>
                                 <td>
-                                    <button class="btn btn-warning" onclick="showEditModal({{ $absensi->id }})">Edit</button>
-                                    <button class="btn btn-danger btn-sm" onclick="deleteAbsensi({{ $absensi->id }})">Delete</button>
                                     @if ($absensi->file_path) <!-- Tambah kondisi untuk menampilkan jika ada file -->
                                         <a href="{{ asset('storage/' . $absensi->file_path) }}" class="btn btn-info btn-sm" target="_blank">Lihat File</a>
                                     @endif
+                                    <button class="btn btn-warning" onclick="showEditModal({{ $absensi->id }})"><i class="fa fa-edit"></i></button>
+                                    <button class="btn btn-danger" onclick="deleteAbsensi({{ $absensi->id }})"><i class="fa fa-trash"></i></button>
+                                    
                                 </td>
                             </tr>
                         @endif
@@ -139,11 +140,12 @@
                                     <td>{{ \Carbon\Carbon::parse($absensi->created_at)->format('H:i:s') }}</td>
                                     <td>{{ $absensi->status_absen }}</td>
                                     <td>
-                                        <button class="btn btn-warning" onclick="showEditModal({{ $absensi->id }})">Edit</button>
-                                        <button class="btn btn-danger btn-sm" onclick="deleteAbsensi({{ $absensi->id }})">Delete</button>
                                         @if ($absensi->file_path) <!-- Tambah kondisi untuk menampilkan jika ada file -->
                                             <a href="{{ asset('storage/' . $absensi->file_path) }}" class="btn btn-info btn-sm" target="_blank">Lihat File</a>
                                         @endif
+                                        <button class="btn btn-warning" onclick="showEditModal({{ $absensi->id }})"><i class="fa fa-edit"></i></button>
+                                        <button class="btn btn-danger" onclick="deleteAbsensi({{ $absensi->id }})"><i class="fa fa-trash"></i></button>
+                                        
                                     </td>
                                 </tr>
                             @endif
