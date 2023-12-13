@@ -1,8 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\Data_angkatan;
+use App\Exports\UsersExportSiswa;
 use App\Models\Detail_siswa;
 use App\Models\Siswa;
 use App\Models\Kelas;
@@ -13,7 +13,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Schema;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Log;
+
 
 class SiswaController extends Controller
 {
@@ -277,5 +279,9 @@ class SiswaController extends Controller
         $siswa->delete();
 
         return redirect()->route('siswa_out')->with('toast_success', 'Data Siswa Berhasil di Hapus');
+    }
+    public function export()
+    {
+        return Excel::download(new UsersExportSiswa, 'usersSiswa.xlsx');
     }
 }

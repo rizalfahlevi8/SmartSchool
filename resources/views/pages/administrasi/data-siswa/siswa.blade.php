@@ -27,6 +27,10 @@
                             class="btn btn-danger font-weight-bold text-xs">
                             Siswa Keluar
                         </a>
+                        <a href="/usersiswa/export" type="submit" id="btntambah"
+                            class="btn btn-success font-weight-bold text-xs">
+                            Export Data siswa
+                        </a>
                         <!-- Button trigger modal -->
 
                         {{-- Filter search --}}

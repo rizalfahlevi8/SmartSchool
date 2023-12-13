@@ -25,9 +25,13 @@ use App\Http\Controllers\JadwalMengajarController;
 use App\Http\Controllers\KalenderAkademikController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PengumumanController;
+use App\Http\Controllers\UserMoodleApi;
+use App\Http\Controllers\NilaiMoodleController;
 use App\Models\Absensi;
 use App\Models\Akademik;
+use App\Http\Controllers\UserMoodleController;
 use App\Models\Peminjaman;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -115,6 +119,11 @@ Route::middleware(['userRole:admin,guru'])->group(function () {
     Route::get('/data-jadwalmengajar-cek/{id}', [JadwalMengajarController::class, 'cekjadwal']);
     Route::get('/data-jadwal-cek', [JadwalController::class, 'lihat']);
     Route::get('/data-jadwal-cekjadwal/{id}', [JadwalController::class, 'cekjadwal']);
+
+    //Nilai Moodle
+    Route::get('/data-nilai-moodle/course-moodle', [NilaiMoodleController::class, 'getMoodleCourses']);
+    Route::get('/data-nilai-moodle/course-moodle/nilai-course/{courseId}', [NilaiMoodleController::class, 'getGradeItems'])
+    ->name('nilai-course');
 });
 
 
@@ -159,6 +168,13 @@ Route::middleware(['userRole:admin,wakasek'])->group(function () {
     Route::get('/administrasi/users', [UserController::class, 'index'])->name('user_management');
     Route::patch('/administrasi/users/{user}', [UserController::class, 'update']);
     Route::put('/administrasi/users/reset/{user}', [UserController::class, 'reset']);
+    Route::get('/administrasi/user/export', [UserController::class, 'export']);
+    Route::get('/administrasi/users/import', [UserController::class, 'showImportForm'])->name('users.import.form');
+    Route::post('/administrasi/users/import', [UserController::class, 'Import'])->name('users.import');
+
+
+    //User Moodle
+    Route::get('/administrasi/usermoodle', [UserMoodleApi::class, 'fetchApi']);
 });
 //==========================================================================================
 
@@ -170,6 +186,7 @@ Route::middleware(['userRole:admin,wakasek'])->group(function () {
     Route::get('/administrasi/guru-update/{guru}', [GuruController::class, 'edit']);
     Route::put('/administrasi/guru-update/{guru}', [GuruController::class, 'update']);
     Route::get('/administrasi/guru-hapus/{guru}', [GuruController::class, 'destroy']);
+    Route::get('/userguru/export', [GuruController::class, 'export']);
 
     // ==============[ D a t a - S i s w a ]===============
     Route::get('/administrasi/siswa', [SiswaController::class, 'index'])->name('siswa_main');
@@ -180,7 +197,7 @@ Route::middleware(['userRole:admin,wakasek'])->group(function () {
     Route::get('/administrasi/siswa-keluar', [SiswaController::class, 'out_page'])->name('siswa_out');
     Route::put('/administrasi/siswa-keluar/{siswa}', [SiswaController::class, 'out']);
     Route::get('/administrasi/siswa-hapus/{siswa}', [SiswaController::class, 'destroy']);
-
+    Route::get('/usersiswa/export', [SiswaController::class, 'export']);
     // ==============[ D a t a - P e g a w a i ]===============
     Route::get('/administrasi/pegawai', [PegawaiController::class, 'index']);
     Route::get('/administrasi/pegawai-tambah', [PegawaiController::class, 'create']);
