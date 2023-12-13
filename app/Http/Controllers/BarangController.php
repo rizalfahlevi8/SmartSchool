@@ -31,7 +31,7 @@ class BarangController extends Controller
    
         $file = $request->file('image');
         $fileName = uniqid() . '.' . $file->getClientOriginalExtension();
-        $file->storeAs('public/', $fileName);
+        $file->storeAs('public/image', $fileName);
         $data['image'] = $fileName;
 
         Barang::create($data);

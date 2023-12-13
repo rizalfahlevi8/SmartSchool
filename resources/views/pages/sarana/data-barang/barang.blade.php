@@ -51,7 +51,7 @@
                                 <td class="text-center">{{ $barang->nama_barang }}</td>
                                 <td class="text-center">{{ $barang->tahun_pengadaan }}</td>
                                 <td class="text-center">{{ $barang->jenis }}</td>
-                                <td><img src="{{ asset('storage/public/' . $barang->image) }}" height="100px" width="120px"></td>
+                                <td><img src="{{ asset('storage/image/' . $barang->image) }}" height="100px" width="120px"></td>
                                 <td class="text-center">{{ $barang->jumlah_seluruh_barang }}</td>
                                 <td class="text-center">
                                     <a href="{{ route('update-barang', $barang->id) }}"  class="btn
