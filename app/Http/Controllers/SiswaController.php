@@ -59,6 +59,23 @@ class SiswaController extends Controller
         // Kembalikan data dalam format JSON
         return response()->json($siswa);
     }
+
+    public function getSiswaByKelas(Request $request)
+{
+    $selectedKelas = $request->query('kelas');
+    
+    try {
+        // Dapatkan id_kelas dari tabel kelas berdasarkan nama kelas
+        $idKelas = Kelas::where('nama_kelas', $selectedKelas)->value('id');
+
+        // Dapatkan siswa berdasarkan id_kelas
+        $siswaList = Siswa::where('id_kelas', $idKelas)->pluck('nama')->toArray();
+        Log::info('Data siswa diambil:', $siswaList);
+        return response()->json($siswaList);
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'Gagal mengambil daftar siswa.']);
+    }
+}
     public function index()
     {
         $siswa = Siswa::with('kelas')->where('status', 'bukan pindahan')->orWhere('status', 'pindahan')->filter(request(['status', 'kelas']))->get();;

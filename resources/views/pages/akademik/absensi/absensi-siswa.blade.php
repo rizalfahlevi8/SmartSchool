@@ -49,7 +49,7 @@
                             <th scope="col">Hari</th>
                             <th scope="col">Jam Absen</th>
                             <th scope="col">Status</th>
-                            <th scope="col">Action</th>
+                            {{-- <th scope="col">Action</th> --}}
                         </tr>
                     </thead>
                     <tbody>
@@ -60,9 +60,9 @@
                                     <td>{{ \Carbon\Carbon::parse($absensi->created_at)->locale('id')->isoFormat('dddd') }}</td>
                                     <td>{{ \Carbon\Carbon::parse($absensi->created_at)->format('H:i:s') }}</td>
                                     <td>{{ $absensi->status_absen }}</td>
-                                    <td>
+                                    {{-- <td>
                                         <a href="#" class="btn btn-warning" onclick="showEditModal({{ $absensi->id }})">Edit</a>
-                                    </td>
+                                    </td> --}}
                                 </tr>
                             @endif
                         @endforeach
@@ -75,11 +75,6 @@
             <div class="border border-2 rounded p-4 my-4 d-flex flex-column text-md" style="height: auto; max-height: 300px; position: relative;" id="presensiOptions">
                 <h5 class="font-weight-bold mb-3">Presensi Absensi Siswa</h5>
                 <form id="absensiForm" enctype="multipart/form-data">
-                    {{-- <div class="d-flex justify-content-center">
-                        <button type="button" class="absensi-button" onclick="selectOption('masuk')">Masuk</button>
-                        <button type="button" class="absensi-button" onclick="selectOption('sakit')">Sakit</button>
-                        <button type="button" class="absensi-button" onclick="selectOption('izin')">Izin</button>
-                    </div> --}}
                     <div class="d-flex justify-content-center">
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" onclick="selectOption('masuk')">
