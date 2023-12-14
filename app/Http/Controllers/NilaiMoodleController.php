@@ -82,9 +82,10 @@ class NilaiMoodleController extends Controller
             });
         }
 
-        // Return view with the filtered grade items
         return view('pages.akademik.data-nilai-moodle.course-moodle-nilai', [
             'gradeItems' => $gradeItems,
-        ])->with('title', 'Detail Nilai');
+            'courseId' => $courseId,
+            'title' => 'Detail Nilai',
+        ]);
     }
 }

@@ -18,24 +18,23 @@
             </a>
         </div>
     </div>
+    {{-- Search form --}}
+    <div class="row mt-3">
+        <div class="col-12">
+            <form action="{{ route('get.grade.items', ['courseId' => $courseId]) }}" method="GET">
+                <div class="form-group">
+                    <label for="search">Search by User Fullname:</label>
+                    <input type="text" class="form-control" id="search" name="search" placeholder="Enter userfullname">
+                </div>
+            </form>
+        </div>
+    </div>
 
     {{-- Store usergrades data in a variable --}}
     @php
         $userGradesData = $gradeItems['usergrades'];
     @endphp
 
-    {{-- Search form --}}
-    <div class="row mt-3">
-        <div class="col-12">
-            <form action="{{ route('search') }}" method="GET">
-                <div class="form-group">
-                    <label for="search">Search by User Fullname:</label>
-                    <input type="text" class="form-control" id="search" name="search" placeholder="Enter userfullname">
-                </div>
-                <button type="submit" class="btn btn-primary">Search</button>
-            </form>
-        </div>
-    </div>
 
     {{-- Iterate through usergrades --}}
     @foreach ($userGradesData as $grade)
@@ -80,5 +79,22 @@
                 </div>
             </div>
         @endif
+    @endforeach
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var searchInput = document.getElementById('search');
+            searchInput.addEventListener('input', function () {
+                // Delay execution to avoid triggering the search on every keystroke
+                clearTimeout(this.timer);
+                this.timer = setTimeout(function () {
+                    // Trigger the form submission when the user types
+                    searchInput.closest('form').submit();
+                }, 500);
+            });
+        });
+    </script>
+    {{-- Iterate through usergrades --}}
+    @foreach ($userGradesData as $grade)
+        <!-- Your existing iteration code... -->
     @endforeach
 @endsection

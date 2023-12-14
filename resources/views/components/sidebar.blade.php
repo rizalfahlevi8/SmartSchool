@@ -169,8 +169,6 @@
                     </ul>
                 </div>
             </li>
-<<<<<<< Updated upstream
-=======
             <li class="mb-1" style="">
                 <a class="btn rounded text-white font-weight-bold 'bg-gradient-primary ' : '' }}"
                     style="text-transform: none; width: 100%;display: flex; align-items: center; column-gap:10px"
@@ -179,7 +177,6 @@
 
             </li>
 
->>>>>>> Stashed changes
         @elseif (auth()->user()->hasRole('wakasek'))
             <li class="mb-1">
                 <button class="btn align-items-center rounded collapsed text-white font-weight-bold"
