@@ -36,8 +36,7 @@
                         <div class="col-md-6">
                             <label for="image" class="form-label">Pilih Gambar</label>
                             <img class="img-preview img-fluid">
-                                <input type="file" name="image" id="image" class="form-control rounded-3" 
-                                onchange="previewImage()">
+                            <input type="file" name="image" id="image" class="form-control rounded-3" accept="image/*" onchange="validateForm()"required>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Jenis</label>
@@ -71,18 +70,41 @@
         </div>
     </div>
     <script>
-        function previewImage(){
-            const image =document.querySelector('#image');
-            const imgPreview = document.querySelector('.img-preview');
+    function previewImage() {
+        const image = document.querySelector('#image');
+        const imgPreview = document.querySelector('.img-preview');
 
-            imgPreview.style.display = 'block';
+        imgPreview.style.display = 'block';
 
-            const oFReader = new FileReader();
-            oFReader.readAsDataURL(image.files[0]);
+        const oFReader = new FileReader();
+        oFReader.readAsDataURL(image.files[0]);
 
-            oFReader.onload = function(oFREvent){
-                imgPreview.src = oFREvent.target.result;
-            }
+        oFReader.onload = function(oFREvent) {
+            imgPreview.src = oFREvent.target.result;
         }
-    </script>
+    }
+
+    function validateForm() {
+        var fileInput = document.getElementById('image');
+        var filePath = fileInput.value;
+
+        // Memeriksa apakah input file tidak kosong
+        if (filePath === '') {
+            alert('Mohon pilih gambar sebelum melanjutkan.');
+            return false;
+        }
+
+        // Memeriksa tipe file (hanya gambar yang diizinkan)
+        var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+        if (!allowedExtensions.exec(filePath)) {
+            alert('Tipe file tidak valid. Hanya file gambar dengan ekstensi .jpg, .jpeg, .png, atau .gif diperbolehkan.');
+            fileInput.value = ''; // Mengosongkan input file jika tidak valid
+            return false;
+        }
+
+        // File dan tipe valid, lanjutkan dengan operasi lain yang diperlukan
+        previewImage();
+        return true;
+    }
+</script>
 @endsection

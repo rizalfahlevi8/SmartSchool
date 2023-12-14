@@ -155,7 +155,7 @@ Route::middleware(['userRole:admin,wakasek'])->group(function () {
 });
 
 //==========================================================================================
-Route::middleware(['userRole:admin'])->group(function () {
+Route::middleware(['userRole:admin,wakasek'])->group(function () {
     // Daftar Barang
     Route::get('/sarana/barang', [BarangController::class, 'index'])->name('barang_main');
     Route::get('/sarana/barang-tambah', [BarangController::class, 'create'])->name('tambah-barang');
