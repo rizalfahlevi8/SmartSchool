@@ -75,11 +75,6 @@
             <div class="border border-2 rounded p-4 my-4 d-flex flex-column text-md" style="height: auto; max-height: 300px; position: relative;" id="presensiOptions">
                 <h5 class="font-weight-bold mb-3">Presensi Absensi Siswa</h5>
                 <form id="absensiForm" enctype="multipart/form-data">
-                    {{-- <div class="d-flex justify-content-center">
-                        <button type="button" class="absensi-button" onclick="selectOption('masuk')">Masuk</button>
-                        <button type="button" class="absensi-button" onclick="selectOption('sakit')">Sakit</button>
-                        <button type="button" class="absensi-button" onclick="selectOption('izin')">Izin</button>
-                    </div> --}}
                     <div class="d-flex justify-content-center">
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" onclick="selectOption('masuk')">

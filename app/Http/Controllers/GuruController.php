@@ -48,6 +48,16 @@ class GuruController extends Controller
         // Kembalikan data dalam format JSON
         return response()->json($guru);
     }
+
+    public function getGuruNames()
+{
+    // Dapatkan hanya nama guru dari tabel "gurus"
+    $guruNames = Guru::pluck('nama');
+
+    // Kembalikan data dalam format JSON
+    return response()->json($guruNames);
+}
+
     public function index()
     {
         $guru = Guru::where('deleted', 0)->get();
