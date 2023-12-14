@@ -67,11 +67,8 @@
                                             text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
                                         Tujuan Mitra
                                     </th>
-                                    {{-- <th
-                                        class="
-                                            text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
-                                        File
-                                    </th> --}}
+
+
                                     <th
                                         class="
                                             text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
@@ -107,14 +104,6 @@
                                         <td class="align-middle text-center">
                                             {{ $m->tujuan_mitra }}
                                         </td>
-                                        {{-- <td class="align-middle text-center">
-                                            <a 
-                                            href="{{ asset('storage/kerjasama/file/' . str_replace(' ', '%20', $m->file)) }}" 
-                                            
-                                            target="_blank"
-                                           
-                                                > Lihat file </a>
-                                        </td> --}}
                                         <td class="text-center">
                                             <button type="button"data-bs-toggle="modal" data-bs-target="#detail-modal"
                                                 class="btn
@@ -125,7 +114,9 @@
                                                 tanggal_mulai_kerjasama="{{ \Carbon\Carbon::parse($m->tanggal_mulai_kerjasama)->format('d/m/Y') }}" 
                                                 tanggal_berakhir_kerjasama="{{ \Carbon\Carbon::parse($m->tanggal_berakhir_kerjasama)->format('d/m/Y') }}"
                                                 PT_Mitra="{{ $m->PT_Mitra }}" tujuan_mitra="{{ $m->tujuan_mitra }}" 
-                                                original_name_file="{{ $m->original_name_file }}"
+
+                                                original_name_file="{{ $m->original_name_file }}" data-file="{{ $m->file }}"
+
                                                 onclick="showModalDialog(this)"> 
                                                 <i class="fa fa-eye"></i>
                                             </button>
@@ -257,11 +248,24 @@
                         <br>
                         
                         <div class="modal-footer">
-                                <a href="{{ asset('storage/kerjasama/file/' . str_replace(' ', '%20', $m->file)) }}" target="_blank" class="btn btn-success" style="color: white;">Lihat File</a>
-                                <a href="{{ asset('storage/kerjasama/file/' . str_replace(' ', '%20', $m->file)) }}" download="{{ $m->file }}" class="btn btn-primary" style="color: white;">Download</a>
+<<<<<<< HEAD
+=======
+
+>>>>>>> 7c56d9d438752ab416e8c106597cbe0d66862c22
+                            <a id="file_link" href="#" target="_blank" class="btn btn-success" style="color: white;">Lihat File</a>
+                            <a id="file_download" href="#" download class="btn btn-primary" style="color: white;">Download</a>
+                            <button id="detail-modal" type="button" class="btn btn-secondary" data-bs-dismiss="modal" >Tutup</button>
+                        </div>
+                    
+                        {{-- <div class="modal-footer">
+                            <a href="{{ asset('storage/kerjasama/file/' . str_replace(' ', '%20', $m->file)) }}" target="_blank" class="btn btn-success" style="color: white;">Lihat File</a>
+                            <a href="{{ asset('storage/kerjasama/file/' . str_replace(' ', '%20', $m->file)) }}" download="{{ $m->file }}" class="btn btn-primary" style="color: white;">Download</a>
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                        </div>                        
-                        
+                        </div>     --}}
+<<<<<<< HEAD
+=======
+
+>>>>>>> 7c56d9d438752ab416e8c106597cbe0d66862c22
                        
                     </div>
 
@@ -273,6 +277,9 @@
     </div>
 
     <script>
+
+
+
         function showModalDialog(element) {
             const updateModalDialog = document.getElementById('detail-modal');
             const nama_mitra = updateModalDialog.querySelector('#nama_mitra');
@@ -284,6 +291,11 @@
             const tujuan_mitra = updateModalDialog.querySelector('#tujuan_mitra');
             const original_name_file = updateModalDialog.querySelector('#original_name_file');
 
+
+            // const fileLink = updateModalDialog.querySelector('#file_link');
+            // const fileDownload = updateModalDialog.querySelector('#file_download');
+
+
             nama_mitra.innerText = element.getAttribute('nama_mitra');
             asal_mitra.innerText = element.getAttribute('asal_mitra');
             Deskripsi_singkat_mitra.innerText = element.getAttribute('Deskripsi_singkat_mitra');
@@ -293,7 +305,41 @@
             tujuan_mitra.innerText = element.getAttribute('tujuan_mitra');
             original_name_file.innerText = element.getAttribute('original_name_file');
 
-        }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 7c56d9d438752ab416e8c106597cbe0d66862c22
+        // // Update link "Lihat File" dan "Download"
+        // const fileName = element.dataset.file;
+        // fileLink.href = `/storage/kerjasama/file/${encodeURIComponent(fileName)}`;
+        // fileDownload.href = `/storage/kerjasama/file/${encodeURIComponent(fileName)}`;
+        // fileDownload.download = fileName;
+
+        // // Menampilkan modal
+        // const modal = new bootstrap.Modal(updateModalDialog);
+        // modal.show();
+
+            }
+    </script>
+    <script>
+
+        const fileLink = updateModalDialog.querySelector('#file_link');
+        const fileDownload = updateModalDialog.querySelector('#file_download');
+        
+        // Update link "Lihat File" dan "Download"
+        const fileName = element.dataset.file;
+        fileLink.href = `/storage/kerjasama/file/${encodeURIComponent(fileName)}`;
+        fileDownload.href = `/storage/kerjasama/file/${encodeURIComponent(fileName)}`;
+        fileDownload.download = fileName;
+
+        // Menampilkan modal
+        const modal = new bootstrap.Modal(updateModalDialog);
+        modal.show();
+
+<<<<<<< HEAD
+=======
+
+>>>>>>> 7c56d9d438752ab416e8c106597cbe0d66862c22
     </script>
 @endsection
 {{-- footer --}}

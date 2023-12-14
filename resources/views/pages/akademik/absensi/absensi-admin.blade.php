@@ -20,13 +20,27 @@
     </div>
     {{-- Header absensi end --}}
     {{-- Isi content start --}}
-    <div class="d-flex align-items-center justify-content-center text-3xl" style="height: 400px">
-        <div class="card">
+    <div class="d-flex justify-content-between mx-8 my-4" style="height: 500px">
+        <!-- Pie chart untuk siswa -->
+        <div class="card" style="flex: 1; margin-right: 10px;">
             <div class="card-body">
-                <div id="chart-demo-pie" class="chart-lg"></div>
+                <h5 class="card-title text-center" style="font-weight: bold;">Rekap Data Siswa</h5>
+                <div id="chart-demo-pie-siswa" class="chart-lg"></div>
+            </div>
+        </div>
+    
+        <!-- Pemisah antara dua pie -->
+        <div style="width: 20px;"></div>
+    
+        <!-- Pie chart untuk guru -->
+        <div class="card" style="flex: 1; margin-left: 10px;">
+            <div class="card-body">
+                <h5 class="card-title text-center" style="font-weight: bold;">Rekap Data Guru</h5>
+                <div id="chart-demo-pie-guru" class="chart-lg"></div>
             </div>
         </div>
     </div>
+    
 
     <div class="mb-4 d-flex align-items-center justify-content-center">
       <div class="col-lg-10 pr-4 mr-2">
@@ -37,8 +51,8 @@
                 Data Siswa
             </h5>
             <div class="input-group mb-3" style="position: sticky; top: 40px; background-color: white; z-index: 99;">
-                <div class="col-5">
-                    <input type="text" class="form-control rounded" placeholder="Search..." name="search" id="searchSiswa" style="border: 2px solid lightblue;">
+                <div style="margin-right: 20px;">
+                    <input type="text" class="form-control rounded" placeholder="Search..." name="search" id="searchSiswa" style="border: 2px solid lightblue; width: 350px;">
                 </div>
                 <div class="col-2 mx-3 ml-5">
                     <select class="form-select rounded" name="dropdownkelas" id="dropdownkelas" style="border: 2px solid lightblue;">
@@ -103,8 +117,8 @@
             Data Guru
         </h5>
         <div class="input-group mb-3" style="position: sticky; top: 40px; background-color: white; z-index: 99;">
-            <div class="col-5">
-                <input type="text" class="form-control rounded" placeholder="Search..." name="search" id="searchGuru" style="border: 2px solid lightblue;">
+            <div style="margin-right: 20px;">
+                <input type="text" class="form-control rounded" placeholder="Search..." name="search" id="searchGuru" style="border: 2px solid lightblue; width: 350px;">
             </div>
             <div class="col-2 mx-3 ml-5">
                 <select class="form-select rounded" name="dropdownkelas" id="dropdownkelasGuru" style="border: 2px solid lightblue;">
@@ -155,6 +169,79 @@
             </table>
         </div>
     </div>
+
+    <!-- Formulir untuk menambahkan absensi -->
+    <form id="absensiForm" enctype="multipart/form-data">
+        <div class="border border-2 rounded p-4 my-4 d-flex flex-column text-md" style="height: auto; max-height: 550px; position: relative;" id="presensiOptions">
+            <h5 class="font-weight-bold mb-3">Tambahkan Absensi</h5>
+            
+            <!-- Radio button untuk memilih apakah absensi untuk "Siswa" atau "Guru" -->
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="roleRadio" id="siswaRadio" value="siswa" onclick="selectRole('siswa')">
+                <label class="form-check-label" for="siswaRadio">
+                    Siswa
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="roleRadio" id="guruRadio" value="guru" onclick="selectRole('guru')">
+                <label class="form-check-label" for="guruRadio">
+                    Guru
+                </label>
+            </div>
+    
+            <!-- Dropdown untuk memilih kelas (akan muncul jika role "Siswa" yang dipilih) -->
+            <div class="mb-3" id="dropdownContainer" style="display: none;">
+                <label for="dropdown1" class="form-label">Pilih :</label>
+                <select class="form-select" id="dropdown1" name="dropdown1"></select>
+                
+                <!-- Dropdown2 untuk daftar nama siswa -->
+                <div class="mb-3" id="dropdown2Container" style="display: none;">
+                    <label for="dropdown2" class="form-label">Pilih Siswa:</label>
+                    <select class="form-select" id="dropdown2" name="dropdown2"></select>
+                </div>
+            </div>
+    
+            <div class="d-flex justify-content-center">
+                <!-- Opsi absensi -->
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" onclick="selectOption('masuk')">
+                    <label class="form-check-label" for="flexRadioDefault1">
+                        Masuk
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" onclick="selectOption('sakit')">
+                    <label class="form-check-label" for="flexRadioDefault2">
+                        Sakit
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3" onclick="selectOption('izin')">
+                    <label class="form-check-label" for="flexRadioDefault3">
+                        Izin
+                    </label>
+                </div>
+            </div>
+            
+            <!-- File upload container -->
+            <div class="file-upload-container" id="fileUploadContainer">
+                <div class="mb-3">
+                    <label for="fileInput" class="form-label">Unggah File (PDF):</label>
+                    <input type="file" class="form-control" id="fileInput" name="file" accept=".pdf">
+                </div>
+            </div>
+    
+            <!-- Hidden input untuk menyimpan nilai status absen -->
+            <input type="hidden" name="status_absen" id="statusInput" value="">
+            
+            <!-- Tombol Submit -->
+            <div class="d-flex justify-content-end mt-3">
+                <button type="button" class="submit-button" onclick="submitData()" id="submitButton">Submit</button>
+                <div id="submitIndicator"></div>
+            </div>
+        </div>
+    </form>
+    
 
     <div class="bodycalendar">
         <div class="container">
@@ -276,6 +363,44 @@
 </div>
 
 <style>
+
+.form-check-label {
+    font-size: 20px; /* Sesuaikan dengan ukuran teks yang diinginkan */
+    margin-right: 10px; /* Sesuaikan dengan jarak yang diinginkan antara label dan tombol input */
+}
+
+.form-check {
+    margin-right: 40px;
+}
+
+.file-upload-container {
+    display: none;
+    margin-top: 10px;
+  }
+
+  .absensi-button {
+      border: none;
+      border-radius: 50%;
+      background-color: #ccc;
+      color: #fff;
+      padding: 10px 20px;
+      margin-right: 10px;
+      cursor: pointer;
+  }
+
+  .absensi-button.active {
+      background-color: #007bff;
+  }
+
+  .submit-button {
+        border: none;
+        border-radius: 5px;
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px 20px;
+        cursor: pointer;
+    }
+
         :root {
     --primary-clr: #b38add;
     }
@@ -893,49 +1018,88 @@
             tidakMasuk: siswaData.tidakMasuk + guruData.tidakMasuk
         };
     
-        // Inisialisasi pie chart dengan data yang dihitung
-        window.ApexCharts && new ApexCharts(document.getElementById('chart-demo-pie'), {
-            chart: {
-                type: "donut",
-                fontFamily: 'inherit',
-                height: 400,
-                sparkline: {
-                    enabled: true
-                },
-                animations: {
-                    enabled: false
-                },
+        window.ApexCharts && new ApexCharts(document.getElementById('chart-demo-pie-siswa'), {
+        chart: {
+            type: "donut",
+            fontFamily: 'inherit',
+            height: 400,
+            sparkline: {
+                enabled: true
             },
-            fill: {
-                opacity: 1,
+            animations: {
+                enabled: false
             },
-            series: [combinedData.masuk, combinedData.sakit, combinedData.izin, combinedData.tidakMasuk],
-            labels: ["Masuk", "Sakit", "Izin", "Tidak Masuk"],
-            tooltip: {
-                theme: 'dark'
+        },
+        // Gunakan data yang dihitung untuk siswa
+        series: [siswaData.masuk, siswaData.sakit, siswaData.izin, siswaData.tidakMasuk],
+        labels: ["Masuk", "Sakit", "Izin", "Tidak Masuk"],
+        tooltip: {
+            theme: 'dark'
+        },
+        grid: {
+            strokeDashArray: 4,
+        },
+        colors: ['#2845ff', '#Feef50', '#20f000', '#ff1818' ],
+        legend: {
+            show: true,
+            position: 'bottom',
+            offsetY: 12,
+            markers: {
+                width: 10,
+                height: 10,
+                radius: 100,
             },
-            grid: {
-                strokeDashArray: 4,
+            itemMargin: {
+                horizontal: 8,
+                vertical: 8
             },
-            colors: ['#2845ff', '#Feef50', '#20f000', '#ff1818' ],
-            legend: {
-                show: true,
-                position: 'bottom',
-                offsetY: 12,
-                markers: {
-                    width: 10,
-                    height: 10,
-                    radius: 100,
-                },
-                itemMargin: {
-                    horizontal: 8,
-                    vertical: 8
-                },
+        },
+        tooltip: {
+            fillSeriesColor: false
+        },
+    }).render();
+
+    // Inisialisasi pie chart untuk guru
+    window.ApexCharts && new ApexCharts(document.getElementById('chart-demo-pie-guru'), {
+        chart: {
+            type: "donut",
+            fontFamily: 'inherit',
+            height: 400,
+            sparkline: {
+                enabled: true
             },
-            tooltip: {
-                fillSeriesColor: false
+            animations: {
+                enabled: false
             },
-        }).render();
+        },
+        // Gunakan data yang dihitung untuk guru
+        series: [guruData.masuk, guruData.sakit, guruData.izin, guruData.tidakMasuk],
+        labels: ["Masuk", "Sakit", "Izin", "Tidak Masuk"],
+        tooltip: {
+            theme: 'dark'
+        },
+        grid: {
+            strokeDashArray: 4,
+        },
+        colors: ['#2845ff', '#Feef50', '#20f000', '#ff1818' ],
+        legend: {
+            show: true,
+            position: 'bottom',
+            offsetY: 12,
+            markers: {
+                width: 10,
+                height: 10,
+                radius: 100,
+            },
+            itemMargin: {
+                horizontal: 8,
+                vertical: 8
+            },
+        },
+        tooltip: {
+            fillSeriesColor: false
+        },
+    }).render();
     });
     
     
@@ -1669,32 +1833,56 @@
         });
     
         function deleteAbsensi(id) {
-        if (confirm('Apakah Anda yakin ingin menghapus data absensi ini?')) {
+    Swal.fire({
+        title: 'Konfirmasi Hapus',
+        text: 'Apakah Anda yakin ingin menghapus data absensi ini?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya, Hapus!',
+        cancelButtonText: 'Batal'
+    }).then((result) => {
+        if (result.isConfirmed) {
             // Get the CSRF token from the meta tag
             var csrfToken = $('meta[name="csrf-token"]').attr('content');
-    
+
             // Include the CSRF token in the headers
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': csrfToken
                 }
             });
-    
+
             // Send the delete request
             $.ajax({
                 type: 'DELETE',
                 url: '/api/delete-absensi/' + id,
                 success: function () {
-                    // Refresh the page after successful deletion
-                    location.reload();
+                    // Display success message
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil',
+                        text: 'Data absensi berhasil dihapus.',
+                    }).then(() => {
+                        // Refresh the page after successful deletion
+                        location.reload();
+                    });
                 },
                 error: function (error) {
                     console.error('Error deleting absensi:', error);
-                    alert('Terjadi kesalahan saat menghapus data absensi.');
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Terjadi kesalahan saat menghapus data absensi.',
+                    });
                 }
             });
         }
-    }
+    });
+}
+
+
     
     
     function showEditModal(absensiId) {
@@ -1809,8 +1997,238 @@
             return new Date(dateTimeString).toLocaleTimeString('id-ID');
         }
     
+    let selectedOption = null;
+
+    function selectOption(option) {
+    // Mendapatkan nilai status absen
+    selectedOption = option;
+
+    // Menyimpan nilai status absen ke dalam hidden input
+    const statusInput = document.getElementById('statusInput');
+    statusInput.value = selectedOption;
+
+    toggleFileUploadContainer();
+    }
+
+    function toggleFileUploadContainer() {
+    const fileUploadContainer = document.getElementById('fileUploadContainer');
+
+    if (selectedOption === 'sakit' || selectedOption === 'izin') {
+        fileUploadContainer.style.display = 'block';
+    } else {
+        fileUploadContainer.style.display = 'none';
+    }
+    }
+
+
+  var roleRadioButtons = document.querySelectorAll('input[name="roleRadio"]');
+var dropdownContainer = document.getElementById('dropdownContainer');
+var dropdown1 = document.getElementById('dropdown1');
+var dropdown2Container = document.getElementById('dropdown2Container');
+var dropdown2 = document.getElementById('dropdown2');
+
+// Function untuk mendapatkan dan menampilkan daftar kelas
+function refreshKelasDropdown() {
+    fetch('/get_kelas')
+        .then(response => response.json())
+        .then(data => {
+            refreshDropdown(dropdown1, data);
+        })
+        .catch(error => {
+            console.error('Gagal mengambil daftar kelas:', error);
+        });
+}
+
+// Function untuk mendapatkan dan menampilkan daftar nama siswa berdasarkan kelas
+function refreshSiswaDropdown(selectedKelas) {
+    fetch('/get_siswaadmin?kelas=' + selectedKelas)
+        .then(response => response.json())
+        .then(data => {
+            refreshDropdown(dropdown2, data);
+            dropdown2Container.style.display = "block";
+        })
+        .catch(error => {
+            console.error('Gagal mengambil daftar siswa:', error);
+        });
+}
+
+// Function untuk mendapatkan dan menampilkan daftar guru
+function refreshGuruDropdown() {
+    fetch('/get_gurunames')
+        .then(response => response.json())
+        .then(data => {
+            refreshDropdown(dropdown1, data);
+            dropdown2Container.style.display = "none"; // Sembunyikan dropdown2 untuk role guru
+        })
+        .catch(error => {
+            console.error('Gagal mengambil daftar guru:', error);
+        });
+}
+
+// Function untuk mendapatkan dan menampilkan dropdown
+// Function untuk mendapatkan dan menampilkan dropdown
+function refreshDropdown(dropdown, data) {
+    console.log('Mengambil dan menampilkan dropdown...');
+    dropdown.innerHTML = '<option value="">Pilih</option>';
+    
+    // Periksa apakah data adalah array
+    if (Array.isArray(data)) {
+        // Jika iya, proses data sebagai array
+        data.forEach(item => {
+            var option = document.createElement("option");
+            option.text = item;
+            dropdown.add(option);
+        });
+    } else {
+        // Jika tidak, proses data langsung
+        var option = document.createElement("option");
+        option.text = data;
+        dropdown.add(option);
+    }
+    
+    console.log('Dropdown berhasil diisi.');
+}
+
+
+// Function untuk menangani perubahan role
+function selectRole(role) {
+    const selectedRole = role;
+    console.log('Selected Role:', selectedRole);
+    console.log('Role dipilih:', role);
+    if (role === 'siswa') {
+        // Jika role "Siswa" dipilih, tampilkan dan isi dropdown kelas serta dropdown siswa
+        console.log('Menampilkan dan mengisi dropdown kelas...');
+        dropdownContainer.style.display = "block";
+        dropdown2Container.style.display = "block"; // Tampilkan dropdown2
+        refreshKelasDropdown();
+    } else if (role === 'guru') {
+        // Jika role "Guru" dipilih, tampilkan dan isi dropdown guru, dan sembunyikan dropdown siswa
+        console.log('Menampilkan dan mengisi dropdown guru...');
+        dropdownContainer.style.display = "block";
+        dropdown2Container.style.display = "none"; // Sembunyikan dropdown2 untuk role guru
+        refreshGuruDropdown();
+    } else if (role === 'on') {
+        return; // Keluar dari fungsi untuk menghindari pengulangan data
+    } else {
+        // Untuk role selain "siswa", "guru", dan "on", sembunyikan dropdown dan dropdown2
+        console.log('Sembunyikan dropdown dan dropdown2.');
+        dropdownContainer.style.display = "none";
+        dropdown2Container.style.display = "none";
+    }
+}
+
+// Event listener untuk perubahan role pada radio button
+roleRadioButtons.forEach(function (radio) {
+    radio.addEventListener('change', function () {
+        // Hanya panggil selectRole jika radio button yang dicek adalah yang dipilih (checked)
+        if (this.checked) {
+            // Reset nilai dropdown saat role berubah
+            dropdown1.value = '';
+            dropdown2.value = '';
+            // Panggil fungsi selectRole dengan role yang dipilih
+            selectRole(this.value);
+        }
+    });
+});
+
+// Event listener untuk perubahan kelas pada dropdown1
+// Event listener untuk perubahan pada dropdown1 (kelas)
+dropdown1.addEventListener('change', function () {
+    var selectedKelas = this.value;
+
+    // Panggil fungsi refreshSiswaDropdown jika role yang dipilih adalah "siswa"
+    if (roleRadioButtons[0].checked) { // Periksa apakah role yang dipilih adalah "siswa"
+        refreshSiswaDropdown(selectedKelas);
+    }
+});
+
+// Inisialisasi dropdown saat halaman dimuat
+console.log('Inisialisasi dropdown...');
+refreshDropdown(dropdown1, []); // Inisialisasi dropdown1
+refreshDropdown(dropdown2, []); // Inisialisasi dropdown2
+
+function submitData() {
+    // Validasi
+    // const selectedOption = document.querySelector('input[name="flexRadioDefault"]:checked').value;
+    const selectedRole = document.querySelector('input[name="roleRadio"]:checked').value;
+    const selectedNama = selectedRole === 'siswa' ? document.getElementById('dropdown2').value : document.getElementById('dropdown1').value;
+    const selectedStatus = document.getElementById('statusInput').value;
+
+    if (!selectedOption || !selectedRole || !selectedNama) {
+        alert('Isi semua informasi yang diperlukan.');
+        return;
+    }
+
+    const fileInput = document.getElementById('fileInput');
+    const formData = new FormData();
+
+    if ((selectedOption === 'sakit' || selectedOption === 'izin') && !fileInput.files.length) {
+        // Jika sakit atau izin dipilih dan file belum diunggah
+        Swal.fire({
+            icon: 'warning',
+            title: 'Peringatan',
+            text: 'Anda memilih opsi Sakit/Izin. Mohon unggah file terlebih dahulu.',
+        });
+        return;
+    }
+
+    // Tidak perlu memeriksa file jika opsi yang dipilih adalah 'masuk'
+    if (!(selectedOption === 'masuk')) {
+        if (!fileInput.files.length) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Peringatan',
+                text: 'Anda memilih opsi selain Sakit/Izin. Mohon unggah file terlebih dahulu.',
+            });
+            return;
+        }
+        formData.append('file', fileInput.files[0]);
+    }
+
+    formData.append('status_absen', selectedStatus);
+    formData.append('role', selectedRole);
+    formData.append('nama_siswa', selectedNama);
+
+    const submitButton = document.getElementById('submitButton');
+    submitButton.innerHTML = 'Submitting...';
+
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+
+    fetch('{{ route('absensi.storeAdmin') }}', {
+        method: 'POST',
+        headers: {
+            'X-CSRF-Token': csrfToken,
+        },
+        body: formData,
+    })
+    .then(response => response.json())
+    .then(data => {
+        submitButton.innerHTML = 'Submit';
+
+        Swal.fire({
+                icon: 'success',
+                title: 'Berhasil',
+                text: 'Data berhasil ditambahkan.',
+            });
+        location.reload();
+    })
+    .catch(error => {
+        submitButton.innerHTML = 'Submit';
+
+        // Menampilkan pesan error yang lebih informatif
+        Swal.fire({
+            icon: 'error',
+            title: 'Terjadi Kesalahan',
+            text: 'Terjadi kesalahan karena data tidak lengkap. Silakan coba lagi.',
+        });
+
+        console.error('Error:', error);
+    });
+}
+
+
+
+
+
     </script>
-
-
-
 @endsection

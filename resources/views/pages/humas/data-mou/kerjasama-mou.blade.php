@@ -72,7 +72,9 @@
                             <label for="floatingTextarea" style="color:darkgrey" > Jelaskan deskripsi singkat terkait kerja sama</label>
                         </div>
                     </div>
-                    <div class="col-md-6">
+
+                    {{-- <div class="col-md-6">
+
                         <div class="row">
                             <label for="formFile" class="form-label">File</label>
                             <label class="form-label"> Keterangan : Silahkan upload file dalam bentuk doc, docx atau pdf </label>
@@ -80,7 +82,17 @@
                             <input class="form-control rounded-3 text-sm" name="file_mitra" type="file"
                             id="file-input" 
                             required value="{{ old('file_mitra') }}" {{ $errors->has('file_mitra') ? 'autofocus="true"' : '' }}>
-                    </div>
+                    </div> --}}
+                    <div class="col-md-6">
+                        <div class="row">
+                            <label for="formFile" class="form-label">File</label>
+                            <label class="form-label"> Keterangan : Silahkan upload file dalam bentuk doc, docx, atau pdf </label>
+                        </div>
+                        <input class="form-control rounded-3 text-sm" name="file_mitra" type="file"
+                            id="file-input" accept=".doc, .docx, .pdf"
+                            required value="{{ old('file_mitra') }}" {{ $errors->has('file_mitra') ? 'autofocus="true"' : '' }}>
+                        <span id="file-error" class="text-danger"></span>
+                    </div>         
                     <div class="col-md-3">
                         <label class="form-label" for="tanggal_mulai">Tanggal Mulai Kerjasama</label>
                         <div class="input-group">
@@ -147,4 +159,29 @@
     }
 </script>
 
+<script>
+    document.getElementById('file-input').addEventListener('change', function() {
+        var allowedExtensions = ['.doc', '.docx', '.pdf'];
+        var input = this;
+        var file = input.files[0];
+        var fileName = file.name;
+
+        var isValid = allowedExtensions.some(function(ext) {
+            return fileName.endsWith(ext);
+        });
+
+        var errorSpan = document.getElementById('file-error');
+        if (!isValid) {
+            errorSpan.textContent = 'File harus dalam format doc, docx, atau pdf.';
+            input.value = '';  // Clear the input field
+        } else {
+            errorSpan.textContent = '';  // Clear any previous error message
+        }
+    });
+</script>
+
+<<<<<<< HEAD
+=======
+
+>>>>>>> 7c56d9d438752ab416e8c106597cbe0d66862c22
 @endsection

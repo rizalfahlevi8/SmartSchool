@@ -93,6 +93,11 @@ Route::middleware(['auth'])->group(function () {
     // ==============[ D A S H B O A R D ]===============
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+    // ==============[ S T A T U S - T A M U ]===============
+    Route::match(['post'], '/dashboard/{id}/terima', [DashboardController::class, 'terimaPesan'])->name('dashboard.terimaPesan');
+    Route::match(['delete'], '/dashboard/{id}/hapus', [DashboardController::class, 'hapusPesan'])->name('dashboard.hapusPesan');
+    // Route::delete('/dashboard/{id}', [DashboardController::class, 'hapusPesan'])->name('dashboard.hapusPesan');
+
     //edit password
     Route::get('/option/change-password', [EditPasswordController::class, 'index']);
     Route::post('/option/change-password/{user}', [EditPasswordController::class, 'ubah'])->name('option.change-password');
@@ -139,6 +144,8 @@ Route::middleware(['userRole:admin,guru'])->group(function () {
     Route::get('/data-nilai-moodle/course-moodle', [NilaiMoodleController::class, 'getMoodleCourses']);
     Route::get('/data-nilai-moodle/course-moodle/nilai-course/{courseId}', [NilaiMoodleController::class, 'getGradeItems'])
     ->name('nilai-course');
+    Route::get('/get-grade-items/{courseId}/{search?}', [NilaiMoodleController::class, 'getGradeItems'])->name('get.grade.items');
+
 });
 
 
@@ -270,15 +277,6 @@ Route::middleware(['userRole:admin,wakasek'])->group(function () {
     Route::post('/akademik/absensi/{akademik}/{kelas}', [AbsensiController::class, 'showKelasAbsensi']);
     Route::post('/api/akademik/absensi-update/{absensi}', [AbsensiController::class, 'apiUpdateAbsensi'])->name('api.update-absensi');
 
-    // Kims-Absensi
-    Route::get('/akademik/absensi/admin', [AbsensiController::class, 'showAbsensiAdmin']);
-    Route::get('/get_kelas', [KelasController::class, 'getKelas']);
-    Route::get('/get_siswa', [SiswaController::class, 'getSiswaKelasAbsensi']);
-    Route::get('/get_guru', [GuruController::class, 'getGuru']);
-    Route::get('/api/events-from-database', [AbsensiController::class, 'getEventsFromDatabase']);
-    Route::delete('/api/delete-absensi/{id}', [AbsensiController::class, 'deleteAbsensi']);
-    Route::put('/api/update-absensi/{id}', [AbsensiController::class, 'updateAbsensi']);
-
     // ==============[ D a t a - P e m i n j a m a n ]===============
     Route::get('/data-peminjaman', [PeminjamanController::class, 'index']);
     Route::get('/data-peminjaman-history', [PeminjamanController::class, 'history']);
@@ -321,6 +319,19 @@ Route::middleware(['userRole:admin,wakasek'])->group(function () {
     Route::get('/data-peminjaman-barang-approve/{peminjaman}', [PeminjamanBarangController::class, 'approve']);
     Route::get('/data-peminjaman-barang-decline/{peminjaman}', [PeminjamanBarangController::class, 'decline']);
 
+    // ==============[ D a t a - A b s e n s i]===============
+    Route::get('/akademik/absensi/admin', [AbsensiController::class, 'showAbsensiAdmin']);
+    Route::get('/get_kelas', [KelasController::class, 'getKelas']);
+    Route::get('/get_siswa', [SiswaController::class, 'getSiswaKelasAbsensi']);
+    Route::get('/get_guru', [GuruController::class, 'getGuru']);
+    Route::get('/get_gurunames', [GuruController::class, 'getGuruNames']);
+    Route::get('/api/events-from-database', [AbsensiController::class, 'getEventsFromDatabase']);
+    Route::delete('/api/delete-absensi/{id}', [AbsensiController::class, 'deleteAbsensi']);
+    Route::put('/api/update-absensi/{id}', [AbsensiController::class, 'updateAbsensi']);  
+    Route::get('/get_siswaadmin', [SiswaController::class, 'getSiswaByKelas']);
+    Route::post('/akademik/absensi/postAbsensi', [AbsensiController::class, 'storeAdmin'])->name('absensi.storeAdmin');
+    Route::get('/getIdUserByNama', [AbsensiController::class, 'getIdUserByNama'])->name('getIdUserByNama');
+
 });
 //======================== G U R U =========================================================
 Route::middleware(['userRole:guru'])->group(function () {
@@ -345,6 +356,7 @@ Route::middleware(['userRole:siswa,admin'])->group(function () {
     Route::get('/akademik/jadwal-siswa/{id}', [JadwalController::class, 'jadwalsiswa']);
 
    
+
 
 });
 

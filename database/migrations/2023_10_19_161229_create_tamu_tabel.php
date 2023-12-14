@@ -23,6 +23,9 @@ return new class extends Migration
             $table->string('Opsi_lanjutan')->references('username')->on('users');
             $table->unsignedBigInteger('user_id')->nullable(); // Tambahkan kolom user_id
             $table->foreign('user_id')->references('id')->on('users')->nullOnDelete();
+
+            $table->enum('status', ['menunggu', 'pesan_telah_diterima', 'pesan_telah_selesai'])->default('menunggu');
+
         });
     }
 
