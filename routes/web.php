@@ -93,6 +93,11 @@ Route::middleware(['auth'])->group(function () {
     // ==============[ D A S H B O A R D ]===============
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+    // ==============[ S T A T U S - T A M U ]===============
+    Route::match(['post'], '/dashboard/{id}/terima', [DashboardController::class, 'terimaPesan'])->name('dashboard.terimaPesan');
+    Route::match(['delete'], '/dashboard/{id}/hapus', [DashboardController::class, 'hapusPesan'])->name('dashboard.hapusPesan');
+    // Route::delete('/dashboard/{id}', [DashboardController::class, 'hapusPesan'])->name('dashboard.hapusPesan');
+
     //edit password
     Route::get('/option/change-password', [EditPasswordController::class, 'index']);
     Route::post('/option/change-password/{user}', [EditPasswordController::class, 'ubah'])->name('option.change-password');
@@ -139,6 +144,8 @@ Route::middleware(['userRole:admin,guru'])->group(function () {
     Route::get('/data-nilai-moodle/course-moodle', [NilaiMoodleController::class, 'getMoodleCourses']);
     Route::get('/data-nilai-moodle/course-moodle/nilai-course/{courseId}', [NilaiMoodleController::class, 'getGradeItems'])
     ->name('nilai-course');
+    Route::get('/get-grade-items/{courseId}/{search?}', [NilaiMoodleController::class, 'getGradeItems'])->name('get.grade.items');
+
 });
 
 

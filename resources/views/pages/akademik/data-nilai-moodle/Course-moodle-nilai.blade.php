@@ -11,22 +11,45 @@
 @section('content')
     <div class="row">
         <div class="col-12">
-            <a href="/akademik/jadwal" type="button" id="btntambah"
-               class="btn btn-secondary rounded-pill font-weight-bold text-xs text-white">
+            <a href="/data-nilai-moodle/course-moodle" type="button" id="btntambah"
+               class="btn btn-secondary rounded-pill font-weight-bold text-xs text-white" style="background-color: #3b82f6";>
                 <i class="material-icons opacity-10">arrow_back</i>
                 Kembali
             </a>
         </div>
     </div>
+    {{-- Search form --}}
+    <div class="row mt-3">
+        <div class="col-12">
+            <form action="{{ route('get.grade.items', ['courseId' => $courseId]) }}" method="GET">
+                <div class="form-group">
+                    <label for="search">Search by User Fullname:</label>
+                    <input type="text" class="form-control" id="search" name="search" placeholder="Enter userfullname">
+                </div>
+            </form>
+        </div>
+    </div>
 
-    @foreach ($gradeItems['usergrades'] as $grade)
+    {{-- Store usergrades data in a variable --}}
+    @php
+        $userGradesData = $gradeItems['usergrades'];
+    @endphp
+
+
+    {{-- Iterate through usergrades --}}
+    @foreach ($userGradesData as $grade)
         @if (strpos(strtolower($grade['userfullname']), 'pengajar') === false)
+            {{-- Check if search query matches userfullname --}}
+            @if (isset($_GET['search']) && stripos($grade['userfullname'], $_GET['search']) === false)
+                @continue
+            @endif
+
             <div class="row mt-3">
                 <div class="col-12">
                     <!-- Card for User Fullname -->
-                    <div class="card mb-1" style="background-color: #D9D9D9; color: #ffffff; font-size: px; border-radius: 14px;">
+                    <div class="card mb-1" style="background-color: #ffffff; color: #ffffff; font-size: px; border-radius: 14px;">
                         <div class="card-body">
-                            <h4 class="card-title"style="font-size: 20px;">{{ $grade['userfullname'] }}</h4>
+                            <h4 class="card-title" style="font-size: 20px;">{{ $grade['userfullname'] }}</h4>
                             <!-- Iterate through gradeitems -->
                             @foreach ($grade['gradeitems'] as $item)
                                 <!-- Check if itemmodule is quiz or assign -->
@@ -56,5 +79,22 @@
                 </div>
             </div>
         @endif
+    @endforeach
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var searchInput = document.getElementById('search');
+            searchInput.addEventListener('input', function () {
+                // Delay execution to avoid triggering the search on every keystroke
+                clearTimeout(this.timer);
+                this.timer = setTimeout(function () {
+                    // Trigger the form submission when the user types
+                    searchInput.closest('form').submit();
+                }, 500);
+            });
+        });
+    </script>
+    {{-- Iterate through usergrades --}}
+    @foreach ($userGradesData as $grade)
+        <!-- Your existing iteration code... -->
     @endforeach
 @endsection

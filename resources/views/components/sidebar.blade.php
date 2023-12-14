@@ -87,12 +87,7 @@
                                     class="material-icons opacity-10 mx-2">receipt_long</i>
                                 Kalender Akademik</a></li>
                     </ul>
-                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                        <li><a class="link-light rounded mb-1 'bg-gradient-primary ' : '' }}"
-                                style="width: 100%" href="javascript:void(0);" onclick="konfirmasiBukaLink()"><i
-                                    class="material-icons opacity-10 mx-2" >task</i>
-                                Elearning</a></li>
-                    </ul>
+                   
                 </div>
             </li>
             
@@ -185,6 +180,14 @@
                 </div>
             </li>
 
+            <li class="mb-1" style="">
+                <a class="btn rounded text-white font-weight-bold 'bg-gradient-primary ' : '' }}"
+                    style="text-transform: none; width: 100%;display: flex; align-items: center; column-gap:10px"
+                    href="javascript:void(0);" onclick="konfirmasiBukaLink()"> <span
+                        class="material-symbols-outlined">task</span> Elearning</a>
+            </li>
+
+
         @elseif (auth()->user()->hasRole('wakasek'))
             <li class="mb-1">
                 <button class="btn align-items-center rounded collapsed text-white font-weight-bold"
@@ -257,16 +260,6 @@
                         class="material-symbols-outlined">event_note</span> Jadwal Pelajaran</a>
             </li>
 
-            <li class="mb-1" style="width: 100%">
-                <a class="btn align-items-center rounded text-white font-weight-bold"
-                    style="text-transform: none; width: 100%; display: flex; align-items: center; column-gap:10px;"
-                    href="/akademik/absensi/siswa">
-                    <span class="material-symbols-outlined">
-                        school
-                    </span>
-                    Presensi
-                </a>
-            </li>
 
             <li class="mb-1" style="">
                 <a class="btn rounded text-white font-weight-bold 'bg-gradient-primary ' : '' }}"

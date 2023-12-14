@@ -4,7 +4,9 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bb67de0fa3b9101bc637978ad60c44d5",
+
+    "content-hash": "eb1c50568c472f50da4ded92a125a549",
+
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -4777,8 +4779,10 @@
             },
             "dist": {
                 "type": "zip",
+
                 "url": "https://api.github.com/repos/symfony/css-selector/zipball/d036c6c0d0b09e24a14a35f8292146a658f986e4",
                 "reference": "d036c6c0d0b09e24a14a35f8292146a658f986e4",
+              
                 "shasum": ""
             },
             "require": {
@@ -4814,7 +4818,8 @@
             "description": "Converts CSS selectors to XPath expressions",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/css-selector/tree/v6.4.0"
+              
+                "source": "https://github.com/symfony/css-selector/tree/v7.0.0"
             },
             "funding": [
                 {
@@ -4830,7 +4835,8 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-10-31T08:40:20+00:00"
+
+            "time": "2023-10-31T17:59:56+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",

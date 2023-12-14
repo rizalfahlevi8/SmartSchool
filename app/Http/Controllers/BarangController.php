@@ -48,7 +48,7 @@ class BarangController extends Controller
     public function destroy(Barang $barang)
     {
         $barang->delete();
-        Storage::delete('public/'. $barang->image);
+        Storage::delete('public/image'. $barang->image);
 
         return redirect()->route('barang_main')->with('success', 'Data barang berhasil dihapus.');
     }

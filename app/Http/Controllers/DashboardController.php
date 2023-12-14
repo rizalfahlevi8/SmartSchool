@@ -136,9 +136,36 @@ class DashboardController extends Controller
 
             return view('pages.dashboard.dashboard'
             ,compact('tamu_pesans')
-            , ['rolePengumuman' => $rolePengumuman] + $datas)->with('title', 'Dashboard');
-        
+            , ['rolePengumuman' => $rolePengumuman] + $datas)->with('title', 'Dashboard');    
 
+        }
+    }
+
+    // Metode kontrol untuk menangani pesan yang diterima
+    public function terimaPesan($id)
+    {
+        $tamu_pesan = Tamu::find($id);
+
+        if ($tamu_pesan) {
+            $tamu_pesan->status = 'pesan_telah_diterima';
+            $tamu_pesan->save();
+            return redirect()->back()->with('success', 'Pesan diterima.');
+        } else {
+            return redirect()->back()->with('error', 'Tamu pesan tidak ditemukan.');
+        }
+    }
+
+    // Metode kontrol untuk menangani penghapusan pesan
+    public function hapusPesan($id)
+    {
+        $tamu_pesan = Tamu::find($id);
+
+        if ($tamu_pesan) {
+            $tamu_pesan->status = 'pesan_telah_selesai';
+            $tamu_pesan->save();
+            return redirect()->back()->with('success', 'Pesan dihapus.');
+        } else {
+            return redirect()->back()->with('error', 'Tamu pesan tidak ditemukan.');
         }
     }
 
