@@ -175,6 +175,48 @@
                                             </ul>
                                         @endif
                                     </div>
+                                    <div class="card-header">
+                                        <h4 class="card-title">Pengumuman Tamu</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        @if ($tamu_pesans->isEmpty())
+                                            <p class="text-muted">Tidak ada tamu saat ini.</p>
+                                        @else
+                                            <ul class="list-group">
+                                                @foreach ($tamu_pesans as $tamu_pesan)
+                                                    <li class="list-group-item">
+                                                        <div class="row">
+                                                            <div class="col-md-2">
+                                                                <span class="float-start">Nama Tamu </span>
+                                                                <div class="float-end">:</div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                {{ $tamu_pesan->nama }}
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-2">
+                                                                <span class="float-start">Alamat </span>
+                                                                <div class="float-end">:</div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                {{ $tamu_pesan->alamat }}
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-2">
+                                                                <span class="float-start">Keperluan </span>
+                                                                <div class="float-end">: </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                {{ $tamu_pesan->Keterangan }}
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        @endif
+                                    </div>
                                 </div>
                                 <div class="card mt-4">
                                     <div class="card-header">
