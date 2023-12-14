@@ -93,6 +93,11 @@ Route::middleware(['auth'])->group(function () {
     // ==============[ D A S H B O A R D ]===============
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+    // ==============[ S T A T U S - T A M U ]===============
+    Route::match(['post'], '/dashboard/{id}/terima', [DashboardController::class, 'terimaPesan'])->name('dashboard.terimaPesan');
+    Route::match(['delete'], '/dashboard/{id}/hapus', [DashboardController::class, 'hapusPesan'])->name('dashboard.hapusPesan');
+    // Route::delete('/dashboard/{id}', [DashboardController::class, 'hapusPesan'])->name('dashboard.hapusPesan');
+
     //edit password
     Route::get('/option/change-password', [EditPasswordController::class, 'index']);
     Route::post('/option/change-password/{user}', [EditPasswordController::class, 'ubah'])->name('option.change-password');

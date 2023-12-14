@@ -5,7 +5,6 @@
         "This file is @generated automatically"
     ],
 
-
     "content-hash": "eb1c50568c472f50da4ded92a125a549",
 
     "packages": [
@@ -2459,7 +2458,6 @@
         },
         {
             "name": "league/flysystem",
-
             "version": "3.23.0",
             "source": {
                 "type": "git",
@@ -2470,7 +2468,6 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/d4ad81e2b67396e33dc9d7e54ec74ccf73151dcc",
                 "reference": "d4ad81e2b67396e33dc9d7e54ec74ccf73151dcc",
-
                 "shasum": ""
             },
             "require": {
@@ -2535,9 +2532,7 @@
             ],
             "support": {
                 "issues": "https://github.com/thephpleague/flysystem/issues",
-
                 "source": "https://github.com/thephpleague/flysystem/tree/3.23.0"
-
             },
             "funding": [
                 {
@@ -2549,7 +2544,6 @@
                     "type": "github"
                 }
             ],
-
             "time": "2023-12-04T10:16:17+00:00"
         },
         {
@@ -2564,7 +2558,6 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/thephpleague/flysystem-local/zipball/5cf046ba5f059460e86a997c504dd781a39a109b",
                 "reference": "5cf046ba5f059460e86a997c504dd781a39a109b",
-
                 "shasum": ""
             },
             "require": {
@@ -2599,9 +2592,7 @@
             ],
             "support": {
                 "issues": "https://github.com/thephpleague/flysystem-local/issues",
-
                 "source": "https://github.com/thephpleague/flysystem-local/tree/3.23.0"
-
             },
             "funding": [
                 {
@@ -2613,9 +2604,7 @@
                     "type": "github"
                 }
             ],
-
             "time": "2023-12-04T10:14:46+00:00"
-
         },
         {
             "name": "league/mime-type-detection",
@@ -4689,7 +4678,6 @@
         },
         {
             "name": "symfony/console",
-
             "version": "v6.4.1",
             "source": {
                 "type": "git",
@@ -4700,7 +4688,6 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/console/zipball/a550a7c99daeedef3f9d23fb82e3531525ff11fd",
                 "reference": "a550a7c99daeedef3f9d23fb82e3531525ff11fd",
-
                 "shasum": ""
             },
             "require": {
@@ -4765,9 +4752,7 @@
                 "terminal"
             ],
             "support": {
-
                 "source": "https://github.com/symfony/console/tree/v6.4.1"
-
             },
             "funding": [
                 {
@@ -4783,7 +4768,6 @@
                     "type": "tidelift"
                 }
             ],
-
             "time": "2023-11-30T10:54:28+00:00"
         },
         {
@@ -4796,9 +4780,10 @@
             },
             "dist": {
                 "type": "zip",
+
                 "url": "https://api.github.com/repos/symfony/css-selector/zipball/d036c6c0d0b09e24a14a35f8292146a658f986e4",
                 "reference": "d036c6c0d0b09e24a14a35f8292146a658f986e4",
-
+              
                 "shasum": ""
             },
             "require": {
@@ -4834,10 +4819,8 @@
             "description": "Converts CSS selectors to XPath expressions",
             "homepage": "https://symfony.com",
             "support": {
-
-
+              
                 "source": "https://github.com/symfony/css-selector/tree/v7.0.0"
-
             },
             "funding": [
                 {
@@ -4854,9 +4837,7 @@
                 }
             ],
 
-
             "time": "2023-10-31T17:59:56+00:00"
-
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -5299,7 +5280,6 @@
         },
         {
             "name": "symfony/http-kernel",
-
             "version": "v6.4.1",
             "source": {
                 "type": "git",
@@ -5310,7 +5290,6 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/http-kernel/zipball/2953274c16a229b3933ef73a6898e18388e12e1b",
                 "reference": "2953274c16a229b3933ef73a6898e18388e12e1b",
-
                 "shasum": ""
             },
             "require": {
@@ -5394,9 +5373,7 @@
             "description": "Provides a structured process for converting a Request into a Response",
             "homepage": "https://symfony.com",
             "support": {
-
                 "source": "https://github.com/symfony/http-kernel/tree/v6.4.1"
-
             },
             "funding": [
                 {
@@ -5412,9 +5389,7 @@
                     "type": "tidelift"
                 }
             ],
-
             "time": "2023-12-01T17:02:02+00:00"
-
         },
         {
             "name": "symfony/mailer",
@@ -6381,7 +6356,6 @@
         },
         {
             "name": "symfony/routing",
-
             "version": "v6.4.1",
             "source": {
                 "type": "git",
@@ -6392,7 +6366,6 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/routing/zipball/0c95c164fdba18b12523b75e64199ca3503e6d40",
                 "reference": "0c95c164fdba18b12523b75e64199ca3503e6d40",
-
                 "shasum": ""
             },
             "require": {
@@ -6446,9 +6419,7 @@
                 "url"
             ],
             "support": {
-
                 "source": "https://github.com/symfony/routing/tree/v6.4.1"
-
             },
             "funding": [
                 {
@@ -6464,9 +6435,7 @@
                     "type": "tidelift"
                 }
             ],
-
             "time": "2023-12-01T14:54:37+00:00"
-
         },
         {
             "name": "symfony/service-contracts",
@@ -7433,7 +7402,6 @@
         },
         {
             "name": "laravel/sail",
-
             "version": "v1.26.3",
             "source": {
                 "type": "git",
@@ -7444,7 +7412,6 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/laravel/sail/zipball/fa1ad5fbb03686dfc752bfd1861d86091cc1c32d",
                 "reference": "fa1ad5fbb03686dfc752bfd1861d86091cc1c32d",
-
                 "shasum": ""
             },
             "require": {
@@ -7496,9 +7463,7 @@
                 "issues": "https://github.com/laravel/sail/issues",
                 "source": "https://github.com/laravel/sail"
             },
-
             "time": "2023-12-02T18:26:39+00:00"
-
         },
         {
             "name": "mockery/mockery",
@@ -9664,5 +9629,5 @@
         "php": "^8.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }

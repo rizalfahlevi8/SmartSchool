@@ -57,6 +57,10 @@
                                         Keterangan
                                     </th>
                                     <th
+                                        class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
+                                        Status
+                                    </th>
+                                    <th
                                         class="
                                             text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
                                         Aksi
@@ -84,6 +88,17 @@
                                         </td>
                                         <td class="text-center">
                                             {{ $t->Keterangan }}
+                                        </td>
+                                        <td class="text-center">
+                                            @if ($t->status === 'menunggu')
+                                                Menunggu
+                                            @elseif ($t->status === 'pesan_telah_diterima')
+                                                Pesan Di Terima
+                                            @elseif ($t->status === 'pesan_telah_selesai')
+                                                Pesan Selesai
+                                            @else
+                                                {{ $t->status }}
+                                            @endif
                                         </td>
                                         <td class="text-center">
                                             <button type="button"data-bs-toggle="modal" data-bs-target="#detail-modal"
