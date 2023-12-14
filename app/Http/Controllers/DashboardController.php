@@ -111,7 +111,6 @@ class DashboardController extends Controller
 
                 $datas['pengumumans'] = $pengumumans;
                 $rolePengumuman = $pengumumans->pluck('role')->unique()->toArray();
-
             }
             
             if (Auth::check()) {

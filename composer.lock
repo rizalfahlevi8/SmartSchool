@@ -3814,6 +3814,8 @@
                 "source": "https://github.com/php-fig/cache/tree/3.0.0"
             },
             "time": "2021-02-03T23:26:27+00:00"
+
+
         },
         {
             "name": "psr/clock",
@@ -4818,8 +4820,10 @@
             "description": "Converts CSS selectors to XPath expressions",
             "homepage": "https://symfony.com",
             "support": {
+
               
                 "source": "https://github.com/symfony/css-selector/tree/v7.0.0"
+
             },
             "funding": [
                 {
@@ -4836,7 +4840,9 @@
                 }
             ],
 
+
             "time": "2023-10-31T17:59:56+00:00"
+
         },
         {
             "name": "symfony/deprecation-contracts",

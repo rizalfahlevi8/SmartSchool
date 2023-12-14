@@ -72,7 +72,9 @@
                             <label for="floatingTextarea" style="color:darkgrey" > Jelaskan deskripsi singkat terkait kerja sama</label>
                         </div>
                     </div>
+
                     {{-- <div class="col-md-6">
+
                         <div class="row">
                             <label for="formFile" class="form-label">File</label>
                             <label class="form-label"> Keterangan : Silahkan upload file dalam bentuk doc, docx atau pdf </label>
@@ -178,4 +180,8 @@
     });
 </script>
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 7c56d9d438752ab416e8c106597cbe0d66862c22
 @endsection

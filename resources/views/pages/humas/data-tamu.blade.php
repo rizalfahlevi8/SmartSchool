@@ -61,10 +61,8 @@
                                         Status
                                     </th>
                                     <th
-                                        class="
-                                            text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
+
                                         Aksi
-                                    </th>
                                 </tr>
                             </thead>
 

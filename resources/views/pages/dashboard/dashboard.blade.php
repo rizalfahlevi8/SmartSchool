@@ -179,7 +179,9 @@
                                         <h4 class="card-title">Pengumuman Tamu</h4>
                                     </div>
                                     <div class="card-body">
+
                                         @if ($tamu_pesans->where('status', '!=', 'pesan_telah_selesai')->isEmpty())
+
                                             <p class="text-muted">Tidak ada tamu saat ini.</p>
                                         @else
                                             <ul class="list-group">
@@ -240,6 +242,10 @@
                                             </ul>
                                         @endif
                                     </div>                
+<<<<<<< HEAD
+=======
+
+>>>>>>> 7c56d9d438752ab416e8c106597cbe0d66862c22
                                 </div>
                                 <div class="card mt-4">
                                     <div class="card-header">
