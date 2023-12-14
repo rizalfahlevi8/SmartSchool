@@ -246,7 +246,7 @@
                         <div class="modal-footer">
                             <a id="file_link" href="#" target="_blank" class="btn btn-success" style="color: white;">Lihat File</a>
                             <a id="file_download" href="#" download class="btn btn-primary" style="color: white;">Download</a>
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                            <button id="detail-modal" type="button" class="btn btn-secondary" data-bs-dismiss="modal" >Tutup</button>
                         </div>
                     
                         {{-- <div class="modal-footer">
@@ -265,6 +265,7 @@
     </div>
 
     <script>
+
         function showModalDialog(element) {
             const updateModalDialog = document.getElementById('detail-modal');
             const nama_mitra = updateModalDialog.querySelector('#nama_mitra');
@@ -276,8 +277,8 @@
             const tujuan_mitra = updateModalDialog.querySelector('#tujuan_mitra');
             const original_name_file = updateModalDialog.querySelector('#original_name_file');
 
-            const fileLink = updateModalDialog.querySelector('#file_link');
-            const fileDownload = updateModalDialog.querySelector('#file_download');
+            // const fileLink = updateModalDialog.querySelector('#file_link');
+            // const fileDownload = updateModalDialog.querySelector('#file_download');
 
             nama_mitra.innerText = element.getAttribute('nama_mitra');
             asal_mitra.innerText = element.getAttribute('asal_mitra');
@@ -288,6 +289,23 @@
             tujuan_mitra.innerText = element.getAttribute('tujuan_mitra');
             original_name_file.innerText = element.getAttribute('original_name_file');
 
+        // // Update link "Lihat File" dan "Download"
+        // const fileName = element.dataset.file;
+        // fileLink.href = `/storage/kerjasama/file/${encodeURIComponent(fileName)}`;
+        // fileDownload.href = `/storage/kerjasama/file/${encodeURIComponent(fileName)}`;
+        // fileDownload.download = fileName;
+
+        // // Menampilkan modal
+        // const modal = new bootstrap.Modal(updateModalDialog);
+        // modal.show();
+
+            }
+    </script>
+    <script>
+
+        const fileLink = updateModalDialog.querySelector('#file_link');
+        const fileDownload = updateModalDialog.querySelector('#file_download');
+        
         // Update link "Lihat File" dan "Download"
         const fileName = element.dataset.file;
         fileLink.href = `/storage/kerjasama/file/${encodeURIComponent(fileName)}`;
@@ -298,7 +316,6 @@
         const modal = new bootstrap.Modal(updateModalDialog);
         modal.show();
 
-            }
     </script>
 @endsection
 {{-- footer --}}
