@@ -44,19 +44,14 @@ class Guru extends Model
         return $this->hasOne(Kelas::class, 'id_guru', 'id');
     }
 
-<<<<<<< Updated upstream
-    public function absensi()
-    {
-        return $this->hasMany(Absensi::class, 'id_siswa');
-=======
 
-    //untuk tamu
-    public function tamu_penguman()
-    {
-        return $this->hasMany(Tamu::class, 'Opsi_lanjutan', 'username');
 
->>>>>>> Stashed changes
-    }
+
+    // public function tamu_penguman()
+    // {
+    //     return $this->hasMany(Tamu::class, 'Opsi_lanjutan', 'username');
+
+    // }
     // public function absensi()
     // {
     //     return $this->hasMany(Absensi::class, 'id_siswa');
