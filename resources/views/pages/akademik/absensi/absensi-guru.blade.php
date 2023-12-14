@@ -49,7 +49,7 @@
                                 <th scope="col">Hari</th>
                                 <th scope="col">Jam Absen</th>
                                 <th scope="col">Status</th>
-                                <th scope="col">Action</th>
+                                {{-- <th scope="col">Action</th> --}}
                             </tr>
                         </thead>
                         <tbody>
@@ -60,9 +60,9 @@
                                         <td>{{ \Carbon\Carbon::parse($absensi->created_at)->locale('id')->isoFormat('dddd') }}</td>
                                         <td>{{ \Carbon\Carbon::parse($absensi->created_at)->format('H:i:s') }}</td>
                                         <td>{{ $absensi->status_absen }}</td>
-                                        <td>
+                                        {{-- <td>
                                             <a href="#" class="btn btn-warning" onclick="showEditModal({{ $absensi->id }})">Edit</a>
-                                        </td>
+                                        </td> --}}
                                     </tr>
                                 @endif
                             @endforeach

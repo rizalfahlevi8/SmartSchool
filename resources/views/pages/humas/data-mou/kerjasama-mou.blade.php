@@ -72,7 +72,9 @@
                             <label for="floatingTextarea" style="color:darkgrey" > Jelaskan deskripsi singkat terkait kerja sama</label>
                         </div>
                     </div>
+
                     {{-- <div class="col-md-6">
+
                         <div class="row">
                             <label for="formFile" class="form-label">File</label>
                             <label class="form-label"> Keterangan : Silahkan upload file dalam bentuk doc, docx atau pdf </label>
@@ -80,6 +82,7 @@
                             <input class="form-control rounded-3 text-sm" name="file_mitra" type="file"
                             id="file-input" 
                             required value="{{ old('file_mitra') }}" {{ $errors->has('file_mitra') ? 'autofocus="true"' : '' }}>
+
                     </div> --}}
                     <div class="col-md-6">
                         <div class="row">
@@ -91,6 +94,7 @@
                             required value="{{ old('file_mitra') }}" {{ $errors->has('file_mitra') ? 'autofocus="true"' : '' }}>
                         <span id="file-error" class="text-danger"></span>
                     </div>         
+
                     <div class="col-md-3">
                         <label class="form-label" for="tanggal_mulai">Tanggal Mulai Kerjasama</label>
                         <div class="input-group">
@@ -157,6 +161,7 @@
     }
 </script>
 
+
 <script>
     document.getElementById('file-input').addEventListener('change', function() {
         var allowedExtensions = ['.doc', '.docx', '.pdf'];
@@ -177,5 +182,6 @@
         }
     });
 </script>
+
 
 @endsection

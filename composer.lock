@@ -5,6 +5,7 @@
         "This file is @generated automatically"
     ],
 
+
     "content-hash": "eb1c50568c472f50da4ded92a125a549",
 
     "packages": [
@@ -3815,6 +3816,7 @@
             },
             "time": "2021-02-03T23:26:27+00:00"
 
+
         },
         {
             "name": "psr/clock",
@@ -4781,9 +4783,11 @@
             "dist": {
                 "type": "zip",
 
+
                 "url": "https://api.github.com/repos/symfony/css-selector/zipball/d036c6c0d0b09e24a14a35f8292146a658f986e4",
                 "reference": "d036c6c0d0b09e24a14a35f8292146a658f986e4",
               
+
                 "shasum": ""
             },
             "require": {
@@ -4819,8 +4823,10 @@
             "description": "Converts CSS selectors to XPath expressions",
             "homepage": "https://symfony.com",
             "support": {
+
               
                 "source": "https://github.com/symfony/css-selector/tree/v7.0.0"
+
             },
             "funding": [
                 {
@@ -4837,7 +4843,9 @@
                 }
             ],
 
+
             "time": "2023-10-31T17:59:56+00:00"
+
         },
         {
             "name": "symfony/deprecation-contracts",

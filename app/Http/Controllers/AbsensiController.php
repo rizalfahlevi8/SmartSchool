@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Absensi;
 use App\Models\Akademik;
 use App\Models\Kelas;
+use App\Models\Siswa;
+use App\Models\Guru;
 use App\Models\User;
 use App\Models\Keteranganabsensi;
 use Illuminate\Http\Request;
@@ -17,45 +19,46 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as Middleware;
 
 class AbsensiController extends Controller
 {
-    public function showAbsensiAdmin(){
-        $absensis = Absensi::all();
-    
-        // Sort absensi by Tanggal
-        $absensis = $absensis->sortBy('created_at');
-    
-        // Separate data for siswa and guru
-        $siswaAbsensi = $absensis->filter(function ($absensi) {
-            return $absensi->user->role == 'siswa';
-        });
-    
-        $guruAbsensi = $absensis->filter(function ($absensi) {
-            return $absensi->user->role == 'guru';
-        });
-    
-        // Sort siswaAbsensi by Tanggal, Kelas, Nama
-        $siswaAbsensi = $siswaAbsensi->sortBy([
-            'created_at',
-            function ($absensi) {
-                return optional($absensi->siswa->kelas)->nama_kelas;
-            },
-            function ($absensi) {
-                return optional($absensi->siswa)->nama;
-            },
-        ]);
-    
-        // Sort guruAbsensi by Tanggal, Nama
-        $guruAbsensi = $guruAbsensi->sortBy([
-            'created_at',
-            function ($absensi) {
-                return optional($absensi->guru)->nama;
-            },
-        ]);
-    
-        return view('pages.akademik.absensi.absensi-admin', [
-            'siswaAbsensis' => $siswaAbsensi,
-            'guruAbsensis' => $guruAbsensi,
-        ])->with('title', 'Absensi Admin');
-    }
+    public function showAbsensiAdmin()
+{
+    $absensis = Absensi::all();
+
+    // Sort absensi by Tanggal (descending)
+    $absensis = $absensis->sortByDesc('created_at');
+
+    // Separate data for siswa and guru
+    $siswaAbsensi = $absensis->filter(function ($absensi) {
+        return $absensi->user->role == 'siswa';
+    });
+
+    $guruAbsensi = $absensis->filter(function ($absensi) {
+        return $absensi->user->role == 'guru';
+    });
+
+    // Sort siswaAbsensi by Tanggal (descending), Kelas, Nama
+    $siswaAbsensi = $siswaAbsensi->sortByDesc('created_at')->sortBy([
+        function ($absensi) {
+            return optional($absensi->siswa->kelas)->nama_kelas;
+        },
+        function ($absensi) {
+            return optional($absensi->siswa)->nama;
+        },
+    ]);
+
+    // Sort guruAbsensi by Tanggal (descending), Nama
+    $guruAbsensi = $guruAbsensi->sortByDesc('created_at')->sortBy([
+        function ($absensi) {
+            return optional($absensi->guru)->nama;
+        },
+    ]);
+
+    return view('pages.akademik.absensi.absensi-admin', [
+        'siswaAbsensis' => $siswaAbsensi,
+        'guruAbsensis' => $guruAbsensi,
+    ])->with('title', 'Absensi Admin');
+}
+
+
 
     public function deleteAbsensi($id) {
         try {
@@ -101,6 +104,9 @@ class AbsensiController extends Controller
 {
     $absensis = Absensi::all();
 
+    // Sort absensi by Tanggal (descending)
+    $absensis = $absensis->sortByDesc('created_at');
+
     if ($request->ajax()) {
         return response()->json($absensis);
     }
@@ -111,6 +117,9 @@ class AbsensiController extends Controller
 public function showAbsensiGuru(Request $request)
 {
     $absensis = Absensi::all();
+
+    // Sort absensi by Tanggal (descending)
+    $absensis = $absensis->sortByDesc('created_at');
 
     if ($request->ajax()) {
         return response()->json($absensis);
@@ -182,6 +191,90 @@ public function store(Request $request)
     return response()->json(['message' => 'Data absensi berhasil disimpan'], 201);
 }
 
+public function storeAdmin(Request $request)
+{
+    // Log data request
+    Log::info('Absensi store admin request data:', $request->all());
+
+    try {
+        // Validasi request
+        $request->validate([
+            'status_absen' => 'required|in:masuk,sakit,izin',
+            'role' => 'required|in:siswa,guru', // Sesuaikan dengan opsi yang mungkin dari frontend
+            'nama_siswa' => 'required',
+            'file' => 'nullable|mimes:pdf|max:5120',
+        ]);
+
+        // Cek apakah pengguna telah melakukan presensi pada hari ini
+        $namaSiswa = $request->input('nama_siswa');
+        $selectedRole = $request->input('role');
+
+        // Menggunakan function getIdUserByNama yang telah kita buat sebelumnya
+        $userId = $this->getIdUserByNama($namaSiswa, $selectedRole);
+
+        // Log data sebelum membuat Absensi
+        Log::info('Before creating Absensi:', [
+            'status_absen' => $request->input('status_absen'),
+            'role' => $selectedRole,
+            'id_user' => $userId,
+        ]);
+
+        // Buat data absensi dengan mengisi semua kolom yang diperlukan
+        $absensi = new Absensi([
+            'status_absen' => $request->input('status_absen'),
+            'role' => $selectedRole,
+            'id_user' => $userId,
+            'created_at' => now(),
+        ]);
+
+        // Simpan data absensi ke database
+        $absensi->save();
+
+        // Handle unggahan file PDF (jika ada)
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+        
+            // Log nama file yang diunggah
+            Log::info('Uploaded file name: ' . $file->getClientOriginalName());
+        
+            $filePath = $file->storeAs('absensi_files', 'absensi_' . $absensi->id . '.' . $file->getClientOriginalExtension(), 'public');
+        
+            // Log path/nama file yang disimpan
+            Log::info('File path saved: ' . $filePath);
+        
+            // Simpan path/nama file ke dalam kolom file_path
+            $absensi->update(['file_path' => $filePath]);
+        }
+
+        return response()->json(['message' => 'Data absensi berhasil disimpan'], 201);
+    } catch (\Exception $e) {
+        // Log error jika terjadi kesalahan
+        Log::error('Error in storeAdmin:', ['error' => $e->getMessage()]);
+        return response()->json(['message' => 'Terjadi kesalahan saat menyimpan data absensi'], 500);
+    }
+}
+
+
+
+
+private function getIdUserByNama($namaUser, $role)
+{
+    try {
+        if ($role == 'siswa') {
+            $user = Siswa::where('nama', $namaUser)->first();
+            return $user ? $user->id_user : null; // Perubahan disini
+        } elseif ($role == 'guru') {
+            $user = Guru::where('nama', $namaUser)->first();
+            return $user ? $user->id_user : null; // Perubahan disini
+        }
+    } catch (\Exception $e) {
+        // Log error jika terjadi kesalahan
+        Log::error('Error in getIdUserByNama:', ['error' => $e->getMessage()]);
+    }
+
+    return null;
+}
+
 
 public function checkAndFillAbsentData()
 {
@@ -189,8 +282,8 @@ public function checkAndFillAbsentData()
     $userId = Auth::id();
 
     // Tentukan tanggal awal dan akhir untuk pengecekan
-    $startDate = now()->setYear(2023)->setMonth(11)->setDay(30);
-    $endDate = now()->subDay(); // Tanggal kemarin (sehari sebelum hari ini)
+    $endDate = now()->subDays();
+        $startDate = $endDate->copy()->subDays(8);
 
     $dataInserted = false; // Indikator apakah ada data tambahan yang dimasukkan
 

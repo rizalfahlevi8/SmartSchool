@@ -98,6 +98,7 @@ class KerjaSamaController extends Controller
 
         return view('pages.humas.data-mou.data-kerjasama', [
             'title' => 'data-kerjasama',
+
             // 'mou'=> KerjaSama::get(),
             'mou' => KerjaSama::latest('updated_at')->get(),
         ]);

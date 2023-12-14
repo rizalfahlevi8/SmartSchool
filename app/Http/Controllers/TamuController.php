@@ -99,6 +99,7 @@ class TamuController extends Controller
         return redirect('/data-tamu')->with([
             // 'tamus' => Tamu::get(),
             // 'tamus' => Tamu::latest('updated_at')->get(),
+
             'tamus' => $filteredTamus,
             'title'=>"tamu",
             'userRoles' => $userRoles,
@@ -110,6 +111,7 @@ class TamuController extends Controller
     // ==============[ Data - tamu ]===============
 
     public function index() {
+
 
         // $userId = auth()->user()->id;
         // $selectedUsername = $request->input('Opsi_Lanjutan');
@@ -128,10 +130,12 @@ class TamuController extends Controller
         // dd($tamu_tujuan);
 
         return view('pages.humas.data-tamu', [
+
     
         'title' => 'data-tamu',
         // 'tamus' => Tamu::get(),
         'tamus' => Tamu::latest('updated_at')->get(),
+
 
         ]);
      }

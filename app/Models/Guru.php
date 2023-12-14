@@ -50,7 +50,9 @@ class Guru extends Model
     {
         return $this->hasMany(Tamu::class, 'Opsi_lanjutan', 'username');
 
+
     }
+
     public function absensi()
     {
         return $this->hasMany(Absensi::class, 'id_siswa');
