@@ -165,7 +165,6 @@ class DashboardController extends Controller
             return redirect()->back()->with('success', 'Pesan dihapus.');
         } else {
             return redirect()->back()->with('error', 'Tamu pesan tidak ditemukan.');
-
         }
     }
 

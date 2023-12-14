@@ -5,7 +5,6 @@
         "This file is @generated automatically"
     ],
 
-
     "content-hash": "eb1c50568c472f50da4ded92a125a549",
 
     "packages": [
@@ -4783,11 +4782,9 @@
             "dist": {
                 "type": "zip",
 
-
                 "url": "https://api.github.com/repos/symfony/css-selector/zipball/d036c6c0d0b09e24a14a35f8292146a658f986e4",
                 "reference": "d036c6c0d0b09e24a14a35f8292146a658f986e4",
               
-
                 "shasum": ""
             },
             "require": {

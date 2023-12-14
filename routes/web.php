@@ -319,7 +319,6 @@ Route::middleware(['userRole:admin,wakasek'])->group(function () {
     Route::get('/data-peminjaman-barang-approve/{peminjaman}', [PeminjamanBarangController::class, 'approve']);
     Route::get('/data-peminjaman-barang-decline/{peminjaman}', [PeminjamanBarangController::class, 'decline']);
 
-
     // ==============[ D a t a - A b s e n s i]===============
     Route::get('/akademik/absensi/admin', [AbsensiController::class, 'showAbsensiAdmin']);
     Route::get('/get_kelas', [KelasController::class, 'getKelas']);
@@ -332,7 +331,6 @@ Route::middleware(['userRole:admin,wakasek'])->group(function () {
     Route::get('/get_siswaadmin', [SiswaController::class, 'getSiswaByKelas']);
     Route::post('/akademik/absensi/postAbsensi', [AbsensiController::class, 'storeAdmin'])->name('absensi.storeAdmin');
     Route::get('/getIdUserByNama', [AbsensiController::class, 'getIdUserByNama'])->name('getIdUserByNama');
-
 
 });
 //======================== G U R U =========================================================

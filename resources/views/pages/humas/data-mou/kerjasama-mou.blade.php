@@ -82,7 +82,6 @@
                             <input class="form-control rounded-3 text-sm" name="file_mitra" type="file"
                             id="file-input" 
                             required value="{{ old('file_mitra') }}" {{ $errors->has('file_mitra') ? 'autofocus="true"' : '' }}>
-
                     </div> --}}
                     <div class="col-md-6">
                         <div class="row">
@@ -94,7 +93,6 @@
                             required value="{{ old('file_mitra') }}" {{ $errors->has('file_mitra') ? 'autofocus="true"' : '' }}>
                         <span id="file-error" class="text-danger"></span>
                     </div>         
-
                     <div class="col-md-3">
                         <label class="form-label" for="tanggal_mulai">Tanggal Mulai Kerjasama</label>
                         <div class="input-group">
@@ -161,7 +159,6 @@
     }
 </script>
 
-
 <script>
     document.getElementById('file-input').addEventListener('change', function() {
         var allowedExtensions = ['.doc', '.docx', '.pdf'];
@@ -183,5 +180,8 @@
     });
 </script>
 
+<<<<<<< HEAD
+=======
 
+>>>>>>> 7c56d9d438752ab416e8c106597cbe0d66862c22
 @endsection

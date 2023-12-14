@@ -104,7 +104,6 @@
                                         <td class="align-middle text-center">
                                             {{ $m->tujuan_mitra }}
                                         </td>
-
                                         <td class="text-center">
                                             <button type="button"data-bs-toggle="modal" data-bs-target="#detail-modal"
                                                 class="btn
@@ -249,7 +248,10 @@
                         <br>
                         
                         <div class="modal-footer">
+<<<<<<< HEAD
+=======
 
+>>>>>>> 7c56d9d438752ab416e8c106597cbe0d66862c22
                             <a id="file_link" href="#" target="_blank" class="btn btn-success" style="color: white;">Lihat File</a>
                             <a id="file_download" href="#" download class="btn btn-primary" style="color: white;">Download</a>
                             <button id="detail-modal" type="button" class="btn btn-secondary" data-bs-dismiss="modal" >Tutup</button>
@@ -260,7 +262,10 @@
                             <a href="{{ asset('storage/kerjasama/file/' . str_replace(' ', '%20', $m->file)) }}" download="{{ $m->file }}" class="btn btn-primary" style="color: white;">Download</a>
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                         </div>     --}}
+<<<<<<< HEAD
+=======
 
+>>>>>>> 7c56d9d438752ab416e8c106597cbe0d66862c22
                        
                     </div>
 
@@ -300,7 +305,10 @@
             tujuan_mitra.innerText = element.getAttribute('tujuan_mitra');
             original_name_file.innerText = element.getAttribute('original_name_file');
 
+<<<<<<< HEAD
+=======
 
+>>>>>>> 7c56d9d438752ab416e8c106597cbe0d66862c22
         // // Update link "Lihat File" dan "Download"
         // const fileName = element.dataset.file;
         // fileLink.href = `/storage/kerjasama/file/${encodeURIComponent(fileName)}`;
@@ -328,7 +336,10 @@
         const modal = new bootstrap.Modal(updateModalDialog);
         modal.show();
 
+<<<<<<< HEAD
+=======
 
+>>>>>>> 7c56d9d438752ab416e8c106597cbe0d66862c22
     </script>
 @endsection
 {{-- footer --}}
