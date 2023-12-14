@@ -53,6 +53,7 @@ class TamuController extends Controller
         return view('pages.humas.tamu',[
             'title' =>  "tamu",
             'tamu'=> Tamu::get(),
+            // 'tamus' => Tamu::latest('updated_at')->get(),
             'userRoles' => $userRoles,
             // 'usernamesWithNames' => $usernamesWithNames,
             
@@ -87,8 +88,18 @@ class TamuController extends Controller
         $filteredTamus = Tamu::whereIn('Opsi_Tujuan', $userRoles)->get();
         // dd($filteredTamus);
         
-        return view('pages.humas.data-tamu',[
+        // return view('pages.humas.data-tamu',[
+        //     // 'tamus' => Tamu::get(),
+        //     // 'tamus' => Tamu::latest('updated_at')->get(),
+        //     'tamus' => $filteredTamus,
+        //     'title'=>"tamu",
+        //     'userRoles' => $userRoles,
+
+        // ]);
+        return redirect('/data-tamu')->with([
             // 'tamus' => Tamu::get(),
+            // 'tamus' => Tamu::latest('updated_at')->get(),
+
             'tamus' => $filteredTamus,
             'title'=>"tamu",
             'userRoles' => $userRoles,
@@ -99,7 +110,8 @@ class TamuController extends Controller
 
     // ==============[ Data - tamu ]===============
 
-    public function index(Request $request) {
+    public function index() {
+
 
         // $userId = auth()->user()->id;
         // $selectedUsername = $request->input('Opsi_Lanjutan');
@@ -118,13 +130,13 @@ class TamuController extends Controller
         // dd($tamu_tujuan);
 
         return view('pages.humas.data-tamu', [
-    //        'data-tamu' => Tamu::orderBy('created_at')->get(),
-    //    ])->with('title', 'data-tamu'); 
+
+    
         'title' => 'data-tamu',
-        'tamus' => Tamu::get(),
-        // 'tamu_tujuan' => $tamu_tujuan,
-        // 'tamus' => $filteredTamus,
-        // 'availableOptions' => $availableOptions,
+        // 'tamus' => Tamu::get(),
+        'tamus' => Tamu::latest('updated_at')->get(),
+
+
         ]);
      }
   

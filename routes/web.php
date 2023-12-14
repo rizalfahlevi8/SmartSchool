@@ -93,6 +93,11 @@ Route::middleware(['auth'])->group(function () {
     // ==============[ D A S H B O A R D ]===============
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+    // ==============[ S T A T U S - T A M U ]===============
+    Route::match(['post'], '/dashboard/{id}/terima', [DashboardController::class, 'terimaPesan'])->name('dashboard.terimaPesan');
+    Route::match(['delete'], '/dashboard/{id}/hapus', [DashboardController::class, 'hapusPesan'])->name('dashboard.hapusPesan');
+    // Route::delete('/dashboard/{id}', [DashboardController::class, 'hapusPesan'])->name('dashboard.hapusPesan');
+
     //edit password
     Route::get('/option/change-password', [EditPasswordController::class, 'index']);
     Route::post('/option/change-password/{user}', [EditPasswordController::class, 'ubah'])->name('option.change-password');
@@ -139,6 +144,8 @@ Route::middleware(['userRole:admin,guru'])->group(function () {
     Route::get('/data-nilai-moodle/course-moodle', [NilaiMoodleController::class, 'getMoodleCourses']);
     Route::get('/data-nilai-moodle/course-moodle/nilai-course/{courseId}', [NilaiMoodleController::class, 'getGradeItems'])
     ->name('nilai-course');
+    Route::get('/get-grade-items/{courseId}/{search?}', [NilaiMoodleController::class, 'getGradeItems'])->name('get.grade.items');
+
 });
 
 
@@ -312,6 +319,7 @@ Route::middleware(['userRole:admin,wakasek'])->group(function () {
     Route::get('/data-peminjaman-barang-approve/{peminjaman}', [PeminjamanBarangController::class, 'approve']);
     Route::get('/data-peminjaman-barang-decline/{peminjaman}', [PeminjamanBarangController::class, 'decline']);
 
+
     // ==============[ D a t a - A b s e n s i]===============
     Route::get('/akademik/absensi/admin', [AbsensiController::class, 'showAbsensiAdmin']);
     Route::get('/get_kelas', [KelasController::class, 'getKelas']);
@@ -324,6 +332,7 @@ Route::middleware(['userRole:admin,wakasek'])->group(function () {
     Route::get('/get_siswaadmin', [SiswaController::class, 'getSiswaByKelas']);
     Route::post('/akademik/absensi/postAbsensi', [AbsensiController::class, 'storeAdmin'])->name('absensi.storeAdmin');
     Route::get('/getIdUserByNama', [AbsensiController::class, 'getIdUserByNama'])->name('getIdUserByNama');
+
 
 });
 //======================== G U R U =========================================================
@@ -349,6 +358,7 @@ Route::middleware(['userRole:siswa,admin'])->group(function () {
     Route::get('/akademik/jadwal-siswa/{id}', [JadwalController::class, 'jadwalsiswa']);
 
    
+
 
 });
 

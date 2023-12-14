@@ -179,44 +179,71 @@
                                         <h4 class="card-title">Pengumuman Tamu</h4>
                                     </div>
                                     <div class="card-body">
-                                        @if ($tamu_pesans->isEmpty())
+
+                                        @if ($tamu_pesans->where('status', '!=', 'pesan_telah_selesai')->isEmpty())
+
                                             <p class="text-muted">Tidak ada tamu saat ini.</p>
                                         @else
                                             <ul class="list-group">
                                                 @foreach ($tamu_pesans as $tamu_pesan)
-                                                    <li class="list-group-item">
-                                                        <div class="row">
-                                                            <div class="col-md-2">
-                                                                <span class="float-start">Nama Tamu </span>
-                                                                <div class="float-end">:</div>
-                                                            </div>
-                                                            <div class="col-md-2">
-                                                                {{ $tamu_pesan->nama }}
-                                                            </div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-md-2">
-                                                                <span class="float-start">Alamat </span>
-                                                                <div class="float-end">:</div>
-                                                            </div>
-                                                            <div class="col-md-2">
-                                                                {{ $tamu_pesan->alamat }}
-                                                            </div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-md-2">
-                                                                <span class="float-start">Keperluan </span>
-                                                                <div class="float-end">: </div>
-                                                            </div>
-                                                            <div class="col-md-2">
-                                                                {{ $tamu_pesan->Keterangan }}
-                                                            </div>
-                                                        </div>
-                                                    </li>
+
+                                                    @if ($tamu_pesan->status !== 'pesan_telah_selesai')                                                       
+                                                            <div class="row">
+                                                                <div class="col-md-8">  <!-- Kolom untuk data -->
+                                                                    <li class="list-group-item">
+                                                                            <div class="row">
+                                                                                <div class="col-md-2">
+                                                                                    <span class="float-start">Nama Tamu </span>
+                                                                                    <div class="float-end">:</div>
+                                                                                </div>
+                                                                                <div class="col-md-6">
+                                                                                    {{ $tamu_pesan->nama }}
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="row">
+                                                                                <div class="col-md-2">
+                                                                                    <span class="float-start">Alamat </span>
+                                                                                    <div class="float-end">:</div>
+                                                                                </div>
+                                                                                <div class="col-md-6">
+                                                                                    {{ $tamu_pesan->alamat }}
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="row">
+                                                                                <div class="col-md-2">
+                                                                                    <span class="float-start">Keperluan </span>
+                                                                                    <div class="float-end">: </div>
+                                                                                </div>
+                                                                                <div class="col-md-6">
+                                                                                    {{ $tamu_pesan->Keterangan }}
+                                                                                </div>
+                                                                            </div>
+                                                                    </li>
+                                                                </div>
+                                                                <div class="col-md-4"> <!-- Kolom untuk tombol -->
+                                                                    <div class="col">
+                                                                        <div class="col-md-6">
+                                                                            <form action="{{ route('dashboard.terimaPesan', ['id' => $tamu_pesan->id]) }}" method="POST">
+                                                                                @csrf
+                                                                                <button type="submit" class="btn btn-success">Pesan Diterima</button>
+                                                                            </form>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <form action="{{ route('dashboard.hapusPesan', ['id' => $tamu_pesan->id]) }}" method="POST">
+                                                                                @csrf
+                                                                                @method('DELETE')
+                                                                                <button type="submit" class="btn btn-danger">Hapus Pesan</button>
+                                                                            </form>
+                                                                        </div>                                                                        
+                                                                    </div>
+                                                                </div>    
+                                                            </div>                                                       
+                                                    @endif
                                                 @endforeach
                                             </ul>
                                         @endif
-                                    </div>
+                                    </div>                
+
                                 </div>
                                 <div class="card mt-4">
                                     <div class="card-header">
@@ -370,6 +397,71 @@
                                             </ul>
                                         @endif
                                     </div>
+                                    <div class="card-header">
+                                        <h4 class="card-title">Pengumuman Tamu</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        @if ($tamu_pesans->where('status', '!=', 'pesan_telah_selesai')->isEmpty())
+                                            <p class="text-muted">Tidak ada tamu saat ini.</p>
+                                        @else
+                                            <ul class="list-group">
+                                                @foreach ($tamu_pesans as $tamu_pesan)
+                                                    @if ($tamu_pesan->status !== 'pesan_telah_selesai')                                                       
+                                                            <div class="row">
+                                                                <div class="col-md-8">  <!-- Kolom untuk data -->
+                                                                    <li class="list-group-item">
+                                                                            <div class="row">
+                                                                                <div class="col-md-2">
+                                                                                    <span class="float-start">Nama Tamu </span>
+                                                                                    <div class="float-end">:</div>
+                                                                                </div>
+                                                                                <div class="col-md-6">
+                                                                                    {{ $tamu_pesan->nama }}
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="row">
+                                                                                <div class="col-md-2">
+                                                                                    <span class="float-start">Alamat </span>
+                                                                                    <div class="float-end">:</div>
+                                                                                </div>
+                                                                                <div class="col-md-6">
+                                                                                    {{ $tamu_pesan->alamat }}
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="row">
+                                                                                <div class="col-md-2">
+                                                                                    <span class="float-start">Keperluan </span>
+                                                                                    <div class="float-end">: </div>
+                                                                                </div>
+                                                                                <div class="col-md-6">
+                                                                                    {{ $tamu_pesan->Keterangan }}
+                                                                                </div>
+                                                                            </div>
+                                                                    </li>
+                                                                </div>
+                                                                <div class="col-md-4"> <!-- Kolom untuk tombol -->
+                                                                    <div class="col">
+                                                                        <div class="col-md-6">
+                                                                            <form action="{{ route('dashboard.terimaPesan', ['id' => $tamu_pesan->id]) }}" method="POST">
+                                                                                @csrf
+                                                                                <button type="submit" class="btn btn-success">Pesan Diterima</button>
+                                                                            </form>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <form action="{{ route('dashboard.hapusPesan', ['id' => $tamu_pesan->id]) }}" method="POST">
+                                                                                @csrf
+                                                                                @method('DELETE')
+                                                                                <button type="submit" class="btn btn-danger">Hapus Pesan</button>
+                                                                            </form>
+                                                                        </div>                                                                        
+                                                                    </div>
+                                                                </div>    
+                                                            </div>                                                       
+                                                    @endif
+                                                @endforeach
+                                            </ul>
+                                        @endif
+                                    </div> 
                                 </div>
                                 <div class="card mt-4">
                                     <div class="card-header">
@@ -423,4 +515,24 @@
         });
     </script>
     @endif
+
+    {{-- Tamu status --}}
+    {{-- <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        function hapusPesan(id) {
+            // Lakukan permintaan Ajax untuk menghapus pesan
+            $.ajax({
+                url: '/dashboard/' + id,
+                type: 'DELETE',
+                success: function(response) {
+                    // Sembunyikan elemen dengan ID yang sesuai
+                    $('#pesan-' + id).hide();
+                },
+                error: function(error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+    </script>  --}}
+    
 @endsection

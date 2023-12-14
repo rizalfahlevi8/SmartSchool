@@ -13,20 +13,55 @@ class EditPasswordController extends Controller
 {
     public function index()
     {
-        return view('pages.user.settings.password.ubah')->with('title', 'Ubah Password');
+        return view('ubahpassword.ubah');
     }
-    public function ubah(Request $request, User $user)
+    public function ubah(Request $request,$id)
     {
-        if (!Hash::check($request->get('old_password'), $user->password)) {
+        
+        $guru = Guru::where('id',$id)->first();
+        // $guruu = $guru->nama;
+        // dd($guruu);
+        // dd($request->pwdbaru);
+        if (!Hash::check($request->get('pwdlama'), $guru->password)) 
+        {
             return back()->with('toast_error', "Password lama yang dimasukkan salah!");
-        } elseif (strcmp($request->get('old_password'), $request->new_password) == 0) {
+        }elseif (strcmp($request->get('pwdlama'), $request->pwdbaru) == 0) 
+        {
             return redirect()->back()->with("toast_error", "Password baru tidak boleh sama dengan password lama!");
-        } elseif ($request->new_password != $request->new_password_confirm) {
+        }elseif($request->pwdbaru != $request->pwdbaru2){
+
             return back()->with('toast_error', "Konfirmasi password baru salah!");
-        } else {
-            $user->password =  Hash::make($request->new_password);
-            $user->save();
+
+        }else{
+            $guru->password =  Hash::make($request->pwdbaru);
+            $guru->save();
             return back()->with('toast_success', "Password berhasil diubah!");
         }
+   
     }
+    public function ubahpwdsiswa(Request $request,$id)
+    {
+        
+        $siswa = Siswa::where('id',$id)->first();
+        // $guruu = $guru->nama;
+        // dd($guruu);
+        // dd($request->pwdbaru);
+        if (!Hash::check($request->get('pwdlama'), $siswa->password)) 
+        {
+            return back()->with('toast_error', "Password lama yang dimasukkan salah!");
+        }elseif (strcmp($request->get('pwdlama'), $request->pwdbaru) == 0) 
+        {
+            return redirect()->back()->with("toast_error", "Password baru tidak boleh sama dengan password lama!");
+        }elseif($request->pwdbaru != $request->pwdbaru2){
+
+            return back()->with('toast_error', "Konfirmasi password baru salah!");
+
+        }else{
+            $siswa->password =  Hash::make($request->pwdbaru);
+            $siswa->save();
+            return back()->with('toast_success', "Password berhasil diubah!");
+        }
+   
+    }
+
 }

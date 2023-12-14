@@ -96,14 +96,15 @@
                                     {{ $errors->has('Keterangan') ? 'autofocus="true"' : '' }}>
                             </div>
                         </div> --}}
+
+
                         <div class="mb-3" style="padding-left: 20px; padding-right: 20px;">
                             <label for="exampleFormControlTextarea1" class="form-label fs-6">Keterangan</label>
                             <div class="form-floating mb-3">
-                                <textarea class="form-control" name="keteranganTamu" id="floatingTextarea" style="height: 100px" required {{ $errors->has('Keterangan') ? 'autofocus="true"' : '' }}>
-                                    {{ $form_input['Keterangan'] }}
-                                </textarea>
+                                <textarea class="form-control" name="keteranganTamu" id="floatingTextarea" style="height: 100px" required{{ $errors->has('Keterangan') ? ' autofocus="true"' : '' }}>{{ $form_input['Keterangan'] }}</textarea>
                             </div>
-                        </div>
+                        </div>                        
+
 
                         <div class="card-footer d-flex justify-content-end" style="gap: 10px">
                             <a href="/data-tamu" type="button" class="btn btn-danger text-sm rounded-3"
