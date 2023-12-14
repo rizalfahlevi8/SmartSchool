@@ -37,8 +37,8 @@
                 Data Siswa
             </h5>
             <div class="input-group mb-3" style="position: sticky; top: 40px; background-color: white; z-index: 99;">
-                <div class="col-5">
-                    <input type="text" class="form-control rounded" placeholder="Search..." name="search" id="searchSiswa" style="border: 2px solid lightblue;">
+                <div style="margin-right: 20px;">
+                    <input type="text" class="form-control rounded" placeholder="Search..." name="search" id="searchSiswa" style="border: 2px solid lightblue; width: 350px;">
                 </div>
                 <div class="col-2 mx-3 ml-5">
                     <select class="form-select rounded" name="dropdownkelas" id="dropdownkelas" style="border: 2px solid lightblue;">
@@ -103,8 +103,8 @@
             Data Guru
         </h5>
         <div class="input-group mb-3" style="position: sticky; top: 40px; background-color: white; z-index: 99;">
-            <div class="col-5">
-                <input type="text" class="form-control rounded" placeholder="Search..." name="search" id="searchGuru" style="border: 2px solid lightblue;">
+            <div style="margin-right: 20px;">
+                <input type="text" class="form-control rounded" placeholder="Search..." name="search" id="searchGuru" style="border: 2px solid lightblue; width: 350px;">
             </div>
             <div class="col-2 mx-3 ml-5">
                 <select class="form-select rounded" name="dropdownkelas" id="dropdownkelasGuru" style="border: 2px solid lightblue;">

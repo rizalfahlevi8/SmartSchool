@@ -19,45 +19,46 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as Middleware;
 
 class AbsensiController extends Controller
 {
-    public function showAbsensiAdmin(){
-        $absensis = Absensi::all();
-    
-        // Sort absensi by Tanggal
-        $absensis = $absensis->sortBy('created_at');
-    
-        // Separate data for siswa and guru
-        $siswaAbsensi = $absensis->filter(function ($absensi) {
-            return $absensi->user->role == 'siswa';
-        });
-    
-        $guruAbsensi = $absensis->filter(function ($absensi) {
-            return $absensi->user->role == 'guru';
-        });
-    
-        // Sort siswaAbsensi by Tanggal, Kelas, Nama
-        $siswaAbsensi = $siswaAbsensi->sortBy([
-            'created_at',
-            function ($absensi) {
-                return optional($absensi->siswa->kelas)->nama_kelas;
-            },
-            function ($absensi) {
-                return optional($absensi->siswa)->nama;
-            },
-        ]);
-    
-        // Sort guruAbsensi by Tanggal, Nama
-        $guruAbsensi = $guruAbsensi->sortBy([
-            'created_at',
-            function ($absensi) {
-                return optional($absensi->guru)->nama;
-            },
-        ]);
-    
-        return view('pages.akademik.absensi.absensi-admin', [
-            'siswaAbsensis' => $siswaAbsensi,
-            'guruAbsensis' => $guruAbsensi,
-        ])->with('title', 'Absensi Admin');
-    }
+    public function showAbsensiAdmin()
+{
+    $absensis = Absensi::all();
+
+    // Sort absensi by Tanggal (descending)
+    $absensis = $absensis->sortByDesc('created_at');
+
+    // Separate data for siswa and guru
+    $siswaAbsensi = $absensis->filter(function ($absensi) {
+        return $absensi->user->role == 'siswa';
+    });
+
+    $guruAbsensi = $absensis->filter(function ($absensi) {
+        return $absensi->user->role == 'guru';
+    });
+
+    // Sort siswaAbsensi by Tanggal (descending), Kelas, Nama
+    $siswaAbsensi = $siswaAbsensi->sortByDesc('created_at')->sortBy([
+        function ($absensi) {
+            return optional($absensi->siswa->kelas)->nama_kelas;
+        },
+        function ($absensi) {
+            return optional($absensi->siswa)->nama;
+        },
+    ]);
+
+    // Sort guruAbsensi by Tanggal (descending), Nama
+    $guruAbsensi = $guruAbsensi->sortByDesc('created_at')->sortBy([
+        function ($absensi) {
+            return optional($absensi->guru)->nama;
+        },
+    ]);
+
+    return view('pages.akademik.absensi.absensi-admin', [
+        'siswaAbsensis' => $siswaAbsensi,
+        'guruAbsensis' => $guruAbsensi,
+    ])->with('title', 'Absensi Admin');
+}
+
+
 
     public function deleteAbsensi($id) {
         try {
@@ -103,6 +104,9 @@ class AbsensiController extends Controller
 {
     $absensis = Absensi::all();
 
+    // Sort absensi by Tanggal (descending)
+    $absensis = $absensis->sortByDesc('created_at');
+
     if ($request->ajax()) {
         return response()->json($absensis);
     }
@@ -113,6 +117,9 @@ class AbsensiController extends Controller
 public function showAbsensiGuru(Request $request)
 {
     $absensis = Absensi::all();
+
+    // Sort absensi by Tanggal (descending)
+    $absensis = $absensis->sortByDesc('created_at');
 
     if ($request->ajax()) {
         return response()->json($absensis);
@@ -275,8 +282,8 @@ public function checkAndFillAbsentData()
     $userId = Auth::id();
 
     // Tentukan tanggal awal dan akhir untuk pengecekan
-    $startDate = now()->setYear(2023)->setMonth(11)->setDay(30);
-    $endDate = now()->subDay(); // Tanggal kemarin (sehari sebelum hari ini)
+    $endDate = now()->subDays();
+        $startDate = $endDate->copy()->subDays(8);
 
     $dataInserted = false; // Indikator apakah ada data tambahan yang dimasukkan
 
