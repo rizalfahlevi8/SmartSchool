@@ -144,6 +144,8 @@ Route::middleware(['userRole:admin,guru'])->group(function () {
     Route::get('/data-nilai-moodle/course-moodle', [NilaiMoodleController::class, 'getMoodleCourses']);
     Route::get('/data-nilai-moodle/course-moodle/nilai-course/{courseId}', [NilaiMoodleController::class, 'getGradeItems'])
     ->name('nilai-course');
+    Route::get('/get-grade-items/{courseId}/{search?}', [NilaiMoodleController::class, 'getGradeItems'])->name('get.grade.items');
+
 });
 
 

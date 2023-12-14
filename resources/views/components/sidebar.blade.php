@@ -29,6 +29,10 @@
                 <div class="collapse {{ Request::is('administrasi/guru*') || Request::is('administrasi/siswa*') || Request::is('akademik/mapel*') || Request::is('sarana/kelas*') || Request::is('sarana/ruang*') || Request::is('sarana/barang*') ? 'show' : '' }}"
                     id="master-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                    <li><a class="link-light rounded mb-1 {{ Request::is('administrasi/users*') ? 'bg-gradient-primary ' : '' }}"
+                                style="width: 100%" href="/administrasi/users"><i
+                                    class="material-icons opacity-10 mx-2">groups</i> Data User</a>
+                        </li>
                         <li><a class="link-light rounded mb-1 {{ Request::is('administrasi/guru*') ? 'bg-gradient-primary ' : '' }}"
                                 style="width: 100%" href="/administrasi/guru"><i
                                     class="material-icons opacity-10 mx-2">groups</i> Data
@@ -83,12 +87,7 @@
                                     class="material-icons opacity-10 mx-2">receipt_long</i>
                                 Kalender Akademik</a></li>
                     </ul>
-                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                        <li><a class="link-light rounded mb-1 'bg-gradient-primary ' : '' }}"
-                                style="width: 100%" href="javascript:void(0);" onclick="konfirmasiBukaLink()"><i
-                                    class="material-icons opacity-10 mx-2" >task</i>
-                                Elearning</a></li>
-                    </ul>
+                   
                 </div>
             </li>
             
@@ -180,6 +179,14 @@
                     </ul>
                 </div>
             </li>
+
+            <li class="mb-1" style="">
+                <a class="btn rounded text-white font-weight-bold 'bg-gradient-primary ' : '' }}"
+                    style="text-transform: none; width: 100%;display: flex; align-items: center; column-gap:10px"
+                    href="javascript:void(0);" onclick="konfirmasiBukaLink()"> <span
+                        class="material-symbols-outlined">task</span> Elearning</a>
+            </li>
+
 
         @elseif (auth()->user()->hasRole('wakasek'))
             <li class="mb-1">
