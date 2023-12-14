@@ -49,8 +49,6 @@ class Guru extends Model
     public function tamu_penguman()
     {
         return $this->hasMany(Tamu::class, 'Opsi_lanjutan', 'username');
-
-
     }
 
     public function absensi()

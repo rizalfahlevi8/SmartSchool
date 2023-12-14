@@ -104,11 +104,11 @@ Data Peminjaman barang
                                 </th>
                                 <th class="
                                             text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
-                                    Surat Peminjaman
+                                    Status Pengajuan
                                 </th>
                                 <th class="
                                             text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
-                                    Status Pengajuan
+                                    Surat Peminjaman
                                 </th>
                                 <th class="
                                             text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
@@ -142,21 +142,17 @@ Data Peminjaman barang
                                     {{ $value->tanggal_pengembalian }}
                                 </td>
                                 <td class="text-center">
-                                    <a href="{{ asset('storage/surat/' . str_replace(' ', '%20', $value->surat)) }}" target="_blank">Lihat file </a>
+                                    <span class="badge {{ is_null($value->status_pengajuan) ? 'text-bg-warning' : ($value->status_pengajuan ? 'text-bg-success' : 'text-bg-danger') }}">
+                                        {{ is_null($value->status_pengajuan) ? 'Menunggu' : ($value->status_pengajuan ? 'Disetujui' : 'Ditolak') }}
+                                    </span>
                                 </td>
                                 <td class="text-center">
-                                    {{ is_null($value->status_pengajuan) ? 'Menunggu' : ($value->status_pengajuan ? 'Disetujui' : 'Ditolak') }}
-                                </td>
-                                @if (auth()->user()->hasRole('wakasek'))
-                                <td class="text-center" style="display: flex; gap: 10px; justify-content: center">
-                                    <a href="data-peminjaman-barang-approve/{{ $value->id }}" class=" btn btn-success font-weight-bold text-sm" title="konfirmasi" onclick="return confirm('Apakah anda yakin menyetujui pengajuan ini?')">
-                                        Setuju
-                                    </a>
-                                    <a href="data-peminjaman-barang-decline/{{ $value->id }}" class=" btn btn-danger font-weight-bold text-sm" title="konfirmasi" onclick="return confirm('Apakah anda yakin menolak pengajuan ini?')">
-                                        Tolak
+                                    <a class=" btn btn-primary font-weight-bold text-sm" href="{{ asset('storage/surat/' . str_replace(' ', '%20', $value->surat)) }}" target="_blank">
+                                        Lihat file
+                                        <i class="fa fa-download"></i>
                                     </a>
                                 </td>
-                                @elseif (auth()->user()->hasRole('admin'))
+                                @if (auth()->user()->hasRole('admin'))
                                 <td class="text-center" style="display: flex; gap: 10px; justify-content: center">
                                     <button class="btn btn-warning font-weight-bold btn--edit text-sm rounded-circle" style="margin: 5px 0;" type="button" data-bs-toggle="modal" data-bs-target="#update-modal" id-peminjaman="{{ $value->id }}" id-barang="{{ $value->barang_id }}" jumlah="{{ $value->jumlah }}" nama-peminjam="{{ $value->nama_peminjam }}" tgl-peminjaman="{{ $value->tanggal_peminjaman }}" tgl-pengembalian="{{ $value->tanggal_pengembalian }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit" onclick="showUpdateModalDialog(this)">
                                         <i class="fa fa-edit"></i>
@@ -167,7 +163,6 @@ Data Peminjaman barang
                                         <button onclick="return confirm('Anda yakin akan menghapus data ini?')" class=" btn btn-danger font-weight-bold text-sm rounded-circle" style="margin: 5px 0;" data-bs-toggle="tooltip" data-bs-placement="bottom">
                                             <i class="fa fa-trash"></i>
                                         </button>
-                                        @endif
                                     </form>
                                     {{-- <a href="{{ route('peminjamanBarang.destroy', $p->id) }}"
                                     onclick="return confirm('Anda yakin akan menghapus data ini?')"
@@ -176,6 +171,18 @@ Data Peminjaman barang
                                     <i class="fa fa-trash"></i>
                                     </a> --}}
                                 </td>
+                                @elseif (auth()->user()->hasRole('wakasek'))
+                                <td class="text-center" style="display: flex; gap: 10px; justify-content: center">
+                                    @if (!$value->status_pengajuan)
+                                    <a href="data-peminjaman-barang-approve/{{ $value->id }}" class=" btn btn-success font-weight-bold text-sm" title="konfirmasi" onclick="return confirm('Apakah anda yakin menyetujui pengajuan ini?')">
+                                        Setuju
+                                    </a>
+                                    <a href="data-peminjaman-barang-decline/{{ $value->id }}" class=" btn btn-danger font-weight-bold text-sm" title="konfirmasi" onclick="return confirm('Apakah anda yakin menolak pengajuan ini?')">
+                                        Tolak
+                                    </a>
+                                    @endif
+                                </td>
+                                @endif
                             </tr>
                             @endforeach
                         </tbody>
@@ -269,7 +276,7 @@ Data Peminjaman barang
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <form action="{{ route('peminjamanBarang.store') }}" class="row g-3 py-1 px-4" method="POST" enctype="multipart/form-data">
+                                    <form action="{{ route('peminjamanBarang.store') }}" class="row g-3 py-1 px-4" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
                                         @csrf
                                         <div class="col-md-6 mb-3">
                                             <label class="form-label">Barang</label>
@@ -302,18 +309,18 @@ Data Peminjaman barang
                                         <div class="col-md-6">
                                             <label class="form-label">Tanggal Peminjaman</label>
                                             <div class="input-group">
-                                                <input type="date" name="tanggal_peminjaman" class="form-control rounded-3" id="inputEmail4" required value="{{ old('tanggal_peminjaman') }}" {{ $errors->has('tanggal_peminjaman') ? 'autofocus="true"' : '' }}>
+                                                <input type="date" name="tanggal_peminjaman" class="form-control rounded-3" required value="{{ old('tanggal_peminjaman') }}" {{ $errors->has('tanggal_peminjaman') ? 'autofocus="true"' : '' }}>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <label class="form-label">Tanggal Pengembalian</label>
                                             <div class="input-group">
-                                                <input type="date" name="tanggal_pengembalian" class="form-control rounded-3" id="inputEmail4" required value="{{ old('tanggal_pengembalian') }}" {{ $errors->has('tanggal_pengembalian') ? 'autofocus="true"' : '' }}>
+                                                <input type="date" name="tanggal_pengembalian" class="form-control rounded-3" required value="{{ old('tanggal_pengembalian') }}" {{ $errors->has('tanggal_pengembalian') ? 'autofocus="true"' : '' }}>
                                             </div>
                                         </div>
                                         <div class="mb-3">
                                             <label for="surat" class="form-label">Surat Pengajuan</label>
-                                            <input class="form-control" type="file" id="surat" name="surat">
+                                            <input class="form-control" type="file" id="surat" name="surat" accept=".jpg, .jpeg, .png, .pdf, .doc, .docx" required>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="submit" class="btn btn-primary ml-5 text-sm rounded-3" style="float:right; ">
@@ -380,6 +387,31 @@ Data Peminjaman barang
 
             console.log(inputNamaPeminjam);
 
+        }
+
+        function validateForm() {
+            // Mendapatkan elemen input file
+            var fileInput = document.getElementById('surat');
+
+            // Memeriksa apakah ada file yang dipilih
+            if (fileInput.files.length === 0) {
+                alert('Pilih file untuk diunggah.');
+                return false;
+            }
+
+            // Mendapatkan file yang dipilih
+            var file = fileInput.files[0];
+
+            // Memeriksa tipe file (hanya gambar atau dokumen yang diizinkan)
+            var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.pdf|\.doc|\.docx)$/i;
+
+            if (!allowedExtensions.exec(file.name)) {
+                alert('Tipe file tidak valid. Hanya file gambar dengan ekstensi .jpg, .jpeg, .png, atau dokumen dengan ekstensi .pdf, .doc, atau .docx diperbolehkan.');
+                fileInput.value = ''; // Mengosongkan input file jika tidak valid
+                return false;
+            }
+
+            return true;
         }
     </script>
     @endsection

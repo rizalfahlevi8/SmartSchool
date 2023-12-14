@@ -51,7 +51,7 @@ class PeminjamanBarangController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'barang_id' => ['numeric'],
+            'barang_id' => ['numeric', 'unique:peminjaman_barangs,barang_id'],
             'jumlah' => ['numeric'],
             'nama_peminjam' => ['string'],
             'tanggal_peminjaman' => ['date'],
