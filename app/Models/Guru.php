@@ -55,4 +55,5 @@ class Guru extends Model
         return $this->hasMany(Absensi::class, 'id_siswa');
 
     }
+
 }

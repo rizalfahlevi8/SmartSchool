@@ -48,7 +48,7 @@ class NilaiMoodleController extends Controller
         return view('pages.akademik.data-nilai-moodle.course-moodle', ['courses' => $filteredCourses])->with('title', 'Data Course Moodle');
     }
     
-    public function getGradeItems($courseId)
+    public function getGradeItems($courseId, Request $request)
     {
         // URL API Moodle
         $apiUrl = 'http://localhost/moodle/webservice/rest/server.php';
@@ -72,13 +72,20 @@ class NilaiMoodleController extends Controller
         // Mengambil data dari respons
         $gradeItems = json_decode($response->getBody(), true);
 
-        //test respons
-        // dd($gradeItems);
+        // Get the search query from the request
+        $searchQuery = $request->input('search');
 
-        // Lakukan sesuatu dengan data, misalnya tampilkan ke view
+        // Filter gradeItems based on the search query
+        if (!empty($searchQuery)) {
+            $gradeItems['usergrades'] = array_filter($gradeItems['usergrades'], function ($grade) use ($searchQuery) {
+                return stripos($grade['userfullname'], $searchQuery) !== false;
+            });
+        }
+
         return view('pages.akademik.data-nilai-moodle.course-moodle-nilai', [
             'gradeItems' => $gradeItems,
-        ])->with('title', 'Detail Nilai');
-    
+            'courseId' => $courseId,
+            'title' => 'Detail Nilai',
+        ]);
     }
 }
