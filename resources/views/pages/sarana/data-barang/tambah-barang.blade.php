@@ -54,7 +54,7 @@
                                 value="{{ old('jumlah_seluruh_barang') }}">
                         </div>
                         {{-- Tambahkan field lain sesuai kebutuhan --}}
-                        <div class="col text-right">
+                        <div class="modal-footer">
                             <button type="submit" class="btn btn-primary ml-5 text-sm rounded-3">
                                 <i class="fa fa-save"></i>
                                 Simpan
