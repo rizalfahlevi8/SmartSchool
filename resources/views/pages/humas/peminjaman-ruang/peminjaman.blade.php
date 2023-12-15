@@ -97,11 +97,11 @@ Data Peminjaman Ruang
                                 </th>
                                 <th class="
                                             text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
-                                    surat Peminjaman
+                                    Status Pengajuan
                                 </th>
                                 <th class="
                                             text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
-                                    Status Pengajuan
+                                    Surat Peminjaman
                                 </th>
                                 <th class="
                                             text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
@@ -129,12 +129,15 @@ Data Peminjaman Ruang
                                     {{ $p->tanggal_pengembalian }}
                                 </td>
                                 <td class="text-center">
-                                    <a href="{{ asset('storage/surat/' . str_replace(' ', '%20', $p->surat)) }}" target="_blank">
-                                        Lihat file
-                                    </a>
+                                    <span class="badge {{ is_null($p->status_pengajuan) ? 'text-bg-warning' : ($p->status_pengajuan ? 'text-bg-success' : 'text-bg-danger') }}">
+                                        {{ is_null($p->status_pengajuan) ? 'Menunggu' : ($p->status_pengajuan ? 'Disetujui' : 'Ditolak') }}
+                                    </span>
                                 </td>
                                 <td class="text-center">
-                                    {{ is_null($p->status_pengajuan) ? 'Menunggu' : ($p->status_pengajuan ? 'Disetujui' : 'Ditolak') }}
+                                    <a  class=" btn btn-primary font-weight-bold text-sm" href="{{ asset('storage/surat/' . str_replace(' ', '%20', $p->surat)) }}" target="_blank">
+                                        Lihat file
+                                        <i class="fa fa-download"></i>
+                                    </a>
                                 </td>
                                 
                                 @if (auth()->user()->hasRole('admin'))
@@ -148,12 +151,14 @@ Data Peminjaman Ruang
                                 </td>
                                 @elseif (auth()->user()->hasRole('wakasek'))
                                 <td class="text-center" style="display: flex; gap: 10px; justify-content: center">
+                                    @if (!$p->status_pengajuan)
                                     <a href="peminjaman-approve/{{ $p->id }}" class=" btn btn-success font-weight-bold text-sm" title="konfirmasi" onclick="return confirm('Apakah anda yakin menyetujui pengajuan ini?')">
                                         Setuju
                                     </a>
                                     <a href="peminjaman-decline/{{ $p->id }}" class=" btn btn-danger font-weight-bold text-sm" title="konfirmasi" onclick="return confirm('Apakah anda yakin menolak pengajuan ini?')">
                                         Tolak
                                     </a>
+                                    @endif
                                 </td>
                                 @endif
                             </tr>
@@ -246,7 +251,7 @@ Data Peminjaman Ruang
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <form action="/peminjaman-tambah" class="row g-3 py-1 px-4" method="POST" enctype="multipart/form-data">
+                                    <form action="/peminjaman-tambah" class="row g-3 py-1 px-4" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
                                         @csrf
                                         <div class="col-md-6 mb-3">
                                             <label class="form-label">Ruang</label>
@@ -282,10 +287,9 @@ Data Peminjaman Ruang
                                                 <input type="date" name="tgl_pengembalian" class="form-control rounded-3" id="inputEmail4" required value="{{ old('tgl_pengembalian') }}" {{ $errors->has('tgl_pengembalian') ? 'autofocus="true"' : '' }}>
                                             </div>
                                         </div>
-                                        <div class="mb-3">
-                                            <label for="surat" class="form-label">Surat Pengajuan Peminjaman</label>
-                                            <input class="form-control" type="file" id="surat" name="surat">
-                                        </div>
+                                        <input type="file" class="form-control" id="suratpinjam"
+                                                        name="surat" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx" required
+                                                        onchange="validateForm()">
                                         <div class="modal-footer">
                                             <button type="submit" class="btn btn-primary ml-5 text-sm rounded-3" style="float:right; ">
                                                 <i class="fa fa-save"></i>
@@ -436,6 +440,31 @@ Data Peminjaman Ruang
         inputTglPengembalian.value = tglPengembalian;
         inputSurat.value = surat;
     }
+
+    function validateForm() {
+    // Mendapatkan elemen input file
+    var fileInput = document.getElementById('suratpinjam');
+
+                // Memeriksa apakah ada file yang dipilih
+                if (fileInput.files.length === 0) {
+                    alert('Pilih file untuk diunggah.');
+                    return false;
+                }
+
+    // Mendapatkan file yang dipilih
+    var file = fileInput.files[0];
+    
+    // Memeriksa tipe file (hanya gambar atau dokumen yang diizinkan)
+    var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.pdf|\.doc|\.docx)$/i;
+
+    if (!allowedExtensions.exec(file.name)) {
+        alert('Tipe file tidak valid. Hanya file gambar dengan ekstensi .jpg, .jpeg, .png, atau dokumen dengan ekstensi .pdf, .doc, atau .docx diperbolehkan.');
+        fileInput.value = ''; // Mengosongkan input file jika tidak valid
+        return false;
+    }
+
+    return true;
+}
 </script>
 @endif
 @endsection

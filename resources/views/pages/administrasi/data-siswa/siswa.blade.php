@@ -27,6 +27,10 @@
                             class="btn btn-danger font-weight-bold text-xs">
                             Siswa Keluar
                         </a>
+                        <a href="/usersiswa/export" type="submit" id="btntambah"
+                            class="btn btn-success font-weight-bold text-xs">
+                            Export Data siswa
+                        </a>
                         <!-- Button trigger modal -->
 
                         {{-- Filter search --}}
@@ -456,7 +460,12 @@
                                                         <select class="form-select rounded-3 form-control-lg text-sm"
                                                             aria-label="Default select example" name="status"
                                                             id="status">
+<<<<<<< HEAD
                                                             <option selected>-- Pilih Status --</option>
+=======
+                                                            <option selected>-- Pilih Status --
+                                                            </option>
+>>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
                                                             <option value="lulus"
                                                                 @if (old('status') == 'lulus') {{ 'selected' }} @endif>
                                                                 Lulus</option>
@@ -468,6 +477,7 @@
                                                 </div>
                                             </div>
                                         </li>
+<<<<<<< HEAD
                                         <li class="list-group-item">
                                             <div class="row">
                                                 <div class="col-md-5">
@@ -481,6 +491,8 @@
                                                 </div>
                                             </div>
                                         </li>
+=======
+>>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
 
                                     </ul>
                                 </div>
@@ -568,6 +580,7 @@
             }
         }
         function showModalLeave(element) {
+<<<<<<< HEAD
     const detailModalDialog = document.getElementById('leave-modal');
     const nama_siswa = detailModalDialog.querySelector('#nama-siswa');
     const nis = detailModalDialog.querySelector('#nis');
@@ -594,6 +607,29 @@
     tanggalKeluarInput.value = new Date().toISOString().split('T')[0];
 
 }
+=======
+            const detailModalDialog = document.getElementById('leave-modal');
+            const nama_siswa = detailModalDialog.querySelector('#nama-siswa');
+            const nis = detailModalDialog.querySelector('#nis');
+            const nisn = detailModalDialog.querySelector('#nisn');
+            const kelas = detailModalDialog.querySelector('#kelas');
+            const form = document.getElementById("siswaForm");
+    
+            // Mengasumsikan idSiswa adalah variabel yang ingin Anda gunakan
+            const idSiswa = element.getAttribute("id-siswa");
+
+            form.action = "/administrasi/siswa-keluar/" + idSiswa;
+
+            nama_siswa.innerText = element.getAttribute('nama-siswa');
+            nis.innerText = element.getAttribute('nis');
+            nisn.innerText = element.getAttribute('nisn');
+            kelas.innerText = element.getAttribute('kelas');
+
+            // Jika Anda memiliki elemen dengan id 'nik', Anda juga dapat mengatur innerText-nya
+            const nik = detailModalDialog.querySelector('#nik');
+            nik.innerText = element.getAttribute('nik');
+        }
+>>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
     </script>
 @endsection
 {{-- footer --}}

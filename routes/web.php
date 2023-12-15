@@ -25,9 +25,23 @@ use App\Http\Controllers\JadwalMengajarController;
 use App\Http\Controllers\KalenderAkademikController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PengumumanController;
+use App\Http\Controllers\UserMoodleApi;
+use App\Http\Controllers\NilaiMoodleController;
 use App\Models\Absensi;
 use App\Models\Akademik;
+use App\Http\Controllers\UserMoodleController;
 use App\Models\Peminjaman;
+
+
+use App\Http\Controllers\KerjaSamaController;
+// use App\Http\Controllers\UserController;
+// use App\Models\Absensi;
+// use App\Models\Akademik;
+
+use App\Models\Tamu;
+use App\Http\Controllers\TamuController;
+use App\Models\Kerjasama;
+// use App\Http\Controllers\KerjaSamaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -79,6 +93,11 @@ Route::middleware(['auth'])->group(function () {
     // ==============[ D A S H B O A R D ]===============
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+    // ==============[ S T A T U S - T A M U ]===============
+    Route::match(['post'], '/dashboard/{id}/terima', [DashboardController::class, 'terimaPesan'])->name('dashboard.terimaPesan');
+    Route::match(['delete'], '/dashboard/{id}/hapus', [DashboardController::class, 'hapusPesan'])->name('dashboard.hapusPesan');
+    // Route::delete('/dashboard/{id}', [DashboardController::class, 'hapusPesan'])->name('dashboard.hapusPesan');
+
     //edit password
     Route::get('/option/change-password', [EditPasswordController::class, 'index']);
     Route::post('/option/change-password/{user}', [EditPasswordController::class, 'ubah'])->name('option.change-password');
@@ -106,6 +125,11 @@ Route::middleware(['userRole:admin,guru'])->group(function () {
 
     //raport siswa
     Route::post('/data-raport-siswa/{id}', [RaportController::class, 'raportsiswa']);
+
+    //jadwal siswa
+    Route::get('/data-jadwal/{id}', [JadwalController::class, 'jadwalsiswa']);
+    Route::get('/data-jadwalsiswa/cetak_pdf/{id}', [JadwalController::class, 'cetakjadwalsiswa']);
+
     Route::get('/data-raport-cetak-siswa/{id}/{smt}', [RaportController::class, 'cetakraportsiswa']);
 
     //kepsek
@@ -115,6 +139,13 @@ Route::middleware(['userRole:admin,guru'])->group(function () {
     Route::get('/data-jadwalmengajar-cek/{id}', [JadwalMengajarController::class, 'cekjadwal']);
     Route::get('/data-jadwal-cek', [JadwalController::class, 'lihat']);
     Route::get('/data-jadwal-cekjadwal/{id}', [JadwalController::class, 'cekjadwal']);
+
+    //Nilai Moodle
+    Route::get('/data-nilai-moodle/course-moodle', [NilaiMoodleController::class, 'getMoodleCourses']);
+    Route::get('/data-nilai-moodle/course-moodle/nilai-course/{courseId}', [NilaiMoodleController::class, 'getGradeItems'])
+    ->name('nilai-course');
+    Route::get('/get-grade-items/{courseId}/{search?}', [NilaiMoodleController::class, 'getGradeItems'])->name('get.grade.items');
+
 });
 
 
@@ -125,6 +156,13 @@ Route::middleware(['userRole:admin,wakasek'])->group(function () {
     Route::post('/dashboard/buat-pengumuman', [PengumumanController::class, 'store']);
     Route::get('/dashboard/hapus-pengumuman/{pengumuman}', [PengumumanController::class, 'destroy']);
     Route::put('/dashboard/update-pengumuman/{pengumuman}', [PengumumanController::class, 'update'])->name('update-pengumuman');
+
+    Route::get('/administrasi/users', [UserController::class, 'index'])->name('user_management');
+    Route::post('/administrasi/users/{user}', ['UserController', 'update']);
+});
+
+//==========================================================================================
+Route::middleware(['userRole:admin,wakasek'])->group(function () {
     // Daftar Barang
     Route::get('/sarana/barang', [BarangController::class, 'index'])->name('barang_main');
     Route::get('/sarana/barang-tambah', [BarangController::class, 'create'])->name('tambah-barang');
@@ -159,6 +197,13 @@ Route::middleware(['userRole:admin,wakasek'])->group(function () {
     Route::get('/administrasi/users', [UserController::class, 'index'])->name('user_management');
     Route::patch('/administrasi/users/{user}', [UserController::class, 'update']);
     Route::put('/administrasi/users/reset/{user}', [UserController::class, 'reset']);
+    Route::get('/administrasi/user/export', [UserController::class, 'export']);
+    Route::get('/administrasi/users/import', [UserController::class, 'showImportForm'])->name('users.import.form');
+    Route::post('/administrasi/users/import', [UserController::class, 'Import'])->name('users.import');
+
+
+    //User Moodle
+    Route::get('/administrasi/usermoodle', [UserMoodleApi::class, 'fetchApi']);
 });
 //==========================================================================================
 
@@ -170,6 +215,7 @@ Route::middleware(['userRole:admin,wakasek'])->group(function () {
     Route::get('/administrasi/guru-update/{guru}', [GuruController::class, 'edit']);
     Route::put('/administrasi/guru-update/{guru}', [GuruController::class, 'update']);
     Route::get('/administrasi/guru-hapus/{guru}', [GuruController::class, 'destroy']);
+    Route::get('/userguru/export', [GuruController::class, 'export']);
 
     // ==============[ D a t a - S i s w a ]===============
     Route::get('/administrasi/siswa', [SiswaController::class, 'index'])->name('siswa_main');
@@ -180,7 +226,7 @@ Route::middleware(['userRole:admin,wakasek'])->group(function () {
     Route::get('/administrasi/siswa-keluar', [SiswaController::class, 'out_page'])->name('siswa_out');
     Route::put('/administrasi/siswa-keluar/{siswa}', [SiswaController::class, 'out']);
     Route::get('/administrasi/siswa-hapus/{siswa}', [SiswaController::class, 'destroy']);
-
+    Route::get('/usersiswa/export', [SiswaController::class, 'export']);
     // ==============[ D a t a - P e g a w a i ]===============
     Route::get('/administrasi/pegawai', [PegawaiController::class, 'index']);
     Route::get('/administrasi/pegawai-tambah', [PegawaiController::class, 'create']);
@@ -237,6 +283,28 @@ Route::middleware(['userRole:admin,wakasek'])->group(function () {
     Route::get('/peminjaman-hapus/{id}', [PeminjamanController::class, 'destroy']);
     Route::post('/peminjaman-tambah', [PeminjamanController::class, 'store']);
     Route::put('/peminjaman-update', [PeminjamanController::class, 'update']);
+
+     // ==============[ D a t a - T a m u ]===============
+     Route::get('/data-tamu', [TamuController::class, 'index']);
+     Route::get('/tamu', [TamuController::class, 'create']);
+     Route::post('/tamu', [TamuController::class, 'kirim']);
+     Route::get('/tamu-edit/{id}', [TamuController::class, 'edit']);
+     Route::put('/tamu-edit/{id}', [TamuController::class, 'update']);
+     Route::get('/tamu-delete/{tamu}', [TamuController::class, 'delete']);
+     // Route::get('/get-guru-username', 'TamuController@create')->name('get_guru_user');
+     Route::get('/get-username-by-role/{role}', [TamuController::class, 'getUsernamesByRole']);
+     // Route::get('/search-by-username/{username}', [TamuController::class, 'searchByUsername']);
+     
+     // ==============[ D a t a - K e r j a s a m a ]===============
+     Route::get('/mou',[KerjaSamaController::class, 'lihat']);
+     Route::get('/add-mou', [KerjaSamaController::class, 'create']);
+     Route::post('/add-mou', [KerjaSamaController::class, 'store']);
+     Route::get('/edit-mou/{id}', [KerjaSamaController::class, 'edit']);
+     Route::put('/edit-mou/{id}', [KerjaSamaController::class, 'update']);
+     Route::get('/delete-mou/{kerjasama}', [KerjaSamaController::class, 'destroy']);
+     // file
+    //  Route::get('/storage/kerjasama/file/{file}', [KerjaSamaController::class, 'viewfile'])->name('viewfile');  
+
     Route::get('/peminjaman-confirm/{id}', [PeminjamanController::class, 'confirm']);
     Route::get('/peminjaman-approve/{peminjaman}', [PeminjamanController::class, 'approve']);
     Route::get('/peminjaman-decline/{peminjaman}', [PeminjamanController::class, 'decline']);
@@ -248,13 +316,68 @@ Route::middleware(['userRole:admin,wakasek'])->group(function () {
     Route::delete('/data-peminjaman-barang/{id}', [PeminjamanBarangController::class, 'destroy'])->name('peminjamanBarang.destroy');
     Route::get('/data-peminjaman-barang-history', [PeminjamanBarangController::class, 'history']);
     Route::get('/data-peminjaman-barang-confirm/{id}', [PeminjamanBarangController::class, 'confirm']);
-    Route::get('/data-peminjaman-barang-approve/{id}', [PeminjamanController::class, 'approve']);
+    Route::get('/data-peminjaman-barang-approve/{peminjaman}', [PeminjamanBarangController::class, 'approve']);
+    Route::get('/data-peminjaman-barang-decline/{peminjaman}', [PeminjamanBarangController::class, 'decline']);
+
+    // ==============[ D a t a - A b s e n s i]===============
+    Route::get('/akademik/absensi/admin', [AbsensiController::class, 'showAbsensiAdmin']);
+    Route::get('/get_kelas', [KelasController::class, 'getKelas']);
+    Route::get('/get_siswa', [SiswaController::class, 'getSiswaKelasAbsensi']);
+    Route::get('/get_guru', [GuruController::class, 'getGuru']);
+    Route::get('/get_gurunames', [GuruController::class, 'getGuruNames']);
+    Route::get('/api/events-from-database', [AbsensiController::class, 'getEventsFromDatabase']);
+    Route::delete('/api/delete-absensi/{id}', [AbsensiController::class, 'deleteAbsensi']);
+    Route::put('/api/update-absensi/{id}', [AbsensiController::class, 'updateAbsensi']);  
+    Route::get('/get_siswaadmin', [SiswaController::class, 'getSiswaByKelas']);
+    Route::post('/akademik/absensi/postAbsensi', [AbsensiController::class, 'storeAdmin'])->name('absensi.storeAdmin');
+    Route::get('/getIdUserByNama', [AbsensiController::class, 'getIdUserByNama'])->name('getIdUserByNama');
+
 });
 //======================== G U R U =========================================================
 Route::middleware(['userRole:guru'])->group(function () {
+    Route::get('/akademik/absensi/guru', [AbsensiController::class, 'showAbsensiGuru'])->name('absensi.showAbsensiGuru');
+    Route::put('/api/update-absensi-guru/{id}', [GuruController::class, 'updateAbsensi']);
+});
+
+Route::middleware(['userRole:siswa'])->group(function () {
+    Route::get('/akademik/absensi/siswa', [AbsensiController::class, 'showAbsensiSiswa'])->name('absensi.showAbsensiSiswa');
+    Route::put('/api/update-absensi-siswa/{id}', [SiswaController::class, 'updateAbsensi']);
+
+});
+
+Route::middleware(['userRole:siswa,guru'])->group(function () {
+    //jadwal pelajaran
+    Route::post('/akademik/absensi/siswaguruPostAbsensi', [AbsensiController::class, 'store'])->name('absensi.store');
+    Route::post('/absensi/checkAndFillAbsentData', [AbsensiController::class, 'checkAndFillAbsentData'])->name('absensi.checkAndFillAbsentData');
 });
 
 Route::middleware(['userRole:siswa,admin'])->group(function () {
     //jadwal pelajaran
     Route::get('/akademik/jadwal-siswa/{id}', [JadwalController::class, 'jadwalsiswa']);
+
+   
+
+
 });
+
+Route::middleware(['userRole:siswa,admin'])->group(function () {
+    Route::get('/akademik/raport-siswa/{jenis_raport}', [RaportController::class, 'show_raport']);
+    Route::get('/akademik/jadwal-siswa', [JadwalController::class, 'showJadwalSiswa']);
+    Route::get('/akademik/raport/{jenis_nilai}/{siswa}', [RaportController::class, 'show']);
+});
+
+//==========================================================================================
+    // ==============[ D a f t a r - T a m u ]===============
+
+    Route::get('showTamuByUser/{username}', [DashboardController::class, 'showTamuByUser']);
+
+    Route::get('/get-username-by-role/{role}', [TamuController::class, 'getUsernamesByRole']);
+    Route::get('/daftar-tamu', [TamuController::class, 'daftar'])->name('daftar-tamu'); 
+    Route::post('/datar-tamu', [TamuController::class, 'store'])->name('kirim-tamu');
+
+Route::middleware(['userRole:siswa,guru,admin'])->group(function () {
+    Route::get('/api/absensi/{id}', [AbsensiController::class, 'getAbsensiById']);
+    Route::get('/api/siswa-by-user/{id_user}', [SiswaController::class, 'getSiswaByUser']);
+    Route::get('/api/guru-by-user/{id_user}', [GuruController::class, 'getGuruByUser']);
+});
+

@@ -79,12 +79,16 @@ Data Peminjaman Ruang
                                 </td>
                                 @if (auth()->user()->hasRole('admin'))
                                 <td class="text-center">
+                                    <span class="badge {{ $p->status ? 'text-bg-success' : 'text-bg-warning' }}">
                                     {{ $p->status ? 'Dikembalikan' :  'Belum Dikembalikan' }}
+                                    </span>
                                 </td>
                                 <td class="text-center">
+                                    @if (!$p->status)
                                     <a href="peminjaman-confirm/{{ $p->id }}" class=" btn btn-success font-weight-bold text-sm rounded-circle" title="konfirmasi" onclick="return confirm('Apakah Ruangan sudah dikembalikan?')">
                                         <i class="fa fa-calendar-check"></i>
                                     </a>
+                                    @endif
                                     <a href="/peminjaman-hapus/{{ $p->id }}" onclick="return confirm('Anda yakin akan menghapus data ini?')" class=" btn btn-danger font-weight-bold text-sm rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Hapus">
                                         <i class="fa fa-trash"></i>
                                     </a>

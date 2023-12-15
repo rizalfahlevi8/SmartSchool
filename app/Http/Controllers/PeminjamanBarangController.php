@@ -51,7 +51,7 @@ class PeminjamanBarangController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'barang_id' => ['numeric'],
+            'barang_id' => ['numeric', 'unique:peminjaman_barangs,barang_id'],
             'jumlah' => ['numeric'],
             'nama_peminjam' => ['string'],
             'tanggal_peminjaman' => ['date'],
@@ -166,21 +166,30 @@ class PeminjamanBarangController extends Controller
         return back();
     }
 
-    public function approve( $id)
+    public function approve($id)
     {
-        
         $peminjaman_barang = Peminjaman_barang::find($id);
 
         if ($peminjaman_barang) {
-            if ($peminjaman_barang->status_pengajuan) {
-                $peminjaman_barang->status_pengajuan = 0;
-            } else {
-                $peminjaman_barang->status_pengajuan = 1;
-            }
-
-            $peminjaman_barang->save();
+            $peminjaman_barang->status_pengajuan = true;
         }
+
+        $peminjaman_barang->save();
 
         return back();
     }
+
+    public function decline($id)
+    {
+        $peminjaman_barang = Peminjaman_barang::find($id);
+
+        if ($peminjaman_barang) {
+            $peminjaman_barang->status_pengajuan = false;
+        }
+
+        $peminjaman_barang->save();
+
+        return back();
+    }
+
 }

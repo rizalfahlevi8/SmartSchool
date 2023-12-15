@@ -1,20 +1,81 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\Data_angkatan;
+use App\Exports\UsersExportSiswa;
 use App\Models\Detail_siswa;
 use App\Models\Siswa;
 use App\Models\Kelas;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\Absensi;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Schema;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Log;
+
 
 class SiswaController extends Controller
 {
+
+    public function updateAbsensi(Request $request, $id)
+    {
+        try {
+            $absensi = Absensi::findOrFail($id);
+            $absensi->update($request->all());
+
+            return response()->json(['success' => true, 'message' => 'Absensi updated successfully']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'error' => $e->getMessage()], 500);
+        }
+    }
+
+
+    public function getSiswaByUser($id_user)
+{
+    try {
+        // Ambil data siswa berdasarkan id_user
+        $siswa = Siswa::where('id_user', $id_user)->with('kelas')->first();
+
+        return response()->json(['success' => true, 'data' => $siswa]);
+    } catch (\Exception $e) {
+
+        return response()->json(['success' => false, 'error' => $e->getMessage()], 500);
+    }
+}
+
+    public function getSiswaKelasAbsensi(Request $request)
+    {
+        // Ambil kelas dari request
+        $kelas = $request->query('kelas');
+
+        // Dapatkan data siswa berdasarkan kelas
+        $siswa = Siswa::whereHas('kelas', function ($query) use ($kelas) {
+            $query->where('nama_kelas', $kelas);
+        })->get();
+
+        // Kembalikan data dalam format JSON
+        return response()->json($siswa);
+    }
+
+    public function getSiswaByKelas(Request $request)
+{
+    $selectedKelas = $request->query('kelas');
+    
+    try {
+        // Dapatkan id_kelas dari tabel kelas berdasarkan nama kelas
+        $idKelas = Kelas::where('nama_kelas', $selectedKelas)->value('id');
+
+        // Dapatkan siswa berdasarkan id_kelas
+        $siswaList = Siswa::where('id_kelas', $idKelas)->pluck('nama')->toArray();
+        Log::info('Data siswa diambil:', $siswaList);
+        return response()->json($siswaList);
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'Gagal mengambil daftar siswa.']);
+    }
+}
     public function index()
     {
         $siswa = Siswa::with('kelas')->where('status', 'bukan pindahan')->orWhere('status', 'pindahan')->filter(request(['status', 'kelas']))->get();;
@@ -235,5 +296,9 @@ class SiswaController extends Controller
         $siswa->delete();
 
         return redirect()->route('siswa_out')->with('toast_success', 'Data Siswa Berhasil di Hapus');
+    }
+    public function export()
+    {
+        return Excel::download(new UsersExportSiswa, 'usersSiswa.xlsx');
     }
 }

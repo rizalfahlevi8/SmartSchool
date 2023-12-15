@@ -7,12 +7,14 @@
     "require": {
         "php": "^8.0",
         "barryvdh/laravel-dompdf": "^2.0",
+        "doctrine/dbal": "^3.7",
         "fakerphp/faker": "^1.23",
         "fruitcake/laravel-cors": "^2.0.5",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^9.0",
         "laravel/sanctum": "^2.14",
         "laravel/tinker": "^2.7",
+        "maatwebsite/excel": "^3.1",
         "realrashid/sweet-alert": "^6.0"
     },
     "require-dev": {

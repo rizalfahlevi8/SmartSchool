@@ -31,11 +31,12 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
-
+        
         $this->call(AdminSeeder::class);
         $this->call(MapelSeeder::class);
         $this->call(AngkatanSeeder::class);
         $this->call(UserSeeder::class);
+        $this->call(AbsensisSeeder::class);
         // jadwal dummy
         $this->call(JadwalSeeder::class);
         // jadwal kosong
@@ -43,5 +44,7 @@ class DatabaseSeeder extends Seeder
         // $this->call(NilaiSeeder::class);
         $this->call(BarangSeeder::class);
         $this->call(PeminjamanSeeder::class);
+        $this->call(KeteranganabsensiSeeder::class);
+
     }
 }

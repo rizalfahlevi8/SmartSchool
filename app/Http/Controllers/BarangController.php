@@ -31,7 +31,7 @@ class BarangController extends Controller
    
         $file = $request->file('image');
         $fileName = uniqid() . '.' . $file->getClientOriginalExtension();
-        $file->storeAs('public/', $fileName);
+        $file->storeAs('public/image', $fileName);
         $data['image'] = $fileName;
 
         Barang::create($data);
@@ -48,7 +48,7 @@ class BarangController extends Controller
     public function destroy(Barang $barang)
     {
         $barang->delete();
-        Storage::delete('public/'. $barang->image);
+        Storage::delete('public/image'. $barang->image);
 
         return redirect()->route('barang_main')->with('success', 'Data barang berhasil dihapus.');
     }

@@ -275,7 +275,7 @@ class PeminjamanController extends Controller
 
     public function approve(Peminjaman $peminjaman)
     {
-        
+
         $peminjaman->status_pengajuan = true;
 
         $peminjaman->save();
