@@ -139,6 +139,7 @@ Data Peminjaman Ruang
                                         <i class="fa fa-download"></i>
                                     </a>
                                 </td>
+                                
                                 @if (auth()->user()->hasRole('admin'))
                                 <td class="text-center" style="display: flex; gap: 10px; justify-content: center">
                                     <button type="button" data-bs-toggle="modal" data-bs-target="#update-modal" id-peminjaman="{{ $p->id }}" id-ruang="{{ $p->ruang_id }}" nama-peminjam="{{ $p->nama_peminjam }}" tgl-peminjaman="{{ $p->tanggal_peminjaman }}" tgl-pengembalian="{{ $p->tanggal_pengembalian }}" class="btn btn-warning font-weight-bold btn--edit text-sm rounded-circle" style="margin: 5px 0;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit" onclick="showUpdateModalDialog(this)">
