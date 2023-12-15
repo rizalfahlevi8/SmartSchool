@@ -26,6 +26,8 @@ class PeminjamanBarangController extends Controller
 
         $barang = Barang::all();
 
+        $peminjaman_barang = $peminjaman_barang->sortByDesc('created_at');
+
         return view('pages.humas.data-peminjaman-barang.index', [
             'hariini' => $hariini,
             'peminjaman' => $peminjaman_barang,
