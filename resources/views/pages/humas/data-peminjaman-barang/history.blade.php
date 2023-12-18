@@ -95,7 +95,7 @@ Data Peminjaman Barang
                                         <i class="fa fa-calendar-check"></i>
                                     </a>
                                     @endif
-                                    <a href="/dat-peminjaman-barang/{{ $p->id }}" onclick="return confirm('Anda yakin akan menghapus data ini?')" class=" btn btn-danger font-weight-bold text-sm rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Hapus">
+                                    <a href="/data-peminjaman-barang-hapus/{{ $p->id }}" onclick="return confirm('Anda yakin akan menghapus data ini?')" class=" btn btn-danger font-weight-bold text-sm rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Hapus">
                                         <i class="fa fa-trash"></i>
                                     </a> 
                                 </td>
