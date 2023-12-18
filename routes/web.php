@@ -313,7 +313,7 @@ Route::middleware(['userRole:admin,wakasek'])->group(function () {
     Route::get('/data-peminjaman-barang', [PeminjamanBarangController::class, 'index'])->name('peminjamanBarang.index');
     Route::post('/data-peminjaman-barang', [PeminjamanBarangController::class, 'store'])->name('peminjamanBarang.store');
     Route::put('/data-peminjaman-barang', [PeminjamanBarangController::class, 'update'])->name('peminjamanBarang.update');
-    Route::delete('/data-peminjaman-barang/{id}', [PeminjamanBarangController::class, 'destroy'])->name('peminjamanBarang.destroy');
+    Route::get('/data-peminjaman-barang-hapus/{id}', [PeminjamanBarangController::class, 'destroy'])->name('peminjamanBarang.destroy');
     Route::get('/data-peminjaman-barang-history', [PeminjamanBarangController::class, 'history']);
     Route::get('/data-peminjaman-barang-confirm/{id}', [PeminjamanBarangController::class, 'confirm']);
     Route::get('/data-peminjaman-barang-approve/{peminjaman}', [PeminjamanBarangController::class, 'approve']);
