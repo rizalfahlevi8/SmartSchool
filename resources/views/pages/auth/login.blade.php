@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('assets/img/apple-icon.png') }}">
-    <link rel="icon" type="image/png" href="{{ asset('assets/img/smart scholl only icon.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('assets/img/smartschool.png') }}">
 
     <title>
         Smart School
@@ -53,7 +53,7 @@
                             <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                                 <div class="bg-gradient-primary shadow-primary border-radius-lg py-3 pe-1">
                                     <h4 class="text-white font-weight-bolder text-center mt-2 mb-0" style=""><img
-                                            src="{{ asset('assets/img/smart scholl only icon.png') }}"
+                                            src="{{ asset('assets/img/smartschool.png') }}"
                                             alt="HTML tutorial" style="height: 90px;filter:brightness(0%) invert(90%)">
                                     </h4>
                                     <div class="row mt-2">
