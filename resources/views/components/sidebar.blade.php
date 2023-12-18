@@ -3,7 +3,7 @@
         <div class="text-white w-auto " style="display: flex; align-items: center; justify-content: center; column-gap: 3px">
             {{-- <img src="{{ asset('assets/img/web-icon-brain.png') }}" alt="HTML tutorial"
             style="height: 36px;filter:brightness(0%) invert(90%)"> --}}
-            <img src="{{ asset('assets/img/web-icon-brain.png') }}" alt="HTML tutorial" style="height: 36px;">
+            <img src="{{ asset('assets/img/only-smartschool.png') }}" alt="HTML tutorial" style="height: 36px;">
             {{-- <span class="ms-1 font-weight-bold text-white" style="font-size:23px">Smart School</span> --}}
             <span class="ms-1 font-weight-bold"
                 style="font-size: 24px; background-image: linear-gradient(to right, #0cb1d8, #00c4dc, #00d5d1, #00e4b8, #29f194);

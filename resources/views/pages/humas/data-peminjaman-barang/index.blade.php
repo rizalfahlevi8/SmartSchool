@@ -301,12 +301,6 @@ Data Peminjaman barang
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <label class="form-label">Jumlah</label>
-                                            <div class="input-group">
-                                                <input type="number" name="jumlah" class="form-control rounded-3" id="inputEmail4" required value="{{ old('jumlah') }}" {{ $errors->has('jumlah') ? 'autofocus="true"' : '' }}>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
                                             <label class="form-label">Tanggal Peminjaman</label>
                                             <div class="input-group">
                                                 <input type="date" name="tanggal_peminjaman" class="form-control rounded-3" required value="{{ old('tanggal_peminjaman') }}" {{ $errors->has('tanggal_peminjaman') ? 'autofocus="true"' : '' }}>
@@ -316,6 +310,12 @@ Data Peminjaman barang
                                             <label class="form-label">Tanggal Pengembalian</label>
                                             <div class="input-group">
                                                 <input type="date" name="tanggal_pengembalian" class="form-control rounded-3" required value="{{ old('tanggal_pengembalian') }}" {{ $errors->has('tanggal_pengembalian') ? 'autofocus="true"' : '' }}>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Jumlah</label>
+                                            <div class="input-group">
+                                                <input type="number" name="jumlah" class="form-control rounded-3" id="inputEmail4" required value="{{ old('jumlah') }}" {{ $errors->has('jumlah') ? 'autofocus="true"' : '' }}>
                                             </div>
                                         </div>
                                         <div class="mb-3">
