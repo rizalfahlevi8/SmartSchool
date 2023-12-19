@@ -95,11 +95,7 @@
                                                 {{ $siswa->status }}
                                             </td>
                                             <td class="text-center">
-<<<<<<< HEAD
                                                 {{ $siswa->tanggal_keluar }}
-=======
-                                                {{ $siswa->updated_at }}
->>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
                                             </td>
                                             <td class="text-center">
                                                 <button type="button"data-bs-toggle="modal" data-bs-target="#detail-modal"
@@ -108,27 +104,19 @@
                                                     data-bs-toggle="tooltip" data-bs-placement="bottom" title="Detail"
                                                     onclick="showDetailModal(this)" nama-siswa="{{ $siswa->nama }}"
                                                     nis="{{ $siswa->nis }}" nisn="{{ $siswa->nisn }}"
-                                                    jenis-kelamin="{{ $siswa->jenis_kelamin }}"
-<<<<<<< HEAD
-                                                    {{-- kelas="{{ $siswa->kelas->nama_kelas }}" --}} nik="{{ $siswa->nik }}"
-=======
-                                                    kelas="{{ $siswa->kelas->nama_kelas }}" nik="{{ $siswa->nik }}"
->>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
-                                                    tempat-lahir="{{ $siswa->tempat_lahir }}"
+                                                    jenis-kelamin="{{ $siswa->jenis_kelamin }}" {{-- kelas="{{ $siswa->kelas->nama_kelas }}" --}}
+                                                    nik="{{ $siswa->nik }}" tempat-lahir="{{ $siswa->tempat_lahir }}"
                                                     tanggal-lahir="{{ $siswa->tanggal_lahir }}"
                                                     nama-wali="{{ $siswa->nama_wali }}" no-telp="{{ $siswa->no_telp }}"
                                                     agama="{{ $siswa->agama }}" alamat="{{ $siswa->alamat }}"
                                                     foto="{{ asset('storage/murid/img/' . $siswa->foto) }}">
                                                     <i class="fa fa-eye"></i>
                                                 </button>
-<<<<<<< HEAD
-=======
                                                 <a href="data-siswa-edit/{{ $siswa->id }}"
                                                     class=" btn btn-warning font-weight-bold text-sm rounded-circle"
                                                     data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit">
                                                     <i class="fa fa-edit"></i>
                                                 </a>
->>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
                                                 <a href="data-siswa-hapus/{{ $siswa->id }}"
                                                     onclick="return confirm('Anda yakin akan menghapus data ini?')"
                                                     class=" btn btn-danger font-weight-bold text-sm rounded-circle"
@@ -211,11 +199,7 @@
                                         </div>
                                     </div>
                                 </li>
-<<<<<<< HEAD
                                 {{-- <li class="list-group-item">
-=======
-                                <li class="list-group-item">
->>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
                                     <div class="row">
                                         <div class="col-md-5">
                                             <span class="float-start fw-bold">Kelas</span>
@@ -225,11 +209,7 @@
 
                                         </div>
                                     </div>
-<<<<<<< HEAD
                                 </li> --}}
-=======
-                                </li>
->>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
                                 <li class="list-group-item">
                                     <div class="row">
                                         <div class="col-md-5">
@@ -324,11 +304,7 @@
             const wali = detailModalDialog.querySelector('#wali');
             const ttl = detailModalDialog.querySelector('#ttl');
             const alamat = detailModalDialog.querySelector('#alamat');
-<<<<<<< HEAD
-            // const kelas = detailModalDialog.querySelector('#kelas');
-=======
             const kelas = detailModalDialog.querySelector('#kelas');
->>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
             const jenis_kelamin = detailModalDialog.querySelector('#jenis-kelamin');
             const no_telp = detailModalDialog.querySelector('#no-telp');
             const agama = detailModalDialog.querySelector('#agama');
@@ -342,11 +318,7 @@
             ttl.innerText = `${element.getAttribute('tempat-lahir')}, ${element.getAttribute('tanggal-lahir')}`;
             alamat.innerText = element.getAttribute('alamat');
             agama.innerText = element.getAttribute('agama');
-<<<<<<< HEAD
-            // kelas.innerText = element.getAttribute('kelas');
-=======
             kelas.innerText = element.getAttribute('kelas');
->>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
             jenis_kelamin.innerText = element.getAttribute('jenis-kelamin');
             no_telp.innerText = element.getAttribute('no-telp');
             foto.src = element.getAttribute('foto');

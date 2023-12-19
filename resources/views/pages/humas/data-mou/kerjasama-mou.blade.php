@@ -26,8 +26,8 @@
                     <div class="col-md-6">
                         <label class="form-label" for="nama">Nama Mitra</label>
                         <div class="input-group">
-                            <input 
-                            type="text" name="nama_mitra" class="form-control rounded-3" 
+                            <input
+                            type="text" name="nama_mitra" class="form-control rounded-3"
                             id="nama_mitra" required
                                 value="{{ old('nama_mitra') }}" {{ $errors->has('nama_mitra') ? 'autofocus="true"' : '' }}
                                 >
@@ -36,8 +36,8 @@
                     <div class="col-md-6">
                         <label class="form-label" for="nama">PT Mitra</label>
                         <div class="input-group">
-                            <input 
-                            type="text" name="pt_mitra" class="form-control rounded-3" 
+                            <input
+                            type="text" name="pt_mitra" class="form-control rounded-3"
                             id="pt_mitra" required
                                 value="{{ old('pt_mitra') }}" {{ $errors->has('pt_mitra') ? 'autofocus="true"' : '' }}
                                 >
@@ -46,8 +46,8 @@
                     <div class="col-md-6">
                         <label class="form-label" for="nama">Asal Mitra atau Instansi</label>
                         <div class="input-group">
-                            <input 
-                            type="text" name="asal_mitra" class="form-control rounded-3" 
+                            <input
+                            type="text" name="asal_mitra" class="form-control rounded-3"
                             id="asal_mitra" required
                                 value="{{ old('asal_mitra') }}" {{ $errors->has('asal_mitra') ? 'autofocus="true"' : '' }}
                                 >
@@ -56,8 +56,8 @@
                     <div class="col-md-6">
                         <label class="form-label" for="nama">Tujuan Mitra</label>
                         <div class="input-group">
-                            <input 
-                            type="text" name="tujuan_mitra" class="form-control rounded-3" 
+                            <input
+                            type="text" name="tujuan_mitra" class="form-control rounded-3"
                             id="tujuan_mitra" required
                                 value="{{ old('tujuan_mitra') }}" {{ $errors->has('tujuan_mitra') ? 'autofocus="true"' : '' }}
                                 >
@@ -65,7 +65,7 @@
                     </div>
                     <div class="col-md-6">
                         <label for="nama" class="form-label">Deskripsi Singkat Mitra</label>
-                        <div class="form-floating mb-3" > 
+                        <div class="form-floating mb-3" >
                             <textarea class="form-control" name="deskripsi_singkat_mitra" placeholder="Leave a comment here" id="floatingTextarea" style="height: 120px"
                             id="deskripsi_singkat_mitra" required
                                 value="{{ old('deskripsi_singkat_mitra') }}" {{ $errors->has('deskripsi_singkat_mitra') ? 'autofocus="true"' : '' }}></textarea>
@@ -80,7 +80,7 @@
                             <label class="form-label"> Keterangan : Silahkan upload file dalam bentuk doc, docx atau pdf </label>
                         </div>
                             <input class="form-control rounded-3 text-sm" name="file_mitra" type="file"
-                            id="file-input" 
+                            id="file-input"
                             required value="{{ old('file_mitra') }}" {{ $errors->has('file_mitra') ? 'autofocus="true"' : '' }}>
                     </div> --}}
                     <div class="col-md-6">
@@ -92,12 +92,12 @@
                             id="file-input" accept=".doc, .docx, .pdf"
                             required value="{{ old('file_mitra') }}" {{ $errors->has('file_mitra') ? 'autofocus="true"' : '' }}>
                         <span id="file-error" class="text-danger"></span>
-                    </div>         
+                    </div>
                     <div class="col-md-3">
                         <label class="form-label" for="tanggal_mulai">Tanggal Mulai Kerjasama</label>
                         <div class="input-group">
                             <input type="date" name="tgl_mulai_kerjasama" class="form-control rounded-3"
-                            id='tgl_mulai_kerjasama' 
+                            id='tgl_mulai_kerjasama'
                                 required value="{{ old('tgl_mulai_kerjasama') }}"
                                 {{ $errors->has('tgl_mulai_kerjasama') ? 'autofocus="true"' : '' }}>
                         </div>
@@ -106,7 +106,7 @@
                         <label class="form-label" for="tanggal_berakhir">Tanggal Berakhir Kerjasama</label>
                         <div class="input-group">
                             <input type="date" name="tgl_berakhir_kerjasama" class="form-control rounded-3"
-                            id='tgl_berakhir_kerjasama' 
+                            id='tgl_berakhir_kerjasama'
                                 required value="{{ old('tgl_berakhir_kerjasama') }}"
                                 {{ $errors->has('tgl_berakhir_kerjasama') ? 'autofocus="true"' : '' }}>
                         </div>
@@ -123,7 +123,7 @@
                     </div>
                 </div>
                 <div class="card-body py-1 px-4 pb-2">
-                
+
                 </div>
         </div>
     </div>
@@ -179,9 +179,4 @@
         }
     });
 </script>
-
-<<<<<<< HEAD
-=======
-
->>>>>>> 7c56d9d438752ab416e8c106597cbe0d66862c22
 @endsection

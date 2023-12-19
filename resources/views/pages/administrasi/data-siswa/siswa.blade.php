@@ -76,7 +76,10 @@
                                     name="kelas" id="" style="text-transform: capitalize; width: 200px">
                                     <option selected value="">-- Pilih Kelas --</option>
                                     @foreach ($kelas as $k)
-                                    <option value="{{ $k->id }}" @if (old('kelas') == '{{ $k->id }}' ||(request('kelas') == $k->id)|| (isset($_GET['kelas']) && $_GET['kelas'] == '{{ $k->d }}')) selected @endif>{{ $k->nama_kelas }}</option>
+                                        <option value="{{ $k->id }}"
+                                            @if (old('kelas') == '{{ $k->id }}' ||
+                                                    request('kelas') == $k->id ||
+                                                    (isset($_GET['kelas']) && $_GET['kelas'] == '{{ $k->d }}')) selected @endif>{{ $k->nama_kelas }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -85,10 +88,15 @@
                                 <select class="form-select form-select-sm" aria-label=".form-select-sm example"
                                     name="status" id="" style="text-transform: capitalize; width: 200px">
                                     <option selected value="">-- Pilih Status --</option>
-                                        <option value="bukan pindahan" @if (old('status') == 'bukan pindahan' || request('status') == 'bukan pindahan' || (isset($_GET['status']) && $_GET['status'] == 'bukan pindahan')) selected @endif>Bukan Pindahan
-                                        </option>
-                                        <option value="pindahan" @if (old('status') == 'pindahan' || request('status') == 'pindahan' || (isset($_GET['status']) && $_GET['status'] == 'pindahan')) selected @endif>Pindahan
-                                        </option>
+                                    <option value="bukan pindahan" @if (old('status') == 'bukan pindahan' ||
+                                            request('status') == 'bukan pindahan' ||
+                                            (isset($_GET['status']) && $_GET['status'] == 'bukan pindahan')) selected @endif>Bukan
+                                        Pindahan
+                                    </option>
+                                    <option value="pindahan" @if (old('status') == 'pindahan' ||
+                                            request('status') == 'pindahan' ||
+                                            (isset($_GET['status']) && $_GET['status'] == 'pindahan')) selected @endif>Pindahan
+                                    </option>
                                 </select>
                                 <button type="submit" class="btn btn-outline-primary btn-sm"
                                     style="margin-bottom: 0">Cari</button>
@@ -174,7 +182,8 @@
                                                 <button type="button"data-bs-toggle="modal" data-bs-target="#leave-modal"
                                                     class="btn btn-danger font-weight-bold text-sm rounded-circle"
                                                     data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                    style="margin-bottom: 0" title="Detail" id-siswa="{{ $siswa->id }}" nama-siswa="{{ $siswa->nama }}"
+                                                    style="margin-bottom: 0" title="Detail"
+                                                    id-siswa="{{ $siswa->id }}" nama-siswa="{{ $siswa->nama }}"
                                                     nis="{{ $siswa->nis }}" nisn="{{ $siswa->nisn }}"
                                                     kelas="{{ $siswa->kelas->nama_kelas }}"
                                                     onclick="showModalLeave(this)">
@@ -194,7 +203,8 @@
             </div>
         </div>
         {{-- Modal detail siswa --}}
-        <div class="modal fade" id="detail-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="detail-modal" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
             <div class="modal-dialog  modal-lg">
                 <div class="modal-content">
                     <div class="modal-header bg-primary">
@@ -396,8 +406,7 @@
                         </h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form id="siswaForm" class="row g-3 py-1 px-4" method="post"
-                        enctype="multipart/form-data">
+                    <form id="siswaForm" class="row g-3 py-1 px-4" method="post" enctype="multipart/form-data">
                         @method('PUT')
                         @csrf
                         <div class="modal-body">
@@ -411,7 +420,7 @@
                                                     <div class="float-end">:</div>
                                                 </div>
                                                 <div id="nama-siswa" class="col-md-7" style="text-transform: uppercase">
-    
+
                                                 </div>
                                             </div>
                                         </li>
@@ -422,7 +431,7 @@
                                                     <div class="float-end">:</div>
                                                 </div>
                                                 <div id="nisn" class="col-md-7">
-    
+
                                                 </div>
                                             </div>
                                         </li>
@@ -433,7 +442,7 @@
                                                     <div class="float-end">:</div>
                                                 </div>
                                                 <div id="nis" class="col-md-7">
-    
+
                                                 </div>
                                             </div>
                                         </li>
@@ -444,7 +453,7 @@
                                                     <div class="float-end">:</div>
                                                 </div>
                                                 <div id="kelas" class="col-md-7" style="text-transform: uppercase">
-    
+
                                                 </div>
                                             </div>
                                         </li>
@@ -460,12 +469,7 @@
                                                         <select class="form-select rounded-3 form-control-lg text-sm"
                                                             aria-label="Default select example" name="status"
                                                             id="status">
-<<<<<<< HEAD
                                                             <option selected>-- Pilih Status --</option>
-=======
-                                                            <option selected>-- Pilih Status --
-                                                            </option>
->>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
                                                             <option value="lulus"
                                                                 @if (old('status') == 'lulus') {{ 'selected' }} @endif>
                                                                 Lulus</option>
@@ -477,7 +481,6 @@
                                                 </div>
                                             </div>
                                         </li>
-<<<<<<< HEAD
                                         <li class="list-group-item">
                                             <div class="row">
                                                 <div class="col-md-5">
@@ -486,13 +489,12 @@
                                                 </div>
                                                 <div class="col-md-7">
                                                     <div class="input-group">
-                                                        <input type="date" name="tanggal_keluar" class="form-control rounded-3" id="tanggal_keluar" required>
+                                                        <input type="date" name="tanggal_keluar"
+                                                            class="form-control rounded-3" id="tanggal_keluar" required>
                                                     </div>
                                                 </div>
                                             </div>
                                         </li>
-=======
->>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
 
                                     </ul>
                                 </div>
@@ -579,42 +581,17 @@
                 });
             }
         }
+
         function showModalLeave(element) {
-<<<<<<< HEAD
-    const detailModalDialog = document.getElementById('leave-modal');
-    const nama_siswa = detailModalDialog.querySelector('#nama-siswa');
-    const nis = detailModalDialog.querySelector('#nis');
-    const nisn = detailModalDialog.querySelector('#nisn');
-    const kelas = detailModalDialog.querySelector('#kelas');
-    const form = document.getElementById("siswaForm");
-    const statusDropdown = detailModalDialog.querySelector('#status');
-    const tanggalKeluarInput = detailModalDialog.querySelector('#tanggal_keluar');
-
-    // Mengasumsikan idSiswa adalah variabel yang ingin Anda gunakan
-    const idSiswa = element.getAttribute("id-siswa");
-
-    form.action = "/administrasi/siswa-keluar/" + idSiswa;
-
-    nama_siswa.innerText = element.getAttribute('nama-siswa');
-    nis.innerText = element.getAttribute('nis');
-    nisn.innerText = element.getAttribute('nisn');
-    kelas.innerText = element.getAttribute('kelas');
-
-    // Menambahkan nilai status ke dropdown "Status Keluar"
-    statusDropdown.value = element.getAttribute('status');
-
-    // Mengatur nilai default "Tanggal Keluar" berdasarkan status yang dipilih
-    tanggalKeluarInput.value = new Date().toISOString().split('T')[0];
-
-}
-=======
             const detailModalDialog = document.getElementById('leave-modal');
             const nama_siswa = detailModalDialog.querySelector('#nama-siswa');
             const nis = detailModalDialog.querySelector('#nis');
             const nisn = detailModalDialog.querySelector('#nisn');
             const kelas = detailModalDialog.querySelector('#kelas');
             const form = document.getElementById("siswaForm");
-    
+            const statusDropdown = detailModalDialog.querySelector('#status');
+            const tanggalKeluarInput = detailModalDialog.querySelector('#tanggal_keluar');
+
             // Mengasumsikan idSiswa adalah variabel yang ingin Anda gunakan
             const idSiswa = element.getAttribute("id-siswa");
 
@@ -625,11 +602,12 @@
             nisn.innerText = element.getAttribute('nisn');
             kelas.innerText = element.getAttribute('kelas');
 
-            // Jika Anda memiliki elemen dengan id 'nik', Anda juga dapat mengatur innerText-nya
-            const nik = detailModalDialog.querySelector('#nik');
-            nik.innerText = element.getAttribute('nik');
+            // Menambahkan nilai status ke dropdown "Status Keluar"
+            statusDropdown.value = element.getAttribute('status');
+
+            // Mengatur nilai default "Tanggal Keluar" berdasarkan status yang dipilih
+            tanggalKeluarInput.value = new Date().toISOString().split('T')[0];
         }
->>>>>>> 2dea7770bd9617e2022144e6bd759d21582ae3f7
     </script>
 @endsection
 {{-- footer --}}

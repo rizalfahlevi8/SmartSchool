@@ -186,7 +186,7 @@
                                         @else
                                             <ul class="list-group">
                                                 @foreach ($tamu_pesans as $tamu_pesan)
-                                                    @if ($tamu_pesan->status !== 'pesan_telah_selesai')                                                       
+                                                    @if ($tamu_pesan->status !== 'pesan_telah_selesai')
                                                             <div class="row">
                                                                 <div class="col-md-8">  <!-- Kolom untuk data -->
                                                                     <li class="list-group-item">
@@ -233,19 +233,15 @@
                                                                                 @method('DELETE')
                                                                                 <button type="submit" class="btn btn-danger">Hapus Pesan</button>
                                                                             </form>
-                                                                        </div>                                                                        
+                                                                        </div>
                                                                     </div>
-                                                                </div>    
-                                                            </div>                                                       
+                                                                </div>
+                                                            </div>
                                                     @endif
                                                 @endforeach
                                             </ul>
                                         @endif
                                     </div>                
-<<<<<<< HEAD
-=======
-
->>>>>>> 7c56d9d438752ab416e8c106597cbe0d66862c22
                                 </div>
                                 <div class="card mt-4">
                                     <div class="card-header">
@@ -408,7 +404,7 @@
                                         @else
                                             <ul class="list-group">
                                                 @foreach ($tamu_pesans as $tamu_pesan)
-                                                    @if ($tamu_pesan->status !== 'pesan_telah_selesai')                                                       
+                                                    @if ($tamu_pesan->status !== 'pesan_telah_selesai')
                                                             <div class="row">
                                                                 <div class="col-md-8">  <!-- Kolom untuk data -->
                                                                     <li class="list-group-item">
@@ -455,15 +451,15 @@
                                                                                 @method('DELETE')
                                                                                 <button type="submit" class="btn btn-danger">Hapus Pesan</button>
                                                                             </form>
-                                                                        </div>                                                                        
+                                                                        </div>
                                                                     </div>
-                                                                </div>    
-                                                            </div>                                                       
+                                                                </div>
+                                                            </div>
                                                     @endif
                                                 @endforeach
                                             </ul>
                                         @endif
-                                    </div> 
+                                    </div>
                                 </div>
                                 <div class="card mt-4">
                                     <div class="card-header">
@@ -536,5 +532,5 @@
             });
         }
     </script>  --}}
-    
+
 @endsection
