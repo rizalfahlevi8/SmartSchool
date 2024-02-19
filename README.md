@@ -59,7 +59,7 @@ Aplikasi "Smart School" akan memiliki beberapa fitur utama, termasuk:
     php artisan serve
     ```
 8. Buka aplikasi di browser dengan alamat yang muncul pada cmd setelah menjalankan perintah diatas, contoh url : [http://localhost:8000](http://localhost:8000).
-9. Jika Ingin terintegrasi dengan moodle Smart School, Link source code Moodle SmartSchool : [Source Code (click)](https://https://github.com/Izulfirman/MoodleSiakad)
+9. Jika Ingin terintegrasi dengan moodle Smart School, Link source code Moodle SmartSchool : [Source Code (click)](https://github.com/Izulfirman/MoodleSiakad)
 <br><br>
 # 🚀 LIST DEFAULT ACCOUNT
 
