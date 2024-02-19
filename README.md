@@ -12,14 +12,10 @@ Link smartscholl : [Smart School (click)](https://e-digitaledu.id/)
 
 ## Tim Pengembang / MBKM
 
-- Fahim / [https://github.com/Rynare](https://github.com/Rynare)
-- Rizal / [https://github.com/rizalfahlevi8](https://github.com/rizalfahlevi8)
-- Sultan / [https://github.com/Nov189](https://github.com/Nov189)
-- Dimaz / [https://github.com/DimazRM](https://github.com/DimazRM)
-
-## Tim Tefa/Colaborator
-
-- -
+- Muhammad Rizal Fahlevi / [https://github.com/rizalfahlevi8](https://github.com/rizalfahlevi8)
+- M. Fahim David Bachtiar / [https://github.com/Rynare](https://github.com/Rynare)
+- Sultan Arya M / [https://github.com/Nov189](https://github.com/Nov189)
+- Dimaz Raditya M / [https://github.com/DimazRM](https://github.com/DimazRM)
 
 ## Fitur Utama
 
