@@ -32,7 +32,7 @@ Aplikasi "Smart School" akan memiliki beberapa fitur utama, termasuk:
 
 1. Clone repositori ini ke server lokal Anda.
     ```
-    git clone https://github.com/Rynare/siakad.git
+    git clone https://github.com/rizalfahlevi8/SmartSchool.git
     ```
 2. Masuk ke direktori proyek.
     ```
